@@ -1,6 +1,7 @@
 Flask
 Flask-Session
 flask_login
+Flask-SQLAlchemy
 gunicorn
 SQLAlchemy
 requests
