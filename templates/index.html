@@ -1,4 +1,22 @@
-{% extends "layout.html" %} {% block content %}
-<h1>Welcome to FlaskKeyring</h1>
-<p>Manage your passwords securely.</p>
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center mt-4">
+    <h1 class="display-4">Welcome to FlaskKeyring</h1>
+    <p class="lead">Your secure and reliable password management solution.</p>
+    <hr class="my-4">
+    <p>FlaskKeyring helps you to store and manage your passwords in a secure and convenient way.</p>
+
+    {% if not current_user.is_authenticated %}
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Register Now</a>
+        <a class="btn btn-secondary btn-lg" href="{{ url_for('login') }}" role="button">Login</a>
+    </p>
+    {% else %}
+    <p class="lead">
+        <a class="btn btn-success btn-lg" href="{{ url_for('dashboard') }}" role="button">Go to Dashboard</a>
+    </p>
+    {% endif %}
+</div>
 {% endblock %}
+
