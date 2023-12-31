@@ -3,15 +3,13 @@ import os
 from datetime import datetime
 
 from cryptography.fernet import Fernet
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_login import (LoginManager, UserMixin, current_user, login_required,
                          login_user, logout_user)
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from flask_session import Session
-
-# from .helpers import apology, is_password_complex, require_login
 
 # Get the current directory where app.py is located
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -82,6 +80,25 @@ def get_user_fernet_key(user_id):
         return None
 
 
+def is_password_complex(password):
+    if len(password) < 8:
+        return False
+
+    has_upper = has_lower = has_digit = has_special = False
+
+    for char in password:
+        if char.isdigit():
+            has_digit = True
+        elif char.isupper():
+            has_upper = True
+        elif char.islower():
+            has_lower = True
+        elif char in "@$!%*?&_.":
+            has_special = True
+
+    return all([has_upper, has_lower, has_digit, has_special])
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -104,9 +121,18 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
 
+        # Check if the password is complex enough
+        if not is_password_complex(password):
+            flash(
+                "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.",
+                "error",
+            )
+            return redirect(url_for("register"))
+
         user = User.query.filter_by(username=username).first()
         if user:
-            return "Username already exists."
+            flash("Username already exists.", "error")
+            return redirect(url_for("register"))
 
         new_user = User(
             username=username, password_hash=generate_password_hash(password)
@@ -116,6 +142,7 @@ def register():
 
         generate_and_store_fernet_key(new_user.id)
 
+        flash("Registration successful. Please log in.", "success")
         return redirect(url_for("login"))
     return render_template("register.html")
 
@@ -128,7 +155,10 @@ def login():
 
         user = User.query.filter_by(username=username).first()
         if not user or not check_password_hash(user.password_hash, password):
-            return "Invalid username or password."
+            flash(
+                "Invalid username or password", "error"
+            )  # 'error' is a category, can be used for styling
+            return redirect(url_for("login"))  # Redirect back to the login page
 
         login_user(user)
         return redirect(url_for("index"))
