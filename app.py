@@ -1,6 +1,8 @@
+import json
 import os
 from datetime import datetime
 
+from cryptography.fernet import Fernet
 from flask import Flask, redirect, render_template, request, url_for
 from flask_login import (LoginManager, UserMixin, current_user, login_required,
                          login_user, logout_user)
@@ -40,10 +42,10 @@ Session(app)  # Initialize Flask-Session
 
 
 class User(UserMixin, db.Model):
-    __tablename__ = "users"  # Explicitly specifying the table name
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
-    hash = db.Column(db.String(200))  # Adjusted to align with your database schema
+    password_hash = db.Column(db.String(200))
 
 
 class Password(db.Model):
@@ -53,6 +55,31 @@ class Password(db.Model):
     website = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(200), nullable=False)
+
+
+def generate_and_store_fernet_key(user_id):
+    # Generate a new Fernet key
+    fernet_key = Fernet.generate_key().decode()
+    # Store the key in a file or a secure location
+    # Here we use a JSON file for simplicity
+    try:
+        with open("fernet_keys.json", "r") as file:
+            keys = json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        keys = {}
+
+    keys[str(user_id)] = fernet_key
+    with open("fernet_keys.json", "w") as file:
+        json.dump(keys, file)
+
+
+def get_user_fernet_key(user_id):
+    try:
+        with open("fernet_keys.json", "r") as file:
+            keys = json.load(file)
+            return keys.get(str(user_id))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
 
 
 @login_manager.user_loader
@@ -81,9 +108,13 @@ def register():
         if user:
             return "Username already exists."
 
-        new_user = User(username=username, hash=generate_password_hash(password))
+        new_user = User(
+            username=username, password_hash=generate_password_hash(password)
+        )
         db.session.add(new_user)
         db.session.commit()
+
+        generate_and_store_fernet_key(new_user.id)
 
         return redirect(url_for("login"))
     return render_template("register.html")
@@ -96,7 +127,7 @@ def login():
         password = request.form.get("password")
 
         user = User.query.filter_by(username=username).first()
-        if not user or not check_password_hash(user.hash, password):
+        if not user or not check_password_hash(user.password_hash, password):
             return "Invalid username or password."
 
         login_user(user)
@@ -123,36 +154,51 @@ def dashboard():
 
 
 @app.route("/add_password", methods=["GET", "POST"])
-@login_required  # Ensure the user is logged in to access this route
+@login_required
 def add_password():
     if request.method == "POST":
-        # Get the form data
         website = request.form.get("website")
         username = request.form.get("username")
         password = request.form.get("password")
 
-        # Create a new password entry in the database
+        fernet_key = get_user_fernet_key(current_user.id)
+        cipher_suite = Fernet(fernet_key.encode())
+        encrypted_password = cipher_suite.encrypt(password.encode())
+
         new_password = Password(
             user_id=current_user.id,
             website=website,
             username=username,
-            password=password,
+            password=encrypted_password.decode(),
         )
         db.session.add(new_password)
         db.session.commit()
 
-        # Redirect to the dashboard
-        return redirect(url_for("index"))
+        return redirect(url_for("dashboard"))
 
-    # If it's a GET request, render the dashboard template
     return render_template("dashboard.html")
 
 
 @app.route("/view_password/<int:password_id>")
 @login_required
 def view_password(password_id):
-    password = Password.query.get_or_404(password_id)
-    return render_template("view_password.html", password=password)
+    password_entry = Password.query.get_or_404(password_id)
+
+    fernet_key = get_user_fernet_key(current_user.id)
+    if not fernet_key:
+        # Handle the case where the Fernet key is not found
+        flash("Unable to retrieve encryption key for the password.", "error")
+        return redirect(url_for("dashboard"))
+
+    cipher_suite = Fernet(fernet_key.encode())
+    decrypted_password = cipher_suite.decrypt(password_entry.password.encode()).decode()
+
+    # Pass the decrypted password to the template
+    return render_template(
+        "view_passwords.html",
+        password=password_entry,
+        decrypted_password=decrypted_password,
+    )
 
 
 @app.route("/search_password", methods=["POST"])
