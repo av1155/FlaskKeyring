@@ -3,13 +3,20 @@
 {% block content %}
     <header>
         <h1>Password Manager Dashboard</h1>
-        <!-- You can include a navigation menu or user profile information here -->
     </header>
 
     <main>
+        <section class="search-password">
+            <h2>Search Password</h2>
+            <form method="POST" action="{{ url_for('search_password') }}">
+                <label for="search_website">Search Website:</label>
+                <input type="text" id="search_website" name="search_website" required />
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
         <section class="password-list">
             <h2>Your Passwords</h2>
-            <!-- Display user's saved passwords here -->
             <table class="table">
                 <thead>
                     <tr>
@@ -20,15 +27,17 @@
                 </thead>
                 <tbody>
                     {% for password in passwords %}
-                        <tr>
-                            <td>{{ password.website }}</td>
-                            <td>{{ password.username }}</td>
-                            <td>
-                                <a href="{{ url_for('view_password', id=password.id) }}" class="btn btn-primary">View</a>
-                                <a href="{{ url_for('edit_password', id=password.id) }}" class="btn btn-secondary">Edit</a>
-                                <a href="{{ url_for('delete_password', id=password.id) }}" class="btn btn-danger">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ password.website }}</td>
+                        <td>{{ password.username }}</td>
+                        <td>
+                            <a href="{{ url_for('view_password', password_id=password.id) }}" class="btn btn-primary">View</a>
+                            <a href="{{ url_for('edit_password', password_id=password.id) }}" class="btn btn-secondary">Edit</a>
+                            <form action="{{ url_for('remove_password', password_id=password.id) }}" method="POST" style="display: inline-block;">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -36,9 +45,7 @@
 
         <section class="add-password">
             <h2>Add New Password</h2>
-            <!-- Form for adding a new password entry -->
             <form method="POST" action="{{ url_for('add_password') }}">
-                <!-- Input fields for the website, username, and password -->
                 <label for="website">Website:</label>
                 <input type="text" id="website" name="website" required />
 
