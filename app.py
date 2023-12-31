@@ -252,18 +252,36 @@ def search_password():
 @app.route("/edit_password/<int:password_id>", methods=["GET", "POST"])
 @login_required
 def edit_password(password_id):
-    password = Password.query.get_or_404(password_id)
+    password_entry = Password.query.get_or_404(password_id)
 
     if request.method == "POST":
-        # Update the password details based on the form data
-        password.website = request.form.get("website")
-        password.username = request.form.get("username")
-        password.password = request.form.get("password")
+        # Retrieve the form data
+        website = request.form.get("website")
+        username = request.form.get("username")
+        new_password = request.form.get("password")
+
+        # Retrieve the user's encryption key
+        fernet_key = get_user_fernet_key(current_user.id)
+        if not fernet_key:
+            flash("Unable to retrieve encryption key for editing.", "error")
+            return redirect(url_for("dashboard"))
+
+        # Encrypt the new password
+        cipher_suite = Fernet(fernet_key.encode())
+        encrypted_password = cipher_suite.encrypt(new_password.encode())
+
+        # Update the password details
+        password_entry.website = website
+        password_entry.username = username
+        password_entry.password = encrypted_password.decode()
+
+        # Commit changes to the database
         db.session.commit()
 
+        flash("Password updated successfully.", "success")
         return redirect(url_for("dashboard"))
 
-    return render_template("edit_password.html", password=password)
+    return render_template("edit_password.html", password=password_entry)
 
 
 @app.route("/remove_password/<int:password_id>", methods=["POST"])
