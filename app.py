@@ -15,7 +15,7 @@ from flask_session import Session
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
 # Define a relative path to the database file
-database_relative_path = "pypassmanager.db"
+database_relative_path = "flaskkeyring.db"
 
 # Construct the full path to the database file using the current directory
 database_path = os.path.join(current_directory, database_relative_path)
