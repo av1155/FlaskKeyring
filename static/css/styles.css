@@ -20,6 +20,7 @@ h4,
 h5,
 h6 {
     color: #333;
+    text-align: center;
 }
 
 /* Navigation Bar */
@@ -60,6 +61,8 @@ h6 {
 }
 
 /* Tables */
+
+/* Style the table */
 .table {
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -67,10 +70,20 @@ h6 {
     border-spacing: 0 15px;
 }
 
-.table th,
+/* Style table header cells */
+.table th {
+    vertical-align: middle;
+    border-top: none;
+    padding: 10px;
+    /* Adjust the padding as needed */
+}
+
+/* Style table data cells */
 .table td {
     vertical-align: middle;
     border-top: none;
+    padding: 10px;
+    /* Adjust the padding as needed */
 }
 
 /* Dashboard and Password List */
@@ -95,17 +108,25 @@ h6 {
     width: 100%;
 }
 
-/* Responsive Design */
+/* For screens with a maximum width of 768px (typical smartphones) */
 @media (max-width: 768px) {
-
-    .table,
-    .navbar {
-        width: 95%;
-        margin: auto;
+    .form-group {
+        text-align: center;
+        /* Center-align all form groups */
     }
 
-    .form-control,
-    .btn {
+    .form-group label,
+    .form-control {
+        display: block;
+        /* Make labels and inputs display as blocks (one below the other) */
         width: 100%;
+        /* Set width to 100% to occupy the full width of the container */
+        max-width: none;
+        /* Remove the max-width restriction */
+    }
+
+    .text-center {
+        text-align: center;
+        /* Center-align the "Add Password" button */
     }
 }

@@ -2,7 +2,7 @@
 
 {% block content %}
     <header>
-        <h1>Password Manager Dashboard</h1>
+        <h1>FlaskKeyring User Dashboard</h1>
     </header>
 
     <main>
@@ -46,21 +46,30 @@
         <section class="add-password">
             <h2>Add New Password</h2>
             <form method="POST" action="{{ url_for('add_password') }}">
-                <label for="website">Website:</label>
-                <input type="text" id="website" name="website" required />
+                <div class="form-group text-center"> <!-- Center-align the label -->
+                    <label for="website">Website:</label>
+                    <input type="text" id="website" name="website" required class="form-control" style="max-width: 300px; margin: 0 auto;" />
+                </div>
 
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required />
+                <div class="form-group text-center"> <!-- Center-align the label -->
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required class="form-control text-center" style="max-width: 300px; margin: 0 auto;" />
+                </div>
 
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required />
+                <div class="form-group text-center"> <!-- Center-align the label -->
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required class="form-control text-center" style="max-width: 300px; margin: 0 auto;" />
+                </div>
 
-                <button type="submit">Add Password</button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Add Password</button>
+                </div>
             </form>
         </section>
+
     </main>
 
     <footer>
-        <p>&copy; {{ current_year }} - PyPassManager</p>
+        <p>&copy; {{ current_year }} - FlaskKeyring</p>
     </footer>
 {% endblock %}

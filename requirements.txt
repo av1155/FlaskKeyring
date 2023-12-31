@@ -1,0 +1,6 @@
+Flask
+Flask-Session
+gunicorn
+SQLAlchemy
+requests
+pytz
