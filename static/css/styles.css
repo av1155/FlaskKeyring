@@ -8,10 +8,19 @@ body {
     padding-bottom: 40px;
 }
 
+form {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .container {
     max-width: 800px;
+    width: 90%;
     margin: auto;
-    padding: 0 20px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1,
@@ -24,6 +33,11 @@ h6 {
     text-align: center;
 }
 
+h1 {
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
 /* Navigation Bar */
 .navbar {
     background-color: #007bff;
@@ -31,6 +45,7 @@ h6 {
     flex-wrap: wrap;
     justify-content: space-between;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .nav-link {
@@ -53,6 +68,7 @@ h6 {
         background-color 0.3s,
         border-color 0.3s,
         box-shadow 0.3s;
+    margin: 0;
 }
 
 .btn-primary:hover,
@@ -67,6 +83,12 @@ h6 {
     border: 1px solid #ddd;
     padding: 10px;
     font-size: 16px;
+    flex: 1;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
 }
 
 .form-control:focus {
@@ -87,28 +109,42 @@ h6 {
 }
 
 .table {
-    background-color: white;
+    background-color: #faf9f6;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-collapse: separate;
     border-spacing: 0 15px;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
+.table td,
 .table th {
     vertical-align: middle;
-    border-top: none;
-    padding: 10px;
 }
 
 .table td {
-    vertical-align: middle;
-    border-top: none;
-    padding: 10px;
+    padding: 10px 15px;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #faf9f6;
+    /* Use transition for the hover effect */
+    transition: background-color 0.3s ease !important;
+}
+
+.table td:hover {
+    /* Directly change the background color on hover */
+    background-color: #f2f2f2 !important;
+}
+
+.table th {
+    background-color: #343a40;
 }
 
 /* Dashboard and Password List */
 .search-password,
 .password-list,
 .add-password {
+    text-align: center;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
