@@ -10,7 +10,7 @@
             <h2>Search Password</h2>
             <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-4">
                 <div class="input-group">
-                    <input type="text" id="search_website" name="search_website" class="form-control" required />
+                    <input type="text" id="search_website" name="search_website" class="form-control form-control-dark" required />
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </form>
@@ -49,17 +49,52 @@
             <form method="POST" action="{{ url_for('main.add_password') }}" class="mb-4">
                 <div class="mb-3">
                     <label for="website" class="form-label">Website:</label>
-                    <input type="text" id="website" name="website" required class="form-control" />
+                    <input type="text" id="website" name="website" required class="form-control form-control-dark" />
                 </div>
 
                 <div class="mb-3">
                     <label for="username" class="form-label">Username:</label>
-                    <input type="text" id="username" name="username" required class="form-control" />
+                    <input type="text" id="username" name="username" required class="form-control form-control-dark" />
                 </div>
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password:</label>
-                    <input type="password" id="password" name="password" required class="form-control" />
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" required class="form-control form-control-dark" />
+                        <span class="input-group-text" id="generatePasswordIcon" style="cursor: pointer;">
+                            
+                        <img src="{{ url_for('static', filename='images/blue_key.png') }}" alt="Password Generator" width="24" height="24">
+
+                        </span>
+                    </div>
+                </div>
+
+                <div id="passwordGenerator" style="display: none;">
+                    <div class="mb-3">
+                        <label for="generatedPassword" class="form-label">Generated Password:</label>
+                        <input type="text" id="generatedPassword" readonly class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordType" class="form-label">Password Type:</label>
+                        <select id="passwordType" class="form-select">
+                            <option value="random">Random Password</option>
+                            <option value="memorable">Memorable Password</option>
+                            <option value="pin">PIN Code</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordLength" class="form-label">Password Length:</label>
+                        <input type="number" id="passwordLength" value="12" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <input type="checkbox" id="includeNumbers" checked />
+                        <label for="includeNumbers">Include Numbers</label>
+                    </div>
+                    <div class="mb-3">
+                        <input type="checkbox" id="includeSymbols" checked />
+                        <label for="includeSymbols">Include Symbols</label>
+                    </div>
+                    <button id="generatePasswordButton" class="btn btn-primary">Generate</button>
                 </div>
 
                 <div class="text-center">
@@ -67,11 +102,55 @@
                 </div>
             </form>
         </section>
-
     </main>
 
     <footer>
         <p>&copy; {{ current_year }} - FlaskKeyring</p>
     </footer>
-{% endblock %}
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            function requestPasswordGeneration() {
+                let passwordCriteria = {
+                    type: $("#passwordType").val(),
+                    length: $("#passwordLength").val(),
+                    numbers: $("#includeNumbers").is(":checked"),
+                    symbols: $("#includeSymbols").is(":checked"),
+                };
+
+                $.ajax({
+                    url: '/generate_password',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(passwordCriteria),
+                    dataType: 'json',
+                    success: function(data) {
+                        $("#generatedPassword").val(data.password);
+                        // Set focus to the generated password field
+                        $("#generatedPassword").focus();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+            // Toggle the password generator visibility
+            $("#generatePasswordIcon").click(function() {
+                $("#passwordGenerator").toggle();
+                // Remove focus from the current field
+                $(this).blur();
+                requestPasswordGeneration();
+            });
+
+            // Call this function on button click
+            $("#generatePasswordButton").click(function(event) {
+                event.preventDefault(); // Prevent form submission
+                requestPasswordGeneration();
+            });
+        });
+    </script>
+
+{% endblock %}

@@ -1,13 +1,14 @@
 from datetime import datetime
 
 from cryptography.fernet import Fernet
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import (Blueprint, flash, jsonify, redirect, render_template,
+                   request, url_for)
 from flask_login import current_user, login_required
 from sqlalchemy import func
 
 from application.models.password import Password
 from application.utils.extensions import db
-from application.utils.helpers import get_user_fernet_key
+from application.utils.helpers import *
 
 main = Blueprint("main", __name__)
 
@@ -66,6 +67,28 @@ def add_password():
         return redirect(url_for("main.dashboard"))
 
     return render_template("add_password.html")
+
+
+@main.route("/generate_password", methods=["POST"])
+@login_required
+def generate_password():
+    data = request.get_json()
+    password_type = data.get("type")
+    length = int(data.get("length"))  # Ensure length is an integer
+
+    if password_type == "random":
+        use_numbers = data.get("numbers", True)
+        use_symbols = data.get("symbols", True)
+        password = generate_random_password(length, use_numbers, use_symbols)
+    elif password_type == "memorable":
+        # Assuming length here represents the number of words
+        password = generate_memorable_password(length)
+    elif password_type == "pin":
+        password = generate_pin_code(length)
+    else:
+        return jsonify({"error": "Invalid password type"}), 400
+
+    return jsonify({"password": password})
 
 
 @main.route("/view_password/<int:password_id>")

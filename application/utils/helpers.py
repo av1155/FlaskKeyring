@@ -1,4 +1,7 @@
 import json
+import os
+import random
+import string
 
 from cryptography.fernet import Fernet
 
@@ -45,3 +48,46 @@ def is_password_complex(password):
             has_special = True
 
     return all([has_upper, has_lower, has_digit, has_special])
+
+
+def generate_random_password(
+    length=12, use_numbers=True, use_symbols=True, avoid_similar=True
+):
+    similar_chars = "il1Lo0O"
+    allowed_symbols = "@$!%*#?&"  # Define a set of allowed symbols.
+    characters = (
+        string.ascii_letters
+        + (string.digits if use_numbers else "")
+        + (allowed_symbols if use_symbols else "")
+    )
+
+    if avoid_similar:
+        characters = "".join(filter(lambda x: x not in similar_chars, characters))
+
+    return "".join(random.choice(characters) for i in range(length))
+
+
+def generate_memorable_password(length=4):
+    word_list_path = "/Users/andreaventi/Developer/FlaskKeyring/static/files/words.txt"
+
+    if not os.path.exists(word_list_path):
+        print("Word list file not found.")
+        return None
+
+    try:
+        with open(word_list_path, "r") as file:
+            word_list = [line.strip() for line in file if len(line.strip()) > 2]
+    except Exception as e:
+        print(f"Error reading word list file: {e}")
+        return None
+
+    if len(word_list) < length:
+        print("Word list does not contain enough words.")
+        return None
+
+    words = random.sample(word_list, length)
+    return "-".join(words)
+
+
+def generate_pin_code(length=4):
+    return "".join(random.choice(string.digits) for i in range(length))
