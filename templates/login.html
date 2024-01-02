@@ -16,16 +16,34 @@
 
 <form method="post">
 
-    <div class="mb-3">
-        <label for="email" class="form-label">Email:</label>
-        <input type="email" class="form-control" id="email" name="email" required aria-label="Email"/>
+    <section>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required aria-label="Email"/>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-4">Login</button>
+
+    </section>
+
+    <div class="auth-section mt-4">
+        <div class="mb-3">
+            <p class="mb-0 auth-p-font">Don't have an account?</p>
+            <a href="/register" class="p-0 btn btn-link auth-href-font">Register</a>
+        </div>
+
+        <div class="mb-0">
+            <p class="mb-0 auth-p-font">Forgot your password?</p>
+            <a href="/forgot-password" class="p-0 btn btn-link auth-href-font">Reset password</a>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label for="password" class="form-label">Password:</label>
-        <input type="password" class="form-control" id="password" name="password" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
 </form>
 {% endblock %}
 

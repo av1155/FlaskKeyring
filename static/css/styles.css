@@ -266,7 +266,7 @@ form {
         width: 100%;
     }
 
-    max-width: 850px;
+    max-width: 900px;
     width: 100%;
     margin: auto;
     padding: 20px;
@@ -416,6 +416,30 @@ h1 {
     border-color: #f5c6cb;
 }
 
+.auth-section {
+    max-width: 850px;
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-p-font,
+.auth-href-font {
+    line-height: 0.5;
+}
+
+.auth-p-font {
+    font-size: 12px;
+    color: #666;
+}
+
+.auth-href-font {
+    font-size: 12px;
+}
+
 /* Footer */
 .footer {
     background-color: #007bff;
@@ -447,16 +471,6 @@ h1 {
 
     .container {
         width: 90%;
-    }
-}
-
-@media (min-width: 768px) {
-    .navbar {
-        margin-bottom: 30px;
-    }
-
-    .container {
-        width: 80%;
     }
 }
 

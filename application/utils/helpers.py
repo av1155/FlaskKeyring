@@ -68,7 +68,7 @@ def generate_random_password(
 
 
 def generate_memorable_password(length=4):
-    word_list_path = "/Users/andreaventi/Developer/FlaskKeyring/static/files/words.txt"
+    word_list_path = "static/files/words.txt"
 
     if not os.path.exists(word_list_path):
         print("Word list file not found.")
