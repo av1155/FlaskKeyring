@@ -3,6 +3,7 @@ from datetime import datetime
 from cryptography.fernet import Fernet
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
+from sqlalchemy import func
 
 from application.models.password import Password
 from application.utils.extensions import db
@@ -40,7 +41,15 @@ def add_password():
         username = request.form.get("username")
         password = request.form.get("password")
 
+        if not website or not username or not password:
+            flash("All fields are required.", "error")
+            return redirect(url_for("main.add_password"))
+
         fernet_key = get_user_fernet_key(current_user.id)
+        if not fernet_key:
+            flash("Encryption key not found.", "error")
+            return redirect(url_for("main.add_password"))
+
         cipher_suite = Fernet(fernet_key.encode())
         encrypted_password = cipher_suite.encrypt(password.encode())
 
@@ -53,9 +62,10 @@ def add_password():
         db.session.add(new_password)
         db.session.commit()
 
+        flash("Password added successfully.", "success")
         return redirect(url_for("main.dashboard"))
 
-    return render_template("dashboard.html")
+    return render_template("add_password.html")
 
 
 @main.route("/view_password/<int:password_id>")
@@ -83,19 +93,42 @@ def view_password(password_id):
 @main.route("/search_password", methods=["POST"])
 @login_required
 def search_password():
-    search_website = request.form.get("search_website")
-    password = Password.query.filter_by(
-        user_id=current_user.id, website=search_website
-    ).first()
+    search_website_raw = request.form.get("search_website")
+    if search_website_raw:
+        search_website = search_website_raw.lower()
+        password_entry = Password.query.filter(
+            Password.user_id == current_user.id,
+            func.lower(Password.website) == search_website,
+        ).first()
 
-    if not password:
+        if not password_entry:
+            return render_template(
+                "view_passwords.html",
+                password=None,
+                message="Password not found for the given website.",
+            )
+
+        fernet_key = get_user_fernet_key(current_user.id)
+        if not fernet_key:
+            flash("Unable to retrieve encryption key for the password.", "error")
+            return redirect(url_for("main.dashboard"))
+
+        cipher_suite = Fernet(fernet_key.encode())
+        decrypted_password = cipher_suite.decrypt(
+            password_entry.password.encode()
+        ).decode()
+
+        return render_template(
+            "view_passwords.html",
+            password=password_entry,
+            decrypted_password=decrypted_password,
+        )
+    else:
         return render_template(
             "view_passwords.html",
             password=None,
-            message="Password not found for the given website.",
+            message="Please enter a website to search.",
         )
-
-    return render_template("view_passwords.html", password=password)
 
 
 @main.route("/edit_password/<int:password_id>", methods=["GET", "POST"])
@@ -104,27 +137,27 @@ def edit_password(password_id):
     password_entry = Password.query.get_or_404(password_id)
 
     if request.method == "POST":
-        # Retrieve the form data
         website = request.form.get("website")
         username = request.form.get("username")
         new_password = request.form.get("password")
 
-        # Retrieve the user's encryption key
+        # Check if any of the required fields are missing
+        if not website or not username or not new_password:
+            flash("All fields are required.", "error")
+            return redirect(url_for("main.edit_password", password_id=password_id))
+
         fernet_key = get_user_fernet_key(current_user.id)
         if not fernet_key:
             flash("Unable to retrieve encryption key for editing.", "error")
             return redirect(url_for("main.dashboard"))
 
-        # Encrypt the new password
         cipher_suite = Fernet(fernet_key.encode())
         encrypted_password = cipher_suite.encrypt(new_password.encode())
 
-        # Update the password details
         password_entry.website = website
         password_entry.username = username
         password_entry.password = encrypted_password.decode()
 
-        # Commit changes to the database
         db.session.commit()
 
         flash("Password updated successfully.", "success")
