@@ -8,7 +8,7 @@
     <main>
         <section class="search-password">
             <h2>Search Password</h2>
-            <form method="POST" action="{{ url_for('search_password') }}" class="mb-4">
+            <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-4">
                 <div class="input-group">
                     <input type="text" id="search_website" name="search_website" class="form-control" required />
                     <button type="submit" class="btn btn-primary">Search</button>
@@ -32,9 +32,9 @@
                         <td class="align-middle text-center">{{ password.website }}</td>
                         <td class="align-middle text-center">{{ password.username }}</td>
                         <td>
-                            <a href="{{ url_for('view_password', password_id=password.id) }}" class="btn btn-primary">View</a>
-                            <a href="{{ url_for('edit_password', password_id=password.id) }}" class="btn btn-secondary">Edit</a>
-                            <form action="{{ url_for('remove_password', password_id=password.id) }}" method="POST" style="display: inline-block;">
+                            <a href="{{ url_for('main.view_password', password_id=password.id) }}" class="btn btn-primary">View</a>
+                            <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary">Edit</a>
+                            <form action="{{ url_for('main.remove_password', password_id=password.id) }}" method="POST" style="display: inline-block;">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </td>
@@ -46,7 +46,7 @@
 
         <section class="add-password">
             <h2>Add New Password</h2>
-            <form method="POST" action="{{ url_for('add_password') }}" class="mb-4">
+            <form method="POST" action="{{ url_for('main.add_password') }}" class="mb-4">
                 <div class="mb-3">
                     <label for="website" class="form-label">Website:</label>
                     <input type="text" id="website" name="website" required class="form-control" />

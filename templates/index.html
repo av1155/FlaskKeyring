@@ -9,12 +9,12 @@
 
     {% if not current_user.is_authenticated %}
     <p class="lead">
-        <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Register Now</a>
-        <a class="btn btn-secondary btn-lg" href="{{ url_for('login') }}" role="button">Login</a>
+        <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Register Now</a>
+        <a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
     </p>
     {% else %}
     <p class="lead">
-        <a class="btn btn-success btn-lg" href="{{ url_for('dashboard') }}" role="button">Go to Dashboard</a>
+        <a class="btn btn-success btn-lg" href="{{ url_for('main.dashboard') }}" role="button">Go to Dashboard</a>
     </p>
     {% endif %}
 </div>
