@@ -91,11 +91,6 @@ h1 {
     align-items: center;
 }
 
-.form-control:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
 .form-label {
     margin-top: 10px;
     font-weight: bold;
@@ -127,12 +122,10 @@ h1 {
     border-top: 1px solid #dee2e6;
     border-bottom: 1px solid #dee2e6;
     background-color: #faf9f6;
-    /* Use transition for the hover effect */
     transition: background-color 0.3s ease !important;
 }
 
 .table td:hover {
-    /* Directly change the background color on hover */
     background-color: #f2f2f2 !important;
 }
 
@@ -208,12 +201,4 @@ h1 {
     .container {
         width: 80%;
     }
-}
-
-/* Focus State for Accessibility */
-a:focus,
-button:focus,
-.form-control:focus {
-    outline: 2px solid #007bff;
-    outline-offset: 2px;
 }
