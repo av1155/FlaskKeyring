@@ -19,7 +19,7 @@ def index():
         return render_template(
             "dashboard.html", current_year=current_year, passwords=passwords
         )
-    return render_template("index.html")  # Public landing page
+    return render_template("index.html")
 
 
 @main.route("/dashboard")
