@@ -47,29 +47,32 @@
         <section class="add-password">
             <h2>Add New Password</h2>
             <form method="POST" action="{{ url_for('main.add_password') }}" class="mb-4">
-                <div class="mb-3">
-                    <label for="website" class="form-label">Website:</label>
-                    <input type="text" id="website" name="website" required class="form-control form-control-dark" />
+
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-dark" id="website" name="website" placeholder="Website URL" required>
+                    <label for="website">Website</label>
                 </div>
 
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username:</label>
-                    <input type="text" id="username" name="username" required class="form-control form-control-dark" />
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-dark" id="username" name="username" placeholder="Username" required>
+                    <label for="username">Username</label>
                 </div>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password:</label>
-                    <div class="input-group">
-                        <input type="password" id="password" name="password" required class="form-control form-control-dark" />
-                        <span class="input-group-text" id="generatePasswordIcon" style="cursor: pointer;">
-                            
-                        <img src="{{ url_for('static', filename='images/blue_key.png') }}" alt="Password Generator" width="24" height="24">
 
-                        </span>
-                    </div>
+                <div class="mb-3">
+                    <form>
+                        <div class="form-floating mb-3 position-relative">
+                            <input type="password" name="password" class="form-control form-control-dark" id="floatingPassword" placeholder="Password" required />
+                            <label for="floatingPassword">Password</label>
+                            <button id="generatePasswordIcon" type="button" class="btn btn-primary position-absolute top-0 end-0 mt-2 me-2">
+                                <img src="{{ url_for('static', filename='images/key-icon.png') }}" alt="Password Generator" width="24" height="24">
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
-                <div id="passwordGenerator" style="display: none;">
+                <div class="mb-3" id="passwordGenerator" style="display: none;">
                     <div class="mb-3">
                         <label for="generatedPassword" class="form-label">Generated Password:</label>
                         <input type="text" id="generatedPassword" readonly class="form-control" />
@@ -86,20 +89,25 @@
                         <label for="passwordLength" class="form-label">Password Length:</label>
                         <input type="number" id="passwordLength" value="12" class="form-control" />
                     </div>
-                    <div class="mb-3">
-                        <input type="checkbox" id="includeNumbers" checked />
-                        <label for="includeNumbers">Include Numbers</label>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" role="switch" id="includeNumbers" checked>
+                        <label class="form-check-label" for="includeNumbers">Include Numbers</label>
                     </div>
-                    <div class="mb-3">
-                        <input type="checkbox" id="includeSymbols" checked />
-                        <label for="includeSymbols">Include Symbols</label>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" role="switch" id="includeSymbols" checked>
+                        <label class="form-check-label" for="includeSymbols">Include Symbols</label>
                     </div>
-                    <button id="generatePasswordButton" class="btn btn-primary">Generate</button>
+
+                    <div class="text-center">
+                        <button id="generatePasswordButton" class="btn btn-primary mb-2">Generate</button>
+                    </div>
                 </div>
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Add Password</button>
                 </div>
+
             </form>
         </section>
     </main>
@@ -108,49 +116,9 @@
         <p>&copy; {{ current_year }} - FlaskKeyring</p>
     </footer>
     
+{% endblock %}
+
+{% block scripts %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            function requestPasswordGeneration() {
-                let passwordCriteria = {
-                    type: $("#passwordType").val(),
-                    length: $("#passwordLength").val(),
-                    numbers: $("#includeNumbers").is(":checked"),
-                    symbols: $("#includeSymbols").is(":checked"),
-                };
-
-                $.ajax({
-                    url: '/generate_password',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(passwordCriteria),
-                    dataType: 'json',
-                    success: function(data) {
-                        $("#generatedPassword").val(data.password);
-                        // Set focus to the generated password field
-                        $("#generatedPassword").focus();
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            }
-
-            // Toggle the password generator visibility
-            $("#generatePasswordIcon").click(function() {
-                $("#passwordGenerator").toggle();
-                // Remove focus from the current field
-                $(this).blur();
-                requestPasswordGeneration();
-            });
-
-            // Call this function on button click
-            $("#generatePasswordButton").click(function(event) {
-                event.preventDefault(); // Prevent form submission
-                requestPasswordGeneration();
-            });
-        });
-    </script>
-
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}
