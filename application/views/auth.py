@@ -159,6 +159,14 @@ def reset_password(token):
             flash("New password is required.", "error")
             return render_template("reset_password.html", token=token)
 
+        # Check if the new password is complex enough
+        if not is_password_complex(new_password):
+            flash(
+                "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.",
+                "error",
+            )
+            return render_template("reset_password.html", token=token)
+
         # Update the user's password in the database
         user.password_hash = generate_password_hash(new_password)
         db.session.commit()
