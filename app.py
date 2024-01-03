@@ -54,7 +54,7 @@ app.register_blueprint(main)
 # Initialize Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "auth.login"
+login_manager.login_view = "auth.login"  # type: ignore
 
 
 # User loader function for Flask-Login
