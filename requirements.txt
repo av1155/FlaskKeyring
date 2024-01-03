@@ -1,9 +1,10 @@
 Flask
+Flask-Login
+Flask-Mail
 Flask-Session
-flask_login
 Flask-SQLAlchemy
-gunicorn
 SQLAlchemy
-requests
-pytz
 cryptography
+python-dotenv
+gunicorn
+pytz
