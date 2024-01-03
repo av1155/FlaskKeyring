@@ -16,31 +16,33 @@
 
 <form method="post">
 
-    <section>
+    <div class="container my-4">
+        <section>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required aria-label="Email"/>
+                <label for="email">Email address</label>
+            </div>
 
-        <div class="mb-3">
-            <label for="email" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" required aria-label="Email"/>
-        </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required />
+                <label for="password">Password</label>
+            </div>
 
-        <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" required />
-        </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary mb-4">Login</button>
+            </div>
+        </section>
 
-        <button type="submit" class="btn btn-primary mb-4">Login</button>
+        <div class="login-prompt-section mt-4">
+            <div class="mb-3">
+                <p class="mb-0 login-p-font-prompt">Don't have an account?</p>
+                <a href="/register" class="p-0 btn btn-link login-href-font-prompt">Register</a>
+            </div>
 
-    </section>
-
-    <div class="auth-section mt-4">
-        <div class="mb-3">
-            <p class="mb-0 auth-p-font">Don't have an account?</p>
-            <a href="/register" class="p-0 btn btn-link auth-href-font">Register</a>
-        </div>
-
-        <div class="mb-0">
-            <p class="mb-0 auth-p-font">Forgot your password?</p>
-            <a href="/forgot-password" class="p-0 btn btn-link auth-href-font">Reset password</a>
+            <div class="mb-0">
+                <p class="mb-0 login-p-font-prompt">Forgot your password?</p>
+                <a href="/forgot-password" class="p-0 btn btn-link login-href-font-prompt">Reset password</a>
+            </div>
         </div>
     </div>
 

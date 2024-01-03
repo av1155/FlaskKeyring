@@ -8,9 +8,9 @@
     <main>
         <section class="search-password">
             <h2>Search Password</h2>
-            <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-4">
+            <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-2">
                 <div class="input-group">
-                    <input type="text" id="search_website" name="search_website" class="form-control form-control-dark" required />
+                    <input type="text" id="search_website" name="search_website" class="form-control form-control-dark" placeholder="Search by website" required />
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </form>
@@ -18,30 +18,32 @@
 
         <section class="password-list">
             <h2>Your Passwords</h2>
-            <table class="table table-bordered table-hover rounded">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Website</th>
-                        <th>Username</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for password in passwords %}
-                    <tr>
-                        <td class="align-middle text-center">{{ password.website }}</td>
-                        <td class="align-middle text-center">{{ password.username }}</td>
-                        <td>
-                            <a href="{{ url_for('main.view_password', password_id=password.id) }}" class="btn btn-primary">View</a>
-                            <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary">Edit</a>
-                            <form action="{{ url_for('main.remove_password', password_id=password.id) }}" method="POST" style="display: inline-block;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="tbl-container bdr">
+                <table class="table table-bordered table-hover rounded">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Website</th>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                        {% for password in passwords %}
+                        <tr>
+                            <td class="align-middle text-center">{{ password.website }}</td>
+                            <td class="align-middle text-center">{{ password.username }}</td>
+                            <td>
+                                <a href="{{ url_for('main.view_password', password_id=password.id) }}" class="btn btn-primary">View</a>
+                                <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary">Edit</a>
+                                <form action="{{ url_for('main.remove_password', password_id=password.id) }}" method="POST" style="display: inline-block;">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <section class="add-password">
@@ -73,10 +75,12 @@
                 </div>
 
                 <div class="mb-3" id="passwordGenerator" style="display: none;">
+
                     <div class="mb-3">
                         <label for="generatedPassword" class="form-label">Generated Password:</label>
                         <input type="text" id="generatedPassword" readonly class="form-control" />
                     </div>
+
                     <div class="mb-3">
                         <label for="passwordType" class="form-label">Password Type:</label>
                         <select id="passwordType" class="form-select">
@@ -85,6 +89,7 @@
                             <option value="pin">PIN Code</option>
                         </select>
                     </div>
+
                     <div class="mb-3">
                         <label for="passwordLength" class="form-label">Password Length:</label>
                         <input type="number" id="passwordLength" value="12" class="form-control" />
@@ -94,6 +99,7 @@
                         <input class="form-check-input" type="checkbox" role="switch" id="includeNumbers" checked>
                         <label class="form-check-label" for="includeNumbers">Include Numbers</label>
                     </div>
+
                     <div class="form-check form-switch mb-3">
                         <input class="form-check-input" type="checkbox" role="switch" id="includeSymbols" checked>
                         <label class="form-check-label" for="includeSymbols">Include Symbols</label>
@@ -102,6 +108,7 @@
                     <div class="text-center">
                         <button id="generatePasswordButton" class="btn btn-primary mb-2">Generate</button>
                     </div>
+
                 </div>
 
                 <div class="text-center">
@@ -112,7 +119,7 @@
         </section>
     </main>
 
-    <footer>
+    <footer style="text-align: center; margin-top: 30px;">
         <p>&copy; {{ current_year }} - FlaskKeyring</p>
     </footer>
     

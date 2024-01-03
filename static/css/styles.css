@@ -1,16 +1,11 @@
 /* Global Styles */
 body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #e6f0fa;
     color: #212529;
     margin: 0;
     padding-bottom: 40px;
 }
-
-/* form { */
-/*     display: inline-block; */
-/*     vertical-align: middle; */
-/* } */
 
 h1,
 h2,
@@ -23,50 +18,91 @@ h6 {
 
 h1 {
     font-size: 36px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
-.search-password,
-.password-list,
-.add-password {
-    /* background-color: white; */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+h1,
+h2 {
+    text-align: center;
+}
+
+h2 {
     margin-bottom: 20px;
 }
 
-/* DONE BY ME --------------------------------- */
-.auth-section {
+.table {
+    color: #212529;
+}
+
+.table-light td {
+    background-color: #f2f2f2;
+}
+
+.table-dark th {
+    background-color: #343a40;
+}
+
+.tbl-container {
+    width: fit-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bdr {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.container {
     max-width: 850px;
-    width: 100%;
+    width: 80%;
     margin: auto;
     padding: 20px;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.auth-p-font,
-.auth-href-font {
-    line-height: 0.5;
-}
+    .search-password,
+    .password-list,
+    .add-password {
+        background-color: #f8f8f8;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
 
-.auth-p-font {
-    font-size: 12px;
-    color: #666;
-}
+    .login-prompt-section {
+        max-width: 850px;
+        width: 100%;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-.auth-href-font {
-    font-size: 12px;
-}
+    .login-p-font-prompt,
+    .login-href-font-prompt {
+        line-height: 0.5;
+    }
 
-/* END OF DONE BY ME ------------------------- */
+    .login-p-font-prompt {
+        font-size: 12px;
+        color: #666;
+    }
 
-#passwordGenerator {
-    padding: 10px;
-    border: 1px solid #ddd;
-    background-color: #f8f8f8;
-    border-radius: 5px;
-    margin-top: 10px;
+    .login-href-font-prompt {
+        font-size: 12px;
+    }
+
+    #passwordGenerator {
+        padding: 10px;
+        border: 1px solid #ddd;
+        background-color: #e6f0fa;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    #generatedPassword {
+        background-color: #e9ecef;
+    }
 }
