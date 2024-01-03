@@ -1,13 +1,18 @@
 import os
 
+from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager
 
 from application.models.user import User
-from application.utils.extensions import db
+from application.utils import config
+from application.utils.extensions import db, mail
 from application.views.auth import auth
 from application.views.main import main
 from flask_session import Session
+
+# Load environment variables
+load_dotenv()
 
 # Get the current directory where app.py is located
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -20,17 +25,27 @@ database_path = os.path.join(current_directory, database_relative_path)
 
 app = Flask(__name__)
 
+# Load mail configuration from config.py
+app.config.update(
+    MAIL_SERVER=config.MAIL_SERVER,
+    MAIL_PORT=config.MAIL_PORT,
+    MAIL_USE_TLS=config.MAIL_USE_TLS,
+    MAIL_USERNAME=config.MAIL_USERNAME,
+    MAIL_PASSWORD=config.MAIL_PASSWORD,
+    MAIL_DEFAULT_SENDER=config.MAIL_DEFAULT_SENDER,
+)
+
 # Configure application
-app.config[
-    "SECRET_KEY"
-] = b"j5\x03{\xa6y\xb0|\x83:\\\x16\xdbm\xcc\xc3\x02\xd0\xbc\xeas|\xc2n"
+app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SESSION_TYPE"] = "filesystem"  # Server-side session type
+app.config["SESSION_TYPE"] = "filesystem"
+
 
 # Initialize extensions
 db.init_app(app)
 Session(app)
+mail.init_app(app)
 
 # Register blueprints
 app.register_blueprint(auth)

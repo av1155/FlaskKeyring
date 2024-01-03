@@ -4,8 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from application.models.user import User
 from application.utils.extensions import db
-from application.utils.helpers import (generate_and_store_fernet_key,
-                                       is_password_complex)
+from application.utils.helpers import *
 
 auth = Blueprint("auth", __name__)
 
@@ -114,3 +113,60 @@ def change_password():
 def logout():
     logout_user()
     return redirect(url_for("auth.login"))
+
+
+@auth.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+    if request.method == "POST":
+        email = request.form.get("email")
+
+        # Check if the email exists in the database
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            # Generate a unique token for password reset
+            reset_token = generate_reset_token(user.id)
+
+            # Create a password reset link
+            reset_link = url_for(
+                "auth.reset_password", token=reset_token, _external=True
+            )
+
+            # Send the password reset email
+            send_password_reset_email(user.email, reset_link)
+
+            flash("Password reset email sent. Check your inbox.", "success")
+            return redirect(url_for("auth.login"))
+        else:
+            flash("Email not found. Please try again.", "error")
+
+    return render_template("forgot_password.html")
+
+
+@auth.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    # Validate the reset token
+    user = validate_reset_token(token)
+
+    if not user:
+        flash("Invalid or expired token. Please request a new password reset.", "error")
+        return redirect(url_for("auth.forgot_password"))
+
+    if request.method == "POST":
+        new_password = request.form.get("new_password")
+
+        if new_password is None:
+            flash("New password is required.", "error")
+            return render_template("reset_password.html", token=token)
+
+        # Update the user's password in the database
+        user.password_hash = generate_password_hash(new_password)
+        db.session.commit()
+
+        flash(
+            "Password reset successful. You can now log in with your new password.",
+            "success",
+        )
+        return redirect(url_for("auth.login"))
+
+    return render_template("reset_password.html", token=token)

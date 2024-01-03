@@ -73,6 +73,7 @@ h2 {
     }
 
     .login-prompt-section {
+        background-color: #f8f8f8;
         max-width: 850px;
         width: 100%;
         margin: auto;
