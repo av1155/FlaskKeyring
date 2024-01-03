@@ -62,7 +62,9 @@ h2 {
 
     .search-password,
     .password-list,
-    .add-password {
+    .add-password,
+    .edit-password,
+    .view-password {
         background-color: #f8f8f8;
         padding: 20px;
         border-radius: 10px;
