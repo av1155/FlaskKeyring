@@ -63,15 +63,14 @@
 
 
                 <div class="mb-3">
-                    <form>
-                        <div class="form-floating mb-3 position-relative">
-                            <input type="password" name="password" class="form-control form-control-dark" id="floatingPassword" placeholder="Password" required />
-                            <label for="floatingPassword">Password</label>
-                            <button id="generatePasswordIcon" type="button" class="btn btn-primary position-absolute top-0 end-0 mt-2 me-2">
-                                <img src="{{ url_for('static', filename='images/key-icon.png') }}" alt="Password Generator" width="24" height="24">
-                            </button>
-                        </div>
-                    </form>
+                    <div class="form-floating mb-3 position-relative">
+                        <input type="password" name="password" class="form-control form-control-dark" id="floatingPassword" placeholder="Password" required />
+                        <label for="floatingPassword">Password</label>
+                        <!-- Button for generating password -->
+                        <button id="generatePasswordIcon" type="button" class="btn btn-primary position-absolute top-0 end-0 mt-2 me-2">
+                            <img src="{{ url_for('static', filename='images/key-icon.png') }}" alt="Password Generator" width="24" height="24">
+                        </button>
+                    </div>
                 </div>
 
                 <div class="mb-3" id="passwordGenerator" style="display: none;">
@@ -114,7 +113,6 @@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Add Password</button>
                 </div>
-
             </form>
         </section>
     </main>
