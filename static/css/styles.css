@@ -139,9 +139,12 @@ h2 {
         width: 95%;
         padding: 10px;
 
-        .login-prompt-section,
-        .forgot-prompt-section {
+        .login-prompt-section {
             margin-top: 30vh;
+        }
+
+        .forgot-prompt-section {
+            margin-top: 45vh;
         }
     }
 
