@@ -1,17 +1,8 @@
 name: FlaskKeyring
 channels:
-    - defaults
+    - conda-forge
 dependencies:
-    - python=3.12.1
-    - flask
-    - flask-login
-    - flask-mail
-    - flask-migrate
-    - flask-session
-    - flask-sqlalchemy
-    - sqlalchemy
-    - cryptography
-    - python-dotenv
-    - psycopg2-binary
-    - gunicorn
-    - pytz
+    - python
+    - pip
+    - setuptool
+    - readline
