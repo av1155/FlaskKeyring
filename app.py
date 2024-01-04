@@ -38,13 +38,8 @@ app.config.update(
 
 # Configure application
 app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY")
-
-# Conditionally set SQLALCHEMY_DATABASE_URI
-if "DATABASE_URL" in os.environ:
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-else:
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
-
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+# app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
