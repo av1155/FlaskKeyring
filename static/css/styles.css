@@ -83,7 +83,7 @@ h2 {
     }
 
     /* Prompt Sections */
-    .prompt-section {
+    .login-prompt-section {
         background-color: #f8f8f8;
         max-width: 850px;
         width: 100%;
@@ -92,14 +92,18 @@ h2 {
         text-align: center;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .login-prompt-section,
-    .forgot-prompt-section {
         margin-top: 25vh;
     }
 
     .forgot-prompt-section {
+        background-color: #f8f8f8;
+        max-width: 850px;
+        width: 100%;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-top: 40vh;
     }
 
