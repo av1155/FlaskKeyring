@@ -39,6 +39,8 @@ app.config.update(
 # Configure application
 app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY")
 
+print("DATABASE_URL:", os.getenv("DATABASE_URL"))
+
 # Conditionally set SQLALCHEMY_DATABASE_URI
 if "DATABASE_URL" in os.environ:
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")

@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print("DATABASE_URL:", os.getenv("DATABASE_URL"))
+
 MAIL_SERVER = "mail.smtp2go.com"  # SMTP2GO SMTP server
 MAIL_PORT = 2525  # SMTP2GO port for TLS
 MAIL_USE_TLS = True  # Use TLS
