@@ -118,40 +118,15 @@ def view_password(password_id):
 def search_password():
     search_website_raw = request.form.get("search_website")
     if search_website_raw:
-        search_website = search_website_raw.lower()
-        password_entry = Password.query.filter(
+        search_website = f"%{search_website_raw.lower()}%"
+        password_entries = Password.query.filter(
             Password.user_id == current_user.id,
-            func.lower(Password.website) == search_website,
-        ).first()
+            func.lower(Password.website).ilike(search_website),
+        ).all()
 
-        if not password_entry:
-            return render_template(
-                "view_passwords.html",
-                password=None,
-                message="Password not found for the given website.",
-            )
-
-        fernet_key = get_user_fernet_key(current_user.id)
-        if not fernet_key:
-            flash("Unable to retrieve encryption key for the password.", "error")
-            return redirect(url_for("main.dashboard"))
-
-        cipher_suite = Fernet(fernet_key.encode())
-        decrypted_password = cipher_suite.decrypt(
-            password_entry.password.encode()
-        ).decode()
-
-        return render_template(
-            "view_passwords.html",
-            password=password_entry,
-            decrypted_password=decrypted_password,
-        )
+        return render_template("view_passwords.html", passwords=password_entries)
     else:
-        return render_template(
-            "view_passwords.html",
-            password=None,
-            message="Please enter a website to search.",
-        )
+        return render_template("view_passwords.html", passwords=[])
 
 
 @main.route("/edit_password/<int:password_id>", methods=["GET", "POST"])

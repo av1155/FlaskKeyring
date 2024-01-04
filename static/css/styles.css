@@ -109,3 +109,35 @@ h2 {
         background-color: #e9ecef;
     }
 }
+
+@media (max-width: 767px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .tbl-container {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .table .btn,
+    .table form {
+        display: block;
+        width: 100%;
+        margin-bottom: 3px;
+    }
+
+    .table form {
+        padding: 0;
+        margin: 0;
+    }
+
+    .table td {
+        padding: 0.5rem;
+    }
+}
