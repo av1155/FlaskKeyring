@@ -18,24 +18,11 @@ jobs:
               with:
                   python-version: 3.x
 
-            - name: Install Miniforge
-              run: |
-                  curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh"
-                  bash Miniforge3-Linux-x86_64.sh -b
-                  export PATH="$HOME/miniforge3/bin:$PATH"
+            - name: Create virtual environment
+              run: python -m venv venv
 
-            - name: Create Conda environment
-              run: conda env create -f environment.yml
-              env:
-                  CONDA_ALWAYS_YES: "true"
-
-            - name: Find Conda environment path
-              id: find_env
-              run: echo "::set-output name=env_path::$(conda info --envs | grep FlaskKeyring | awk '{print $1}')"
-
-            - name: Activate Conda environment
-              run: conda activate ${{ steps.find_env.outputs.env_path }}
-              shell: bash
+            - name: Activate virtual environment
+              run: source venv/bin/activate
 
             - name: Install dependencies
               run: pip install -r requirements.txt
