@@ -18,10 +18,11 @@ jobs:
               with:
                   python-version: 3.x
 
-            - name: Install Conda
-              uses: anaconda-inc/setup-miniconda@v2
-              with:
-                  environment-file: environment.yml
+            - name: Install Miniforge
+              run: |
+                  curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh"
+                  bash Miniforge3-Linux-x86_64.sh -b
+                  source "$HOME/miniforge3/etc/profile.d/conda.sh"
 
             - name: Create Conda environment
               run: conda env create -f environment.yml
