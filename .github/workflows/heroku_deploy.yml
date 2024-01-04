@@ -29,8 +29,12 @@ jobs:
               env:
                   CONDA_ALWAYS_YES: "true"
 
+            - name: Find Conda environment path
+              id: find_env
+              run: echo "::set-output name=env_path::$(conda info --envs | grep FlaskKeyring | awk '{print $1}')"
+
             - name: Activate Conda environment
-              run: source activate FlaskKeyring
+              run: conda activate ${{ steps.find_env.outputs.env_path }}
               shell: bash
 
             - name: Install dependencies
