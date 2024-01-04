@@ -22,13 +22,16 @@ jobs:
               run: |
                   curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh"
                   bash Miniforge3-Linux-x86_64.sh -b
-                  source "$HOME/miniforge3/etc/profile.d/conda.sh"
+                  export PATH="$HOME/miniforge3/bin:$PATH"
 
             - name: Create Conda environment
               run: conda env create -f environment.yml
+              env:
+                  CONDA_ALWAYS_YES: "true"
 
             - name: Activate Conda environment
-              run: conda activate FlaskKeyring
+              run: source activate FlaskKeyring
+              shell: bash
 
             - name: Install dependencies
               run: pip install -r requirements.txt
