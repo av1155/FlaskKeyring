@@ -34,63 +34,6 @@ def dashboard():
     )
 
 
-@main.route("/add_password", methods=["GET", "POST"])
-@login_required
-def add_password():
-    if request.method == "POST":
-        website = request.form.get("website")
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if not website or not username or not password:
-            flash("All fields are required.", "error")
-            return redirect(url_for("main.add_password"))
-
-        fernet_key = get_user_fernet_key(current_user.id)
-        if not fernet_key:
-            flash("Encryption key not found.", "error")
-            return redirect(url_for("main.add_password"))
-
-        cipher_suite = Fernet(fernet_key.encode())
-        encrypted_password = cipher_suite.encrypt(password.encode())
-
-        new_password = Password(
-            user_id=current_user.id,
-            website=website,
-            username=username,
-            password=encrypted_password.decode(),
-        )
-        db.session.add(new_password)
-        db.session.commit()
-
-        flash("Password added successfully.", "success")
-        return redirect(url_for("main.dashboard"))
-
-    return render_template("add_password.html")
-
-
-@main.route("/generate_password", methods=["POST"])
-@login_required
-def generate_password():
-    data = request.get_json()
-    password_type = data.get("type")
-    length = int(data.get("length"))  # Ensure length is an integer
-
-    if password_type == "random":
-        use_numbers = data.get("numbers", True)
-        use_symbols = data.get("symbols", True)
-        password = generate_random_password(length, use_numbers, use_symbols)
-    elif password_type == "memorable":
-        # Assuming length here represents the number of words
-        password = generate_memorable_password(length)
-    elif password_type == "pin":
-        password = generate_pin_code(length)
-    else:
-        return jsonify({"error": "Invalid password type"}), 400
-
-    return jsonify({"password": password})
-
-
 @main.route("/view_password/<int:password_id>")
 @login_required
 def view_password(password_id):
@@ -132,36 +75,48 @@ def search_password():
 @main.route("/edit_password/<int:password_id>", methods=["GET", "POST"])
 @login_required
 def edit_password(password_id):
-    password_entry = Password.query.get_or_404(password_id)
+    current_password = Password.query.get_or_404(password_id)
+
+    fernet_key = get_user_fernet_key(current_user.id)
+    if not fernet_key:
+        flash("Unable to retrieve encryption key for editing.", "error")
+        return redirect(url_for("main.dashboard"))
+
+    cipher_suite = Fernet(fernet_key.encode())
+
+    # Decrypt the current password
+    current_decrypted_password = cipher_suite.decrypt(
+        current_password.password.encode()
+    ).decode()
 
     if request.method == "POST":
         website = request.form.get("website")
         username = request.form.get("username")
         new_password = request.form.get("password")
 
-        # Check if any of the required fields are missing
-        if not website or not username or not new_password:
-            flash("All fields are required.", "error")
-            return redirect(url_for("main.edit_password", password_id=password_id))
+        # Update website if provided
+        if website:
+            current_password.website = website
 
-        fernet_key = get_user_fernet_key(current_user.id)
-        if not fernet_key:
-            flash("Unable to retrieve encryption key for editing.", "error")
-            return redirect(url_for("main.dashboard"))
+        # Update username if provided
+        if username:
+            current_password.username = username
 
-        cipher_suite = Fernet(fernet_key.encode())
-        encrypted_password = cipher_suite.encrypt(new_password.encode())
-
-        password_entry.website = website
-        password_entry.username = username
-        password_entry.password = encrypted_password.decode()
+        # Encrypt and update the new password if provided
+        if new_password:
+            encrypted_password = cipher_suite.encrypt(new_password.encode())
+            current_password.password = encrypted_password.decode()
 
         db.session.commit()
 
-        flash("Password updated successfully.", "success")
+        flash("Account updated successfully.", "success")
         return redirect(url_for("main.dashboard"))
 
-    return render_template("edit_password.html", password=password_entry)
+    return render_template(
+        "edit_password.html",
+        password=current_password,
+        decrypted_password=current_decrypted_password,
+    )
 
 
 @main.route("/remove_password/<int:password_id>", methods=["POST"])
@@ -170,4 +125,62 @@ def remove_password(password_id):
     password = Password.query.get_or_404(password_id)
     db.session.delete(password)
     db.session.commit()
+    flash("Account removed successfully.", "success")
     return redirect(url_for("main.dashboard"))
+
+
+@main.route("/add_password", methods=["GET", "POST"])
+@login_required
+def add_password():
+    if request.method == "POST":
+        website = request.form.get("website")
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if not website or not username or not password:
+            flash("All fields are required.", "error")
+            return redirect(url_for("main.add_password"))
+
+        fernet_key = get_user_fernet_key(current_user.id)
+        if not fernet_key:
+            flash("Encryption key not found.", "error")
+            return redirect(url_for("main.add_password"))
+
+        cipher_suite = Fernet(fernet_key.encode())
+        encrypted_password = cipher_suite.encrypt(password.encode())
+
+        new_password = Password(
+            user_id=current_user.id,
+            website=website,
+            username=username,
+            password=encrypted_password.decode(),
+        )
+        db.session.add(new_password)
+        db.session.commit()
+
+        flash("Account added successfully.", "success")
+        return redirect(url_for("main.dashboard"))
+
+    return render_template("add_password.html")
+
+
+@main.route("/generate_password", methods=["POST"])
+@login_required
+def generate_password():
+    data = request.get_json()
+    password_type = data.get("type")
+    length = int(data.get("length"))  # Ensure length is an integer
+
+    if password_type == "random":
+        use_numbers = data.get("numbers", True)
+        use_symbols = data.get("symbols", True)
+        password = generate_random_password(length, use_numbers, use_symbols)
+    elif password_type == "memorable":
+        # Assuming length here represents the number of words
+        password = generate_memorable_password(length)
+    elif password_type == "pin":
+        password = generate_pin_code(length)
+    else:
+        return jsonify({"error": "Invalid password type"}), 400
+
+    return jsonify({"password": password})

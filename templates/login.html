@@ -3,17 +3,6 @@
 {% block content %}
 <h2>Login</h2>
 
-<!-- Display flash messages -->
-{% with messages = get_flashed_messages(category_filter=["error"]) %}
-  {% if messages %}
-    <div class="alert alert-danger" role="alert">
-      {% for message in messages %}
-        {{ message }}
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
-
 <form method="post">
 
     <div class="container my-4">
@@ -33,7 +22,7 @@
             </div>
         </section>
 
-        <div class="login-prompt-section mt-4">
+        <div class="login-prompt-section">
             <div class="mb-3">
                 <p class="mb-0 login-p-font-prompt">Don't have an account?</p>
                 <a href="/register" class="p-0 btn btn-link login-href-font-prompt">Register</a>

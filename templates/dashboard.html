@@ -7,7 +7,7 @@
 
     <main>
         <section class="search-password">
-            <h2>Search Password</h2>
+            <h2>Search Account</h2>
             <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-2">
                 <div class="input-group">
                     <input type="text" id="search_website" name="search_website" class="form-control form-control-dark" placeholder="Search by website" required />
@@ -17,7 +17,7 @@
         </section>
 
         <section class="password-list">
-            <h2>Your Passwords</h2>
+            <h2>Your Accounts</h2>
             <div class="tbl-container bdr">
                 <table class="table table-bordered table-hover rounded">
                     <thead class="table-dark text-center">
@@ -47,7 +47,7 @@
         </section>
 
         <section class="add-password">
-            <h2>Add New Password</h2>
+            <h2>Add New Account</h2>
             <form method="POST" action="{{ url_for('main.add_password') }}" class="mb-4">
 
 
@@ -111,19 +111,21 @@
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Add Password</button>
+                    <button type="submit" class="btn btn-primary">Add Account</button>
                 </div>
             </form>
         </section>
     </main>
 
-    <footer style="text-align: center; margin-top: 30px;">
+    <footer class="text-center mt-5">
         <p>&copy; {{ current_year }} - FlaskKeyring</p>
     </footer>
     
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="{{ url_for('static', filename='js/generate_password.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/toggle_password.js') }}"></script>
+
 {% endblock %}

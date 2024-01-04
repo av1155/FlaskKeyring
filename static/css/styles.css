@@ -7,6 +7,7 @@ body {
     padding-bottom: 40px;
 }
 
+/* Typography */
 h1,
 h2,
 h3,
@@ -30,6 +31,13 @@ h2 {
     margin-bottom: 20px;
 }
 
+/* Alerts */
+.alert {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Table Styles */
 .table {
     color: #212529;
 }
@@ -42,6 +50,7 @@ h2 {
     background-color: #343a40;
 }
 
+/* Containers */
 .tbl-container {
     width: fit-content;
     margin-top: 10px;
@@ -60,6 +69,7 @@ h2 {
     margin: auto;
     padding: 20px;
 
+    /* Section Styles */
     .search-password,
     .password-list,
     .add-password,
@@ -72,7 +82,8 @@ h2 {
         margin-bottom: 20px;
     }
 
-    .login-prompt-section {
+    /* Prompt Sections */
+    .prompt-section {
         background-color: #f8f8f8;
         max-width: 850px;
         width: 100%;
@@ -83,20 +94,27 @@ h2 {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
+    .login-prompt-section,
+    .forgot-prompt-section {
+        margin-top: 25vh;
+    }
+
+    .forgot-prompt-section {
+        margin-top: 40vh;
+    }
+
+    /* Prompt Fonts */
     .login-p-font-prompt,
     .login-href-font-prompt {
         line-height: 0.5;
+        font-size: 12px;
     }
 
     .login-p-font-prompt {
-        font-size: 12px;
         color: #666;
     }
 
-    .login-href-font-prompt {
-        font-size: 12px;
-    }
-
+    /* Password Generator Styles */
     #passwordGenerator {
         padding: 10px;
         border: 1px solid #ddd;
@@ -107,13 +125,20 @@ h2 {
 
     #generatedPassword {
         background-color: #e9ecef;
+        cursor: pointer;
     }
 }
 
+/* Responsive Design */
 @media (max-width: 767px) {
     .container {
         width: 95%;
         padding: 10px;
+
+        .login-prompt-section,
+        .forgot-prompt-section {
+            margin-top: 30vh;
+        }
     }
 
     h1 {
@@ -130,11 +155,6 @@ h2 {
         display: block;
         width: 100%;
         margin-bottom: 3px;
-    }
-
-    .table form {
-        padding: 0;
-        margin: 0;
     }
 
     .table td {

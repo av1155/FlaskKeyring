@@ -15,7 +15,10 @@ $(document).ready(function() {
             dataType: "json",
             success: function(data) {
                 $("#generatedPassword").val(data.password);
-                $("#generatedPassword").focus();
+                // Copy the generated password to the password field when clicked
+                $("#generatedPassword").click(function() {
+                    $("#floatingPassword").val(data.password);
+                });
             },
             error: function(error) {
                 console.log(error);
@@ -24,9 +27,22 @@ $(document).ready(function() {
     }
 
     $("#generatePasswordIcon").click(function() {
-        $("#passwordGenerator").toggle();
         $(this).blur();
-        requestPasswordGeneration();
+        if ($("#passwordGenerator").is(":hidden")) {
+            requestPasswordGeneration();
+            $("#passwordGenerator").slideDown(400, function() {
+                $("html, body").animate(
+                    {
+                        scrollTop: $(this).offset().top,
+                    },
+                    1000,
+                );
+            });
+        } else {
+            $("#passwordGenerator").slideUp(400, function() {
+                $("html, body").animate(1000);
+            });
+        }
     });
 
     $("#generatePasswordButton").click(function(event) {
