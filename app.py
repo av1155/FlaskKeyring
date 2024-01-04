@@ -1,6 +1,9 @@
 import os
 
 from dotenv import load_dotenv
+
+load_dotenv()
+
 from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -38,15 +41,9 @@ app.config.update(
 
 # Configure application
 app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY")
-
-print("DATABASE_URL:", os.getenv("DATABASE_URL"))
-
-# Conditionally set SQLALCHEMY_DATABASE_URI
-if "DATABASE_URL" in os.environ:
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-else:
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
-
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL", f"sqlite:///{database_path}"
+)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
