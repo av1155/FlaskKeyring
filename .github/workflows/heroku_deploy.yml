@@ -1,0 +1,42 @@
+name: Heroku Deploy
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Use Node.js 16
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 16
+
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: 3.x
+
+            - name: Install dependencies
+              run: pip install -r requirements.txt
+
+            - name: Deploy to Heroku
+              uses: akhileshns/heroku-deploy@v3.12.12
+              with:
+                  heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+                  heroku_app_name: "flaskkeyring"
+                  heroku_email: "andrea.venti12@gmail.com"
+
+            - name: Install Heroku CLI
+              run: curl https://cli-assets.heroku.com/install.sh | sh
+
+            - name: Run Database Migrations on Heroku
+              env:
+                  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+              run: heroku run flask db upgrade --app flaskkeyring

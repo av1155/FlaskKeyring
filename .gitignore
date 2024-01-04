@@ -1,4 +1,5 @@
 flaskkeyring.db
+DATABASE_MIGRATIONS.md
 
 # Ignore virtual environment
 venv/
