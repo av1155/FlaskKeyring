@@ -53,14 +53,18 @@ def register():
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.form.get("email")
+        username_email = request.form.get("username_email")
         password = request.form.get("password")
 
-        if not email or not password:
+        if not username_email or not password:
             flash("Please enter both email and password", "error")
             return redirect(url_for("auth.login"))
 
-        user = User.query.filter_by(email=email).first()
+        # Query for user by email or username
+        user = User.query.filter(
+            (User.email == username_email) | (User.username == username_email)
+        ).first()
+
         if not user or not check_password_hash(user.password_hash, password):
             flash("Invalid email or password", "error")
             return redirect(url_for("auth.login"))

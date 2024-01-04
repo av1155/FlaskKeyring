@@ -8,8 +8,8 @@
     <div class="container my-4">
         <section>
             <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required aria-label="Email"/>
-                <label for="email">Email address</label>
+                <input type="text" class="form-control" id="username_email" name="username_email" placeholder="Username or Email" required aria-label="Username or Email"/>
+                <label for="username_email">Username or Email</label>
             </div>
 
             <div class="form-floating mb-3">
@@ -17,8 +17,13 @@
                 <label for="password">Password</label>
             </div>
 
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" checked>
+                <label class="form-check-label" for="exampleCheck1">Remember me</label>
+            </div>
+
             <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary mb-4">Login</button>
+                <button type="submit" class="btn btn-primary mb-4">Sign in</button>
             </div>
         </section>
 
@@ -38,3 +43,8 @@
 </form>
 {% endblock %}
 
+{% block scripts %}
+
+    <script src="{{ url_for('static', filename='js/login_remember.js') }}"></script>
+
+{% endblock %}
