@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager
+from flask_migrate import Migrate
 
 from application.models.user import User
 from application.utils import config
@@ -37,15 +38,27 @@ app.config.update(
 
 # Configure application
 app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL", f"sqlite:///{database_path}"
+)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
 
 # Initialize extensions
+
+# Initialize SQLAlchemy: Sets up the database with the Flask app for ORM support
 db.init_app(app)
+
+# Initialize Flask-Migrate: Provides database migration functionality for SQLAlchemy
+migrate = Migrate(app, db)
+
+# Initialize Flask-Session: Manages user sessions using server-side session storage
 Session(app)
+
+# Initialize Flask-Mail: Sets up email sending capabilities for the Flask app
 mail.init_app(app)
+
 
 # Register blueprints
 app.register_blueprint(auth)
