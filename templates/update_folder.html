@@ -1,0 +1,30 @@
+{% extends "layout.html" %} {% block content %}
+<header>
+    <h1 class="mb-3">Update Folder</h1>
+</header>
+
+<main>
+    <div class="container my-4">
+        <section class="update-folder">
+            <form method="POST" action="{{ url_for('main.update_folder', folder_id=folder.id) }}">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="folder_name" name="folder_name"
+                        placeholder="Folder Name" value="{{ folder.name }}" required />
+                    <label for="folder_name">Folder Name</label>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary mb-4">Update Folder</button>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary mb-4">Cancel</a>
+                </div>
+            </form>
+        </section>
+
+        <div class="text-center">
+            <a href="{{ url_for('main.list_folders') }}" class="btn btn-primary mb-3">Back to Folders</a>
+        </div>
+
+    </div>
+</main>
+
+{% endblock %}>

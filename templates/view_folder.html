@@ -1,0 +1,49 @@
+{% extends "layout.html" %} {% block content %}
+<header>
+    <h1 class="mb-3">Folder: {{ folder.name }}</h1>
+</header>
+
+<main>
+    <div class="container my-4">
+
+        <section class="password-list">
+            <h2>Accounts in Folder</h2>
+            <div class="tbl-container bdr">
+                <table class="table table-bordered table-hover rounded">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Website</th>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                        {% for password in passwords %}
+                        <tr>
+                            <td class="align-middle text-center">{{ password.website }}</td>
+                            <td class="align-middle text-center">{{ password.username }}</td>
+                            <td>
+                                <a href="{{ url_for('main.view_password', password_id=password.id) }}"
+                                    class="btn btn-primary">View</a>
+                                <a href="{{ url_for('main.edit_password', password_id=password.id) }}"
+                                    class="btn btn-secondary">Edit</a>
+                                <form action="{{ url_for('main.remove_password', password_id=password.id) }}"
+                                    method="POST" style="display: inline-block">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="text-center">
+            <a href="{{ url_for('main.list_folders') }}" class="btn btn-primary mb-3">Back to Folders</a>
+        </div>
+
+
+    </div>
+</main>
+{% endblock %}

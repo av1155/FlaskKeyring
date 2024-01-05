@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from validate_email import validate_email
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from application.models.folder import Folder
 from application.models.user import User
 from application.utils.extensions import db
 from application.utils.helpers import *
@@ -83,6 +84,11 @@ def register():
                 password_hash=generate_password_hash(password),
             )
             db.session.add(new_user)
+            db.session.commit()
+
+            # Create a "Main" folder for the new user
+            main_folder = Folder(user_id=new_user.id, name="Main")
+            db.session.add(main_folder)
             db.session.commit()
 
             # Generate and store Fernet key for the new user
@@ -172,6 +178,13 @@ def login():
 
         login_user(user)
         logging.info(f"User logged in: {username_email}")
+
+        # Check for the "Main" folder and create it if it doesn't exist
+        main_folder = Folder.query.filter_by(user_id=user.id, name="Main").first()
+        if not main_folder:
+            main_folder = Folder(user_id=user.id, name="Main")
+            db.session.add(main_folder)
+            db.session.commit()
 
         return redirect(url_for("main.index"))
 

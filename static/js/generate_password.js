@@ -35,10 +35,10 @@ $(document).ready(function() {
         if ($("#passwordGenerator").is(":hidden")) {
             requestPasswordGeneration();
             $("#passwordGenerator").slideDown(400);
-            $("html, body").animate({ scrollTop: "+=500" }, 400);
+            $("html, body").animate({ scrollTop: "+=300" }, 400);
         } else {
             $("#passwordGenerator").slideUp(400);
-            $("html, body").animate({ scrollTop: "-=500" }, 400);
+            $("html, body").animate({ scrollTop: "-=300" }, 400);
         }
     });
 

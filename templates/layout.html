@@ -65,16 +65,30 @@
                 </ul>
                 {% if current_user.is_authenticated %}
                 <ul class="navbar-nav ms-auto">
+                    <!-- Folder Management Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="folderDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Folders
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="folderDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('main.create_folder') }}">Create Folder</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('main.list_folders') }}">View Folders</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- User Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi-person-circle"></i> {{ current_user.username }}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
                             <li>
                                 <a class="dropdown-item" href="{{ url_for('auth.change_password') }}">Change
                                     Password</a>

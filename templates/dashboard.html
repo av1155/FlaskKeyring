@@ -1,141 +1,147 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block content %}
+<header>
+    <h1>FlaskKeyring Dashboard</h1>
+</header>
 
-{% block content %}
-    <header>
-        <h1>FlaskKeyring Dashboard</h1>
-<!--         <a href="{{ url_for('main.folders') }}" class="btn btn-secondary mb-3">Manage Folders</a> -->
-
-    </header>
-
-    <main>
-        <section class="search-password">
-            <h2>Search Account</h2>
-            <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-2">
-                <div class="input-group">
-                    <input type="text" id="search_website" name="search_website" class="form-control form-control-dark" placeholder="Search by website" required />
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            </form>
-        </section>
-
-        <section class="password-list">
-            <h2>Your Accounts</h2>
-            <div class="tbl-container bdr">
-                <table class="table table-bordered table-hover rounded">
-                    <thead class="table-dark text-center">
-                        <tr>
-                            <th>Website</th>
-                            <th>Username</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-light">
-                        {% for password in passwords %}
-                        <tr>
-                            <td class="align-middle text-center">{{ password.website }}</td>
-                            <td class="align-middle text-center">{{ password.username }}</td>
-                            <td>
-                                <a href="{{ url_for('main.view_password', password_id=password.id) }}" class="btn btn-primary">View</a>
-                                <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary">Edit</a>
-                                <form action="{{ url_for('main.remove_password', password_id=password.id) }}" method="POST" style="display: inline-block;">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+<main>
+    <section class="search-password">
+        <h2>Search Account</h2>
+        <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-2">
+            <div class="input-group">
+                <input type="text" id="search_website" name="search_website" class="form-control form-control-dark" placeholder="Search by website" required />
+                <button type="submit" class="btn btn-primary">Search</button>
             </div>
-        </section>
+        </form>
+    </section>
 
-        <section class="add-password">
-            <h2>Add New Account</h2>
-            <form method="POST" action="{{ url_for('main.add_password') }}" class="mb-4">
+    <section class="password-list">
+        <h2>Your Accounts</h2>
+        <div class="tbl-container bdr">
+            <table class="table table-bordered table-hover rounded">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Website</th>
+                        <th>Username</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    {% for password in passwords %}
+                    <tr>
+                        <td class="align-middle text-center">{{ password.website }}</td>
+                        <td class="align-middle text-center">{{ password.username }}</td>
+                        <td>
+                            <a href="{{ url_for('main.view_password', password_id=password.id) }}" class="btn btn-primary">View</a>
+                            <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary">Edit</a>
+                            <form action="{{ url_for('main.remove_password', password_id=password.id) }}" method="POST" style="display: inline-block;">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="add-password">
+        <h2>Add New Account</h2>
+        <form method="POST" action="{{ url_for('main.add_password') }}" class="mb-4">
 
 
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control form-control-dark" id="website" name="website" placeholder="Website URL" required>
-                    <label for="website">Website</label>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control form-control-dark" id="website" name="website" placeholder="Website URL" required>
+                <label for="website">Website</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control form-control-dark" id="username" name="username" placeholder="Username" required>
+                <label for="username">Username</label>
+            </div>
+
+
+            <div class="mb-3">
+                <div class="form-floating mb-3 position-relative">
+                    <input type="password" name="password" class="form-control form-control-dark" id="floatingPassword" placeholder="Password" required />
+                    <label for="floatingPassword">Password</label>
+                    <!-- Button for generating password -->
+                    <button id="generatePasswordIcon" type="button" class="btn btn-primary position-absolute top-0 end-0 mt-2 me-2">
+                        <img src="{{ url_for('static', filename='images/key-icon.png') }}" alt="Password Generator" width="24" height="24">
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-3" id="passwordGenerator" style="display: none;">
+
+                <div class="mb-3">
+                    <label for="generatedPassword" class="form-label">Generated Password:</label>
+                    <input type="text" id="generatedPassword" readonly class="form-control" />
                 </div>
 
+
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control form-control-dark" id="username" name="username" placeholder="Username" required>
-                    <label for="username">Username</label>
+                    <select class="form-select" id="passwordType" name="passwordType" aria-label="Password Type select">
+                        <option value="random">Random Password</option>
+                        <option value="memorable">Memorable Password</option>
+                        <option value="pin">PIN Code</option>
+                    </select>
+                    <label for="passwordType">Password Type:</label>
                 </div>
 
 
                 <div class="mb-3">
-                    <div class="form-floating mb-3 position-relative">
-                        <input type="password" name="password" class="form-control form-control-dark" id="floatingPassword" placeholder="Password" required />
-                        <label for="floatingPassword">Password</label>
-                        <!-- Button for generating password -->
-                        <button id="generatePasswordIcon" type="button" class="btn btn-primary position-absolute top-0 end-0 mt-2 me-2">
-                            <img src="{{ url_for('static', filename='images/key-icon.png') }}" alt="Password Generator" width="24" height="24">
-                        </button>
-                    </div>
+                    <label for="passwordLength" class="form-label">Password Length:</label>
+                    <input type="range" id="passwordLength" value="12" min="4" max="40" class="form-range" />
+                    <span id="passwordLengthDisplay" class="text-muted">Length: 12</span>
                 </div>
 
-                <div class="mb-3" id="passwordGenerator" style="display: none;">
-
-                    <div class="mb-3">
-                        <label for="generatedPassword" class="form-label">Generated Password:</label>
-                        <input type="text" id="generatedPassword" readonly class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="passwordType" class="form-label">Password Type:</label>
-                        <select id="passwordType" class="form-select">
-                            <option value="random">Random Password</option>
-                            <option value="memorable">Memorable Password</option>
-                            <option value="pin">PIN Code</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="passwordLength" class="form-label">Password Length:</label>
-                        <input type="range" id="passwordLength" value="12" min="4" max="40" class="form-range" />
-                        <span id="passwordLengthDisplay" class="text-muted">Length: 12</span>
-                    </div>
-
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch" id="includeNumbers" checked>
-                        <label class="form-check-label" for="includeNumbers">Include Numbers</label>
-                    </div>
-
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch" id="includeSymbols" checked>
-                        <label class="form-check-label" for="includeSymbols">Include Symbols</label>
-                    </div>
-
-                    <div class="text-center">
-                        <button id="generatePasswordButton" class="btn btn-primary mb-2">Generate</button>
-                    </div>
-
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="includeNumbers" checked>
+                    <label class="form-check-label" for="includeNumbers">Include Numbers</label>
                 </div>
 
-
-                <!-- <div class="form-floating mb-3"> -->
-                <!---->
-                <!--     <select class="form-select" id="folder_id" name="folder_id"> -->
-                <!--         {% for folder in user_folders %} -->
-                <!--             <option value="{{ folder.id }}">{{ folder.name }}</option> -->
-                <!--         {% endfor %} -->
-                <!--     </select> -->
-                <!---->
-                <!--     <label for="folder_id">Folder</label> -->
-                <!-- </div> -->
-
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="includeSymbols" checked>
+                    <label class="form-check-label" for="includeSymbols">Include Symbols</label>
+                </div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Add Account</button>
+                    <button id="generatePasswordButton" class="btn btn-primary mb-2">Generate</button>
                 </div>
-            </form>
-        </section>
-    </main>
 
-    <footer class="text-center mt-5">
-        <p>&copy; {{ current_year }} - FlaskKeyring</p>
-    </footer>
+            </div>
+
+
+            <div class="form-floating mb-3">
+                <select class="form-select" id="folder_id" name="folder_id" aria-label="Folder select">
+                    {% for folder in folders %}
+                        <option value="{{ folder.id }}" {% if folder.name == 'Main' %}selected{% endif %}>{{ folder.name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="folder_id">Folder</label>
+            </div>
+
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Add Account</button>
+            </div>
+
+        </form>
+    </section>
+
+    <section class="folder-management">
+        <h2>Folder Management</h2>
+        <div class="text-center">
+            <a href="{{ url_for('main.create_folder') }}" class="btn btn-primary mx-2">Create Folder</a>
+            <a href="{{ url_for('main.list_folders') }}" class="btn btn-secondary mx-2">View Folders</a>
+        </div>
+    </section>
+
+</main>
+
+<footer class="text-center mt-5">
+    <p>&copy; {{ current_year }} - FlaskKeyring</p>
+</footer>
     
 {% endblock %}
 
