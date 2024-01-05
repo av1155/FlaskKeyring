@@ -11,9 +11,13 @@ from flask_migrate import Migrate
 from application.models.user import User
 from application.utils import config
 from application.utils.extensions import db, mail
+from application.utils.logging_config import setup_logging
 from application.views.auth import auth
 from application.views.main import main
 from flask_session import Session
+
+# Initialize the logging system
+setup_logging()
 
 # Load environment variables
 load_dotenv()
@@ -84,4 +88,4 @@ with app.app_context():
     db.create_all()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

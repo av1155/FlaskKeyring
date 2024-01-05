@@ -1,6 +1,0 @@
-name: FlaskKeyring
-channels:
-    - conda-forge
-dependencies:
-    - python
-    - pip

@@ -1,5 +1,10 @@
+import logging
+
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
+from sqlalchemy import func
+from sqlalchemy.exc import SQLAlchemyError
+from validate_email import validate_email
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from application.models.user import User
@@ -12,12 +17,21 @@ auth = Blueprint("auth", __name__)
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        email = request.form.get("email")
-        username = request.form.get("username")
-        password = request.form.get("password")
+        email = request.form.get("email", "").lower().strip()
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
 
         if not email or not username or not password:
             flash("Email, username, and password are required.", "error")
+            logging.warning("Failed registration attempt due to missing fields")
+
+            return redirect(url_for("auth.register"))
+
+        # Validate email format using validate_email
+        if not validate_email(email):
+            flash("Invalid email format.", "error")
+            logging.warning("Failed registration attempt due to invalid email format")
+
             return redirect(url_for("auth.register"))
 
         if not is_password_complex(password):
@@ -25,27 +39,67 @@ def register():
                 "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.",
                 "error",
             )
+            logging.warning(
+                "Failed registration attempt due to password complexity requirements"
+            )
+
             return redirect(url_for("auth.register"))
 
-        email_exists = User.query.filter_by(email=email).first()
-        username_exists = User.query.filter_by(username=username).first()
+        if "@" in username:
+            flash("Username cannot contain @", "error")
+            logging.warning(
+                "Failed registration attempt due to invalid character in username"
+            )
 
-        if email_exists or username_exists:
-            flash("Email or username already exists.", "error")
             return redirect(url_for("auth.register"))
 
-        new_user = User(
-            email=email,
-            username=username,
-            password_hash=generate_password_hash(password),
-        )
-        db.session.add(new_user)
-        db.session.commit()
+        # Check for existing users in a case-insensitive manner
+        email_exists = User.query.filter(func.lower(User.email) == email).first()
+        username_exists = User.query.filter(
+            func.lower(User.username) == func.lower(username)
+        ).first()
 
-        generate_and_store_fernet_key(new_user.id)
+        if email_exists:
+            flash("Email already exists.", "error")
+            logging.warning(
+                f"Failed registration attempt due to existing email: {email}"
+            )
 
-        flash("Registration successful. Please log in.", "success")
-        return redirect(url_for("auth.login"))
+            return redirect(url_for("auth.register"))
+
+        if username_exists:
+            flash("Username already exists.", "error")
+            logging.warning(
+                f"Failed registration attempt due to existing username: {username}"
+            )
+
+            return redirect(url_for("auth.register"))
+
+        try:
+            # Attempt to create a new user
+            new_user = User(
+                email=email,
+                username=username,
+                password_hash=generate_password_hash(password),
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            logging.info(f"New user registered: {username}")
+
+            # Assuming this function generates and stores a Fernet key for the new user
+            generate_and_store_fernet_key(new_user.id)
+
+            flash("Registration successful. Please sign in.", "success")
+
+            return redirect(url_for("auth.login"))
+
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            logging.error("Error occurred while creating a user account", exc_info=e)
+            flash(
+                "An error occurred while creating the account. Please try again.",
+                "error",
+            )
 
     return render_template("register.html")
 
@@ -67,9 +121,13 @@ def login():
 
         if not user or not check_password_hash(user.password_hash, password):
             flash("Invalid email or password", "error")
+            logging.warning(f"Failed login attempt for: {username_email}")
+
             return redirect(url_for("auth.login"))
 
         login_user(user)
+        logging.info(f"User logged in: {username_email}")
+
         return redirect(url_for("main.index"))
 
     return render_template("login.html")
@@ -103,6 +161,8 @@ def change_password():
             user.password_hash = generate_password_hash(new_password)
             db.session.commit()
             flash("Password changed successfully.", "success")
+            logging.info(f"Password changed for user: {current_user.username}")
+
             return redirect(url_for("main.dashboard"))
 
         else:
@@ -115,6 +175,7 @@ def change_password():
 @auth.route("/logout")
 @login_required
 def logout():
+    logging.info(f"User logged out: {current_user.username}")
     logout_user()
     return redirect(url_for("auth.login"))
 
@@ -140,9 +201,12 @@ def forgot_password():
             send_password_reset_email(user.email, reset_link)
 
             flash("Password reset email sent. Check your inbox.", "success")
+            logging.info(f"Password reset requested for: {email}")
+
             return redirect(url_for("auth.login"))
         else:
             flash("Email not found. Please try again.", "error")
+            logging.warning(f"Password reset requested for non-existing email: {email}")
 
     return render_template("forgot_password.html")
 
@@ -179,6 +243,8 @@ def reset_password(token):
             "Password reset successful. You can now log in with your new password.",
             "success",
         )
+        logging.info(f"Password reset for user ID: {user.id}")
+
         return redirect(url_for("auth.login"))
 
     return render_template("reset_password.html", token=token)
