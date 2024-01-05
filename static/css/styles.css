@@ -92,7 +92,7 @@ h2 {
         text-align: center;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 20vh;
+        margin-top: 8vh;
     }
 
     .forgot-prompt-section {
@@ -104,7 +104,7 @@ h2 {
         text-align: center;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 40vh;
+        margin-top: 27vh;
     }
 
     /* Prompt Fonts */
@@ -200,11 +200,46 @@ h2 {
         padding: 10px;
 
         .login-prompt-section {
-            margin-top: 20vh;
+            margin-top: 15vh;
         }
 
         .forgot-prompt-section {
-            margin-top: 40vh;
+            margin-top: 35vh;
+        }
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .tbl-container {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .table .btn,
+    .table form {
+        display: block;
+        width: 100%;
+        margin-bottom: 3px;
+    }
+
+    .table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 431px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+
+        .login-prompt-section {
+            margin-top: 15vh;
+        }
+
+        .forgot-prompt-section {
+            margin-top: 30vh;
         }
     }
 

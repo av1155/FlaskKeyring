@@ -84,12 +84,18 @@ def register():
             )
             db.session.add(new_user)
             db.session.commit()
-            logging.info(f"New user registered: {username}")
 
-            # Assuming this function generates and stores a Fernet key for the new user
+            # Generate and store Fernet key for the new user
             generate_and_store_fernet_key(new_user.id)
 
-            flash("Registration successful. Please sign in.", "success")
+            # Generate and send email verification link
+            verification_token = generate_email_verification_token(new_user.id)
+            verification_link = url_for(
+                "auth.verify_email", token=verification_token, _external=True
+            )
+            send_email_verification_link(new_user.email, verification_link)
+
+            flash("Registration successful. Please verify your email.", "success")
 
             return redirect(url_for("auth.login"))
 
@@ -102,6 +108,28 @@ def register():
             )
 
     return render_template("register.html")
+
+
+@auth.route("/verify_email/<token>")
+def verify_email(token):
+    # Find the user with the given token and check if the token is not expired
+    user = User.query.filter_by(email_verification_token=token).first()
+
+    if user and user.email_verification_expires_at > datetime.utcnow():
+        # Token is valid and not expired
+        user.email_verified = True
+        user.email_verification_token = None
+        user.email_verification_expires_at = None
+        db.session.commit()
+
+        # Render the email verified confirmation page instead of flashing a message
+        return render_template("email_verified.html")
+    else:
+        flash(
+            "Invalid or expired token. Please request a new verification email.",
+            "error",
+        )
+        return redirect(url_for("main.index"))
 
 
 @auth.route("/login", methods=["GET", "POST"])
@@ -119,10 +147,27 @@ def login():
             (User.email == username_email) | (User.username == username_email)
         ).first()
 
-        if not user or not check_password_hash(user.password_hash, password):
+        if not user:
             flash("Invalid email or password", "error")
             logging.warning(f"Failed login attempt for: {username_email}")
+            return redirect(url_for("auth.login"))
 
+        if not check_password_hash(user.password_hash, password):
+            flash("Invalid email or password", "error")
+            logging.warning(f"Failed login attempt for: {username_email}")
+            return redirect(url_for("auth.login"))
+
+        if not user.email_verified:
+            # Generate and send a new email verification link
+            verification_token = generate_email_verification_token(user.id)
+            verification_link = url_for(
+                "auth.verify_email", token=verification_token, _external=True
+            )
+            send_email_verification_link(user.email, verification_link)
+
+            flash(
+                "Email not verified. A new verification email has been sent.", "error"
+            )
             return redirect(url_for("auth.login"))
 
         login_user(user)

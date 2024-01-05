@@ -3,6 +3,8 @@
 {% block content %}
     <header>
         <h1>FlaskKeyring Dashboard</h1>
+<!--         <a href="{{ url_for('main.folders') }}" class="btn btn-secondary mb-3">Manage Folders</a> -->
+
     </header>
 
     <main>
@@ -110,6 +112,19 @@
                     </div>
 
                 </div>
+
+
+                <!-- <div class="form-floating mb-3"> -->
+                <!---->
+                <!--     <select class="form-select" id="folder_id" name="folder_id"> -->
+                <!--         {% for folder in user_folders %} -->
+                <!--             <option value="{{ folder.id }}">{{ folder.name }}</option> -->
+                <!--         {% endfor %} -->
+                <!--     </select> -->
+                <!---->
+                <!--     <label for="folder_id">Folder</label> -->
+                <!-- </div> -->
+
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Add Account</button>

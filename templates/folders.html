@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Folders</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label for="folder_name" class="form-label">New Folder Name:</label>
+            <input type="text" class="form-control" id="folder_name" name="folder_name" placeholder="Enter folder name" />
+        </div>
+        <button type="submit" class="btn btn-primary">Create Folder</button>
+    </form>
+
+    {% if folders %}
+    <div class="mt-4">
+        <h3>Your Folders</h3>
+        <ul class="list-group">
+            {% for folder in folders %}
+            <li class="list-group-item">{{ folder.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <div class="mt-4">
+        <p>No folders found.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

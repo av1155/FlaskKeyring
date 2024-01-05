@@ -92,7 +92,9 @@
         <!-- Flash Messages Section -->
         {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message
         in messages %}
-        <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+        <div class="text-center alert alert-{{ 'danger' if category == 'error' else category }}" role="alert">
+            {{ message }}
+        </div>
         {% endfor %} {% endif %} {% endwith %}
         <!-- End Of Flash Messages Section -->
 

@@ -6,6 +6,7 @@ from flask import (Blueprint, flash, jsonify, redirect, render_template,
 from flask_login import current_user, login_required
 from sqlalchemy import func
 
+from application.models.folder import Folder
 from application.models.password import Password
 from application.utils.extensions import db
 from application.utils.helpers import *
@@ -161,7 +162,7 @@ def add_password():
         flash("Account added successfully.", "success")
         return redirect(url_for("main.dashboard"))
 
-    return render_template("add_password.html")
+    return render_template("dashboard.html")
 
 
 @main.route("/generate_password", methods=["POST"])
@@ -184,3 +185,20 @@ def generate_password():
         return jsonify({"error": "Invalid password type"}), 400
 
     return jsonify({"password": password})
+
+
+@main.route("/folders", methods=["GET", "POST"])
+@login_required
+def folders():
+    if request.method == "POST":
+        folder_name = request.form.get("folder_name")
+        if folder_name:
+            new_folder = Folder(user_id=current_user.id, name=folder_name)
+            db.session.add(new_folder)
+            db.session.commit()
+            flash("Folder created successfully.", "success")
+        else:
+            flash("Folder name is required.", "error")
+
+    user_folders = Folder.query.filter_by(user_id=current_user.id).all()
+    return render_template("folders.html", folders=user_folders)

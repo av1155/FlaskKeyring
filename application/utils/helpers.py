@@ -1,8 +1,9 @@
-import json
+import logging
 import os
 import random
 import secrets
 import string
+from datetime import datetime, timedelta
 
 from cryptography.fernet import Fernet
 from flask_mail import Message
@@ -105,9 +106,6 @@ def send_password_reset_email(to_email, reset_link):
         print(f"Error sending password reset email: {e}")
 
 
-from datetime import datetime, timedelta
-
-
 def generate_reset_token(user_id):
     # Generate a unique token for password reset
     token = secrets.token_hex(32)  # Generate a 64-character (32-byte) hex token
@@ -132,3 +130,37 @@ def validate_reset_token(token):
         return User.query.get(reset_token.user_id)
 
     return None
+
+
+def generate_email_verification_token(user_id):
+    # Generate a unique token for email verification
+    token = secrets.token_hex(16)  # Generate a 32-character (16-byte) hex token
+
+    # Calculate the token expiration time (e.g., 24 hours from now)
+    expiration_time = datetime.utcnow() + timedelta(hours=24)
+
+    # Retrieve the user and check if it exists
+    user = User.query.get(user_id)
+    if user is not None:
+        # Store the token and expiration time in the User model
+        user.email_verification_token = token
+        user.email_verification_expires_at = expiration_time
+        db.session.commit()
+        return token
+    else:
+        logging.warning(f"User with id {user_id} not found.")
+        return None
+
+
+def send_email_verification_link(to_email, verification_link):
+    subject = "Email Verification for Your FlaskKeyring Account"
+    body = f"Please click the following link to verify your email address: {verification_link}"
+
+    msg = Message(subject, recipients=[to_email])
+    msg.body = body
+
+    try:
+        mail.send(msg)
+
+    except Exception as e:
+        logging.warning(f"Error sending email verification link: {e}")

@@ -1,3 +1,4 @@
+from application.models.folder import Folder
 from application.utils.extensions import db
 
 
@@ -8,9 +9,11 @@ class Password(db.Model):
     website = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(200), nullable=False)
+    folder_id = db.Column(db.Integer, db.ForeignKey("folders.id"), nullable=True)
 
-    def __init__(self, user_id, website, username, password):
+    def __init__(self, user_id, website, username, password, folder_id=None):
         self.user_id = user_id
         self.website = website
         self.username = username
         self.password = password
+        self.folder_id = folder_id
