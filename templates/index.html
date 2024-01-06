@@ -1,19 +1,21 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="jumbotron text-center" style="padding-top: 50px;">
+<div class="jumbotron text-center">
 
     <h1 class="display-4">Welcome to FlaskKeyring</h1>
     <p class="lead">Your secure and reliable password management solution.</p>
 
+    <img src="{{ url_for('static', filename='images/meta-image.png') }}" alt="Secure Passwords" class="img-fluid mt-3" height="225" width="225">
+    
     <hr class="my-4">
 
-    <p>FlaskKeyring helps you to store and manage your passwords in a secure and convenient way.</p>
+    <p>Store and manage your passwords securely and conveniently with FlaskKeyring.</p>
 
     {% if not current_user.is_authenticated %}
     <p class="lead">
         <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Register Now</a>
-        <a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
+        <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
     </p>
 
     {% else %}
@@ -22,6 +24,8 @@
     </p>
 
     {% endif %}
+
+    <!-- Optional: Testimonials or additional features section here -->
 
 </div>
 {% endblock %}
