@@ -6,6 +6,7 @@ import string
 from datetime import datetime, timedelta
 
 from cryptography.fernet import Fernet
+from flask import render_template
 from flask_mail import Message
 
 from application.models.fernet_key import FernetKey
@@ -95,10 +96,13 @@ def generate_pin_code(length=4):
 
 def send_password_reset_email(to_email, reset_link):
     subject = "Password Reset Request for Your FlaskKeyring Account"
-    body = f"Click the following link to reset your password: {reset_link}"
-
-    msg = Message(subject, recipients=[to_email])
-    msg.body = body
+    current_year = datetime.now().year
+    html_body = render_template(
+        "password_reset_email_template.html",
+        reset_link=reset_link,
+        current_year=current_year,
+    )
+    msg = Message(subject, recipients=[to_email], html=html_body)
 
     try:
         mail.send(msg)
@@ -154,13 +158,15 @@ def generate_email_verification_token(user_id):
 
 def send_email_verification_link(to_email, verification_link):
     subject = "Email Verification for Your FlaskKeyring Account"
-    body = f"Please click the following link to verify your email address: {verification_link}"
-
-    msg = Message(subject, recipients=[to_email])
-    msg.body = body
+    current_year = datetime.now().year
+    html_body = render_template(
+        "email_verification_template.html",
+        verification_link=verification_link,
+        current_year=current_year,
+    )
+    msg = Message(subject, recipients=[to_email], html=html_body)
 
     try:
         mail.send(msg)
-
     except Exception as e:
         logging.warning(f"Error sending email verification link: {e}")
