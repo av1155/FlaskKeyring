@@ -3,10 +3,10 @@
 {% block content %}
 <div class="jumbotron text-center">
 
-    <h1 class="display-4">Welcome to FlaskKeyring</h1>
+    <h1 class="display-4" id="welcomePageHeader">Welcome to FlaskKeyring</h1>
     <p class="lead">Your secure and reliable password management solution.</p>
 
-    <img src="{{ url_for('static', filename='images/meta-image.png') }}" alt="Secure Passwords" class="img-fluid mt-3" height="225" width="225">
+    <img src="{{ url_for('static', filename='images/meta-image.png') }}" alt="Secure Passwords" class="img-fluid rounded mt-2" id="metaImage" height="225" width="225">
     
     <hr class="my-4">
 
