@@ -4,10 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from flask import Flask
+from flask import Flask, redirect, request
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from flask_talisman import Talisman
 
 from application.models.user import User
 from application.utils import config
@@ -37,7 +36,14 @@ app = Flask(__name__)
 
 # Check if the environment is production
 if os.getenv("FLASK_ENV") == "production":
-    Talisman(app)
+
+    @app.before_request
+    def before_request():
+        if request.url.startswith("http://"):
+            url = request.url.replace("http://", "https://", 1)
+            code = 301  # Permanent Redirect
+            return redirect(url, code=code)
+
 
 # Load mail configuration from config.py
 app.config.update(
