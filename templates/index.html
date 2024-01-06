@@ -15,7 +15,7 @@
     {% if not current_user.is_authenticated %}
     <p class="lead">
         <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Register Now</a>
-        <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
+        <a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
     </p>
 
     {% else %}
