@@ -4,6 +4,7 @@ Flask-Mail
 Flask-Migrate
 Flask-Session
 Flask-SQLAlchemy
+flask-talisman
 SQLAlchemy
 cryptography
 python-dotenv

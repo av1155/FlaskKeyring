@@ -4,11 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-print("DATABASE_URL:", os.getenv("DATABASE_URL"))
-
-MAIL_SERVER = "mail.smtp2go.com"  # SMTP2GO SMTP server
-MAIL_PORT = 2525  # SMTP2GO port for TLS
-MAIL_USE_TLS = True  # Use TLS
-MAIL_USERNAME = os.getenv("SMTP2GO_USERNAME")
-MAIL_PASSWORD = os.getenv("SMTP2GO_PASSWORD")
+MAIL_SERVER = os.getenv("MAILGUN_SMTP_SERVER")
+MAIL_PORT = int(os.getenv("MAILGUN_SMTP_PORT", "587"))  # Default port 587 if not set
+MAIL_USE_TLS = True
+MAIL_USE_SSL = False  # Set to False unless you're using port 465 for SSL
+MAIL_USERNAME = os.getenv("MAILGUN_SMTP_USERNAME")
+MAIL_PASSWORD = os.getenv("MAILGUN_SMTP_PASSWORD")
 MAIL_DEFAULT_SENDER = os.getenv("VERIFIED_SENDER_EMAIL")

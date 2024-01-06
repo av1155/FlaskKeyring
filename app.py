@@ -7,6 +7,7 @@ load_dotenv()
 from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_talisman import Talisman
 
 from application.models.user import User
 from application.utils import config
@@ -22,6 +23,7 @@ setup_logging()
 # Load environment variables
 load_dotenv()
 
+
 # Get the current directory where app.py is located
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -32,6 +34,10 @@ database_relative_path = "flaskkeyring.db"
 database_path = os.path.join(current_directory, database_relative_path)
 
 app = Flask(__name__)
+
+# Check if the environment is production
+if os.getenv("FLASK_ENV") == "production":
+    Talisman(app)
 
 # Load mail configuration from config.py
 app.config.update(
