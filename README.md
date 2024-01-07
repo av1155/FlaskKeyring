@@ -2,7 +2,7 @@
 
 ## Introduction
 
-FlaskKeyring is an exemplary password management web application, skillfully constructed using Python and Flask. It stands as a hallmark of modern web application development, integrating sophisticated full-stack technologies with stringent security measures. This application not only manages sensitive information efficiently but also showcases my expertise in creating user-centric and complex web solutions. Deployed seamlessly on Heroku, FlaskKeyring is accessible [here](https://flaskkeyring-bdcc755e0734.herokuapp.com).
+FlaskKeyring is an exemplary password management web application, skillfully constructed using Python and Flask. It stands as a hallmark of modern web application development, integrating sophisticated full-stack technologies with stringent security measures. This application not only manages sensitive information efficiently but also showcases my expertise in creating user-centric and complex web solutions. Deployed seamlessly on Heroku, FlaskKeyring is accessible at [https://flaskkeyring.tech](https://flaskkeyring.tech).
 
 ## Core Technologies
 

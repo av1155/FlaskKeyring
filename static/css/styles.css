@@ -195,13 +195,14 @@ h2 {
     input[type="range"]:focus::-webkit-slider-runnable-track {
         background-size: var(--fill-percentage) 100%;
     }
+}
 
-    #metaImage {
-        width: 50vh;
-        height: auto;
-        max-width: 225px;
-        max-height: 225px;
-    }
+#metaImage {
+    width: 35vh;
+}
+
+#welcomePageHeader {
+    margin-bottom: 25px;
 }
 
 /* Responsive Design */
@@ -240,8 +241,7 @@ h2 {
     }
 
     #metaImage {
-        width: 35vh;
-        /* Smaller screens, smaller image */
+        width: 30vh;
     }
 }
 

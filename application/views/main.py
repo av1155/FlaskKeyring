@@ -1,8 +1,16 @@
 from datetime import datetime
 
 from cryptography.fernet import Fernet
-from flask import (Blueprint, abort, flash, jsonify, redirect, render_template,
-                   request, url_for)
+from flask import (
+    Blueprint,
+    abort,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import current_user, login_required
 from sqlalchemy import func
 
@@ -26,7 +34,8 @@ def index():
             passwords=passwords,
             folders=folders,
         )
-    return render_template("index.html")
+    else:
+        return render_template("index.html", current_year=current_year)
 
 
 @main.route("/dashboard")

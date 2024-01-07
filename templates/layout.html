@@ -24,7 +24,7 @@
     <meta property="og:title" content="FlaskKeyring - Secure Password Management" />
     <meta property="og:description"
         content="FlaskKeyring is a secure and efficient password manager built with Python and Flask." />
-    <meta property="og:image" content="{{ url_for('static', filename='images/meta-image.png') }}" />
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png') }}" />
 
     <!-- Twitter Meta Tags -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -32,7 +32,7 @@
     <meta property="twitter:title" content="FlaskKeyring - Secure Password Management" />
     <meta property="twitter:description"
         content="FlaskKeyring is a secure and efficient password manager built with Python and Flask." />
-    <meta property="twitter:image" content="{{ url_for('static', filename='images/meta-image.png') }}" />
+    <meta property="twitter:image" content="{{ url_for('static', filename='images/logo.png') }}" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}" />
@@ -49,8 +49,8 @@
         <div class="container">
             <!-- Navbar brand with image -->
             <a class="navbar-brand" href="{{ url_for('main.index') }}">
-                <img src="{{ url_for('static', filename='images/FlaskKeyring-logo.png') }}" alt="FlaskKeyring Logo"
-                    width="30" height="30" class="d-inline-block align-text-top" />
+                <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="FlaskKeyring Logo" width="30"
+                    height="30" class="d-inline-block align-text-top" />
                 FlaskKeyring
             </a>
 
@@ -63,48 +63,56 @@
             <!-- Navbar links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    {% if not current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
                     </li>
-                </ul>
-                {% if current_user.is_authenticated %}
-                <ul class="navbar-nav ms-auto">
-                    <!-- Folder Management Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="folderDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Folders
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="folderDropdown">
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('main.create_folder') }}">Create Folder</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('main.list_folders') }}">View Folders</a>
-                            </li>
-                        </ul>
-                    </li>
+                    {% endif %}
 
-                    <!-- User Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi-person-circle"></i> {{ current_user.username }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('auth.change_password') }}">Change
-                                    Password</a>
-                            </li>
-                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                {% endif %}
+                    {% if current_user.is_authenticated %}
+                    <ul class="navbar-nav ms-auto">
+                        <!-- Folder Management Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="folderDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Folders
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="folderDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('main.create_folder') }}">Create
+                                        Folder</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('main.list_folders') }}">View Folders</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- User Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi-person-circle"></i> {{ current_user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('auth.change_password') }}">Change
+                                        Password</a>
+                                </li>
+                                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% endif %}
+
             </div>
         </div>
     </nav>
