@@ -1,16 +1,8 @@
 from datetime import datetime
 
 from cryptography.fernet import Fernet
-from flask import (
-    Blueprint,
-    abort,
-    flash,
-    jsonify,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
+from flask import (Blueprint, abort, flash, jsonify, redirect, render_template,
+                   request, url_for)
 from flask_login import current_user, login_required
 from sqlalchemy import func
 
@@ -62,8 +54,10 @@ def view_password(password_id):
         flash("Unable to retrieve encryption key for the password.", "error")
         return redirect(url_for("main.dashboard"))
 
-    cipher_suite = Fernet(fernet_key.encode())
-    decrypted_password = cipher_suite.decrypt(password_entry.password.encode()).decode()
+    cipher_suite = Fernet(fernet_key.encode("utf-8"))
+    decrypted_password = cipher_suite.decrypt(
+        password_entry.password.encode("utf-8")
+    ).decode("utf-8")
 
     # Get the folder name
     folder_name = None
@@ -107,12 +101,12 @@ def edit_password(password_id):
         flash("Unable to retrieve encryption key for editing.", "error")
         return redirect(url_for("main.dashboard"))
 
-    cipher_suite = Fernet(fernet_key.encode())
+    cipher_suite = Fernet(fernet_key.encode("utf-8"))
 
     # Decrypt the current password
     current_decrypted_password = cipher_suite.decrypt(
-        current_password.password.encode()
-    ).decode()
+        current_password.password.encode("utf-8")
+    ).decode("utf-8")
 
     if request.method == "POST":
         website = request.form.get("website")
@@ -135,8 +129,8 @@ def edit_password(password_id):
 
         # Encrypt and update the new password if provided
         if new_password:
-            encrypted_password = cipher_suite.encrypt(new_password.encode())
-            current_password.password = encrypted_password.decode()
+            encrypted_password = cipher_suite.encrypt(new_password.encode("utf-8"))
+            current_password.password = encrypted_password.decode("utf-8")
 
         db.session.commit()
 
@@ -187,20 +181,24 @@ def add_password():
             flash("All fields are required.", "error")
             return redirect(url_for("main.add_password"))
 
+        if len(password) > 128:
+            flash("Password cannot be more than 128 characters.", "error")
+            return redirect(url_for("main.add_password"))
+
         fernet_key = get_user_fernet_key(current_user.id)
         if not fernet_key:
             flash("Encryption key not found.", "error")
             return redirect(url_for("main.add_password"))
 
-        cipher_suite = Fernet(fernet_key.encode())
-        encrypted_password = cipher_suite.encrypt(password.encode())
+        cipher_suite = Fernet(fernet_key.encode("utf-8"))
+        encrypted_password = cipher_suite.encrypt(password.encode("utf-8"))
 
         new_password = Password(
             user_id=current_user.id,
             website=website,
             username=username,
-            password=encrypted_password.decode(),
-            folder_id=folder_id,  # Add folder_id
+            password=encrypted_password.decode("utf-8"),
+            folder_id=folder_id,
         )
         db.session.add(new_password)
         db.session.commit()
