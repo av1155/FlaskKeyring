@@ -2,40 +2,40 @@ FlaskKeyring License Agreement
 
 Last Updated: 2024
 
-This FlaskKeyring License Agreement ("Agreement") is entered into by and between Andrea Arturo Venti Fuentes ("Creator") and any individual or entity ("User") accessing or using the FlaskKeyring web application deployed on Heroku (the "Software").
+This FlaskKeyring License Agreement ("Agreement") is a binding agreement between Andrea Arturo Venti Fuentes ("Creator") and any individual or entity ("User") accessing or using the FlaskKeyring web application deployed on Heroku (the "Software").
 
-By accessing or using the Software, User agrees to be bound by the terms and conditions of this Agreement.
+By accessing or using the Software, the User agrees to be bound by the terms and conditions of this Agreement.
 
 1. License Grant:
-   - Creator hereby grants User a limited, non-exclusive, non-transferable license to access and use the FlaskKeyring web application exclusively through the Heroku website, solely for personal purposes.
-   - User is expressly prohibited from installing, running, or distributing the Software locally on their own machines.
+   - The Creator grants the User a limited, non-exclusive, non-transferable license to access and use the FlaskKeyring web application exclusively through the Heroku platform, solely for personal and non-commercial purposes.
+   - The User is expressly prohibited from installing, running, or distributing the Software on any platform other than Heroku.
 
-2. Ownership:
-   - Creator retains all ownership and intellectual property rights in the Software.
-   - User acknowledges that this Agreement does not transfer any ownership or rights to the User.
+2. Ownership and Full-Stack Development Acknowledgment:
+   - The Creator retains all ownership and intellectual property rights in the Software, which represents a full-stack development effort encompassing both front-end and back-end components.
+   - The User acknowledges that this Agreement does not transfer any ownership rights to the User and recognizes the Creator's comprehensive development work on the Software.
 
 3. Restrictions:
-   - User shall not copy, modify, reverse engineer, decompile, disassemble, or create derivative works based on the Software.
-   - User shall not remove, alter, or obscure any copyright, trademark, or other proprietary notices on the Software.
+   - The User shall not copy, modify, reverse engineer, decompile, disassemble, or create derivative works based on the Software.
+   - The User shall not remove, alter, or obscure any copyright, trademark, or other proprietary notices on the Software.
 
 4. Termination:
    - This Agreement is effective until terminated by either party.
-   - User's rights under this Agreement will terminate automatically without notice if User fails to comply with any term of this Agreement.
-   - Upon termination, User must cease all use of the Software.
+   - The User's rights under this Agreement will terminate automatically without notice if the User fails to comply with any term of this Agreement.
+   - Upon termination, the User must cease all use of the Software and delete any copies in their possession.
 
 5. Disclaimer of Warranty:
-   - The Software is provided "as is," without warranty of any kind, express or implied.
-   - Creator makes no warranties, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement.
+   - The Software is provided "as is," without any warranty of any kind, express or implied.
+   - The Creator disclaims all warranties, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement.
 
 6. Limitation of Liability:
-   - Creator shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, arising out of User's use or inability to use the Software.
+   - The Creator shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, arising out of the User's use or inability to use the Software.
 
 7. Governing Law:
-   - This Agreement shall be governed by and construed in accordance with the laws of [Your Jurisdiction].
+   - This Agreement shall be governed by and construed in accordance with the laws of the State of Florida, United States.
 
-By accessing or using the FlaskKeyring web application on Heroku, User agrees to abide by the terms and conditions of this Agreement.
+By accessing or using the FlaskKeyring web application on Heroku, the User agrees to abide by the terms and conditions of this Agreement.
 
-For any questions or concerns regarding this Agreement, please contact Andrea Arturo Venti Fuentes at andrea.venti12@gmail.com.
+For inquiries or concerns regarding this Agreement, please contact Andrea Arturo Venti Fuentes at andrea.venti12@gmail.com.
 
 Andrea Arturo Venti Fuentes
 andrea.venti12@gmail.com
