@@ -108,6 +108,8 @@ def edit_password(password_id):
         current_password.password.encode("utf-8")
     ).decode("utf-8")
 
+    changes_made = False
+
     if request.method == "POST":
         website = request.form.get("website")
         username = request.form.get("username")
@@ -120,21 +122,31 @@ def edit_password(password_id):
             current_password.folder_id = None
 
         # Update website if provided
-        if website:
+        if website and website != current_password.website:
             current_password.website = website
+            changes_made = True
 
         # Update username if provided
-        if username:
+        if username and username != current_password.username:
             current_password.username = username
+            changes_made = True
 
         # Encrypt and update the new password if provided
         if new_password:
+            if len(new_password) > 128:
+                flash("Password cannot be more than 128 characters.", "error")
+                return redirect(url_for("main.edit_password", password_id=password_id))
+
             encrypted_password = cipher_suite.encrypt(new_password.encode("utf-8"))
             current_password.password = encrypted_password.decode("utf-8")
+            changes_made = True
 
-        db.session.commit()
+        if changes_made:
+            db.session.commit()
+            flash("Account updated successfully.", "success")
+        else:
+            flash("No changes were made.", "info")
 
-        flash("Account updated successfully.", "success")
         return redirect(url_for("main.dashboard"))
 
     # Pre-select the current folder in the dropdown

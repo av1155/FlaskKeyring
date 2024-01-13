@@ -23,6 +23,9 @@ def upgrade():
             "fk_passwords_folder_id", "folders", ["folder_id"], ["id"]
         )
 
+    with op.batch_alter_table("passwords", schema=None) as batch_op:
+        batch_op.alter_column("password", type_=sa.Text())
+
     with op.batch_alter_table("users", schema=None) as batch_op:
         batch_op.add_column(
             sa.Column(
@@ -49,5 +52,8 @@ def downgrade():
     with op.batch_alter_table("passwords", schema=None) as batch_op:
         batch_op.drop_constraint("fk_passwords_folder_id", type_="foreignkey")
         batch_op.drop_column("folder_id")
+
+    with op.batch_alter_table("passwords", schema=None) as batch_op:
+        batch_op.alter_column("password", type_=sa.String(length=200))
 
     # ### end Alembic commands ###

@@ -8,7 +8,7 @@ class Password(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     website = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(200), nullable=False)
+    password = db.Column(db.Text, nullable=False)
     folder_id = db.Column(db.Integer, db.ForeignKey("folders.id"), nullable=True)
 
     def __init__(self, user_id, website, username, password, folder_id=None):
