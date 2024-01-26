@@ -42,16 +42,40 @@ if os.getenv("FLASK_ENV") == "production":
     def before_request():
         # Check if the current request is HTTP
         if request.url.startswith("http://"):
-            url = request.url.replace("http://", "https://", 1)
-            parsed_url = urlparse(url)
-            code = 301  # Permanent Redirect
+            parsed_url = urlparse(request.url)
+            secure_url = "https://" + parsed_url.netloc + parsed_url.path
 
-            # List of valid domains
+            # List of valid domains and paths
             valid_domains = ["www.flaskkeyring.tech", "flaskkeyring.tech"]
+            valid_paths = [
+                "/register",
+                "/verify_email/",  # For dynamic paths, validate the base path
+                "/login",
+                "/change_password",
+                "/logout",
+                "/forgot-password",
+                "/reset-password/",  # Similarly, for dynamic paths
+                "/",
+                "/dashboard",
+                "/view_password/",  # For paths with dynamic segments
+                "/search_password",
+                "/edit_password/",  # Dynamic segments
+                "/remove_password/",  # Dynamic segments
+                "/add_password",
+                "/generate_password",
+                "/create_folder",
+                "/update_folder/",  # Dynamic segments
+                "/delete_folder/",  # Dynamic segments
+                "/folder/",  # Dynamic segments
+                "/list_folders",
+                # Add other valid paths as necessary
+            ]
 
-            # Check if the domain is valid
-            if parsed_url.netloc in valid_domains:
-                return redirect(url, code=code)
+            # Check if both domain and path are valid
+            if parsed_url.netloc in valid_domains and any(
+                parsed_url.path.startswith(valid_path) for valid_path in valid_paths
+            ):
+                return redirect(secure_url, code=301)
             else:
                 # Handle invalid URL
                 return "Invalid redirection attempt.", 400
