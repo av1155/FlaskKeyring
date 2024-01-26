@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 
@@ -39,10 +40,21 @@ if os.getenv("FLASK_ENV") == "production":
 
     @app.before_request
     def before_request():
+        # Check if the current request is HTTP
         if request.url.startswith("http://"):
             url = request.url.replace("http://", "https://", 1)
+            parsed_url = urlparse(url)
             code = 301  # Permanent Redirect
-            return redirect(url, code=code)
+
+            # List of valid domains
+            valid_domains = ["www.flaskkeyring.tech", "flaskkeyring.tech"]
+
+            # Check if the domain is valid
+            if parsed_url.netloc in valid_domains:
+                return redirect(url, code=code)
+            else:
+                # Handle invalid URL
+                return "Invalid redirection attempt.", 400
 
 
 # Load mail configuration from config.py
