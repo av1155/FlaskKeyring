@@ -81,8 +81,8 @@ def search_password():
     if search_website_raw:
         search_website = f"%{search_website_raw.lower()}%"
         password_entries = Password.query.filter(
-            Password.user_id == current_user.id,
-            func.lower(Password.website).ilike(search_website),
+            Password.user_id == current_user.id,  # type: ignore
+            func.lower(Password.website).ilike(search_website),  # type: ignore
         ).all()
 
         return render_template("view_passwords.html", passwords=password_entries)

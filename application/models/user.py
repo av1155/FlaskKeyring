@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-
 from flask_login import UserMixin
 
 from application.utils.extensions import db

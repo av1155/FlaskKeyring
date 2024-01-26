@@ -55,10 +55,8 @@ def register():
             return redirect(url_for("auth.register"))
 
         # Check for existing users in a case-insensitive manner
-        email_exists = User.query.filter(func.lower(User.email) == email).first()
-        username_exists = User.query.filter(
-            func.lower(User.username) == func.lower(username)
-        ).first()
+        email_exists = User.query.filter(func.lower(User.email) == email).first()  # type: ignore
+        username_exists = User.query.filter(func.lower(User.username) == func.lower(username)).first()  # type: ignore
 
         if email_exists:
             flash("Email already exists.", "error")
@@ -149,9 +147,7 @@ def login():
             return redirect(url_for("auth.login"))
 
         # Query for user by email or username
-        user = User.query.filter(
-            (User.email == username_email) | (User.username == username_email)
-        ).first()
+        user = User.query.filter((User.email == username_email) | (User.username == username_email)).first()  # type: ignore
 
         if not user:
             flash("Invalid email or password", "error")
