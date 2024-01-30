@@ -1,0 +1,244 @@
+repo_name: av1155/FlaskKeyring
+report_id: 5de88570b59010eaca4a83e601adaf46
+version: 0.1
+repo_type: Public
+timestamp: '2024-01-30T03:09:58+00:00'
+requested_by: av1155
+provider: github
+branch: main
+detected_tools_count: 19
+tools:
+- name: CSS 3
+  description: The latest evolution of the Cascading Style Sheets language
+  website_url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/6727/css.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring
+  detection_source: Repo Metadata
+- name: JavaScript
+  description: Lightweight, interpreted, object-oriented language with first-class
+    functions
+  website_url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source_url: https://github.com/av1155/FlaskKeyring
+  detection_source: Repo Metadata
+- name: Mako
+  description: Template library written in Python
+  website_url: https://github.com/zzzeek/mako
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Templating Languages & Extensions
+  image_url: https://img.stackshare.io/service/3583/default_43e3ee00dcc48a40f6fcba33551e4f5a99a10537.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring
+  detection_source: Repo Metadata
+- name: Python
+  description: A clear and powerful object-oriented programming language, comparable
+    to Perl, Ruby, Scheme, or Java.
+  website_url: https://www.python.org
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/993/pUBY5pVj.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring
+  detection_source: Repo Metadata
+- name: SQLAlchemy
+  description: The Python SQL Toolkit and Object Relational Mapper
+  website_url: http://www.sqlalchemy.org/
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Data Stores
+  sub_category: Object Relational Mapper (ORM)
+  image_url: https://img.stackshare.io/service/1839/q5uAkmy7.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2023-12-31 23:14:57.000000000 Z
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring
+  detection_source: Repo Metadata
+- name: GitHub Actions
+  description: Automate your workflow from idea to production
+  website_url: https://github.com/features/actions
+  open_source: false
+  hosted_saas: true
+  category: Build, Test, Deploy
+  sub_category: Continuous Integration
+  image_url: https://img.stackshare.io/service/11563/actions.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/.github/workflows/heroku_deploy.yml
+  detection_source: ".github/workflows/heroku_deploy.yml"
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-04 04:24:20.000000000 Z
+- name: PyPI
+  description: A repository of software for the Python programming language
+  website_url: https://pypi.org/
+  open_source: false
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Hosted Package Repository
+  image_url: https://img.stackshare.io/service/12572/-RIWgodF_400x400.jpg
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2023-12-31 11:48:10.000000000 Z
+- name: Flask
+  description: A simple framework for building complex web applications
+  package_url: https://pypi.org/project/Flask
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/19834/default_58dbe7b4d7ec447b62773209af0f9a31bbabf5bd.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-04 01:55:53.000000000 Z
+- name: Flask-Login
+  description: User session management for Flask
+  package_url: https://pypi.org/project/Flask-Login
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/20091/default_5d939a1a27846185eb6de438be4bf77b84b4ee87.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-04 01:55:53.000000000 Z
+- name: Flask-Mail
+  description: Flask extension for sending email
+  package_url: https://pypi.org/project/Flask-Mail
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/pypi/image.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-04 01:55:53.000000000 Z
+- name: Flask-Migrate
+  description: SQLAlchemy database migrations for Flask applications using Alembic
+  package_url: https://pypi.org/project/Flask-Migrate
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/20329/default_cf6b540611cb9b9b5d016a661f54f50ad3400f1a.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-04 01:55:53.000000000 Z
+- name: Flask-SQLAlchemy
+  description: Adds SQLAlchemy support to your Flask application
+  package_url: https://pypi.org/project/Flask-SQLAlchemy
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/19941/default_aacb529ceff756b62765790d8d6787a041d514ff.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-04 01:55:53.000000000 Z
+- name: Flask-Session
+  description: Adds server-side session support to your Flask application
+  package_url: https://pypi.org/project/Flask-Session
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/pypi/image.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-04 01:55:53.000000000 Z
+- name: cryptography
+  description: Cryptography is a package which provides cryptographic recipes and
+    primitives to Python developers
+  package_url: https://pypi.org/project/cryptography
+  license: BSD-3-Clause,Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/19850/default_db2ab2702f70e20c272f6ce65251108fb2b8f1ea.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2023-12-31 21:20:51.000000000 Z
+- name: gunicorn
+  description: WSGI HTTP Server for UNIX
+  package_url: https://pypi.org/project/gunicorn
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/19931/default_74a0c20721d3a0a1484d69586401591fe8993db2.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-03 11:06:28.000000000 Z
+- name: psycopg2-binary
+  description: Psycopg2 - Python-PostgreSQL Database Adapter
+  package_url: https://pypi.org/project/psycopg2-binary
+  license: BSD-3-Clause-Attribution
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/pypi/image.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-04 01:55:53.000000000 Z
+- name: python-dotenv
+  description: Add .env support to your django/flask apps in development and deployments
+  package_url: https://pypi.org/project/python-dotenv
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/20095/default_3141eabecdd8efa55de73a33c43f2ac0d5bbf954.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-03 11:06:28.000000000 Z
+- name: pytz
+  description: World timezone definitions, modern and historical
+  package_url: https://pypi.org/project/pytz
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/19841/default_bb711fa267b2329ed689711a5adb7d9e74610b20.png
+  detection_source_url: https://github.com/av1155/FlaskKeyring/blob/main/requirements.txt
+  detection_source: requirements.txt
+  last_updated_by: Andrea Venti Fuentes
+  last_updated_on: 2024-01-03 11:06:28.000000000 Z
