@@ -12,9 +12,11 @@ def delete_unverified_users():
     # Define a cutoff date for deletion (e.g., 7 days since registration)
     cutoff_date = datetime.now(timezone.utc) - timedelta(days=7)
 
-    # Query for unverified users registered before the cutoff date
+    # Query for unverified users where the email_verification_expires_at is NOT NULL and has passed
     unverified_users = User.query.filter(
-        User.email_verified == False, User.email_verification_expires_at < cutoff_date
+        User.email_verified == False,
+        User.email_verification_expires_at.isnot(None),
+        User.email_verification_expires_at < cutoff_date,
     ).all()
 
     # Delete associated data for each unverified user
