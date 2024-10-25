@@ -1,8 +1,16 @@
 from datetime import datetime
 
 from cryptography.fernet import Fernet
-from flask import (Blueprint, abort, flash, jsonify, redirect, render_template,
-                   request, url_for)
+from flask import (
+    Blueprint,
+    abort,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import current_user, login_required
 from sqlalchemy import func
 
@@ -308,3 +316,9 @@ def view_folder(folder_id):
 def list_folders():
     folders = Folder.query.filter_by(user_id=current_user.id).all()
     return render_template("list_folders.html", folders=folders)
+
+
+@main.route("/demo")
+def demo():
+    current_year = datetime.now().year
+    return render_template("demo.html", current_year=current_year)

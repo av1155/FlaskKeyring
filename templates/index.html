@@ -10,11 +10,21 @@
         <p>Store and manage your passwords securely and conveniently with FlaskKeyring.</p>
     </header>
 
+
     <main class="mb-auto text-center">
         {% if not current_user.is_authenticated %}
         <p class="lead">
-            <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Register Now</a>
-            <a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
+            <div class="d-flex justify-content-center flex-wrap">
+                <div class="btn-group mx-2">
+                    <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Register Now</a>
+                </div>
+                <div class="btn-group mx-2">
+                    <a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
+                </div>
+            </div>
+            <div class="btn-group mt-3">
+                <a class="btn btn-info btn-lg" href="{{ url_for('main.demo') }}" role="button">Watch Demo</a>
+            </div>
         </p>
         {% else %}
         <p class="lead">
@@ -22,6 +32,7 @@
         </p>
         {% endif %}
     </main>
+
 
     <footer class="bg-dark rounded text-white py-3">
         <div class="container">
