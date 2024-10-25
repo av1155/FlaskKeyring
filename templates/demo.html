@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex flex-column justify-content-start">
+    <header class="text-center mt-4">
+        <h1 class="display-4" id="welcomePageHeader">FlaskKeyring Demo</h1>
+        <p class="lead">See how FlaskKeyring works in action.</p>
+    </header>
+
+    <main class="mb-auto text-center">
+        <!-- Video Section -->
+        <div class="video-container text-center my-4 demo-video">
+            <!-- Vimeo Embed Code -->
+            <div style="padding: 56.25% 0 0 0; position: relative">
+                <iframe
+                    src="https://player.vimeo.com/video/1023123432?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+                    title="FlaskKeyring Demo"
+                ></iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+    </main>
+
+    <footer class="bg-dark rounded text-white py-3 mt-5">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col d-flex justify-content-md-start">
+                    <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="FlaskKeyring Logo" class="me-2" style="height: 24px;">
+                    <p class="mb-0">&copy; {{ current_year }} FlaskKeyring</p>
+                </div>
+                <div class="col-auto">
+                    <a href="mailto:support@mg.flaskkeyring.tech">
+                        <img src="{{ url_for('static', filename='images/email-icon.png') }}" alt="Email" style="height: 24px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<style>
+/* Default styling for video container (for smaller screens) */
+.demo-video {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.demo-video iframe {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* Larger screen video styling */
+@media (min-width: 768px) {
+    .demo-video {
+        max-width: 900px;
+        height: auto;
+    }
+}
+
+@media (min-width: 1024px) {
+    .demo-video {
+        max-width: 1400px;
+        height: auto;
+    }
+}
+
+/* Footer should have some margin from the content */
+footer {
+    margin-top: 100px;
+}
+</style>
+{% endblock %}
