@@ -147,6 +147,11 @@ def edit_password(password_id):
 
             encrypted_password = cipher_suite.encrypt(new_password.encode("utf-8"))
             current_password.password = encrypted_password.decode("utf-8")
+
+            # Generate new iv and salt for updated encryption
+            current_password.iv = generate_iv()
+            current_password.salt = generate_salt()
+
             changes_made = True
 
         if changes_made:
@@ -213,11 +218,17 @@ def add_password():
         cipher_suite = Fernet(fernet_key.encode("utf-8"))
         encrypted_password = cipher_suite.encrypt(password.encode("utf-8"))
 
+        # Generate random iv and salt for each encryption session
+        iv = generate_iv()
+        salt = generate_salt()
+
         new_password = Password(
             user_id=current_user.id,
             website=website,
             username=username,
             password=encrypted_password.decode("utf-8"),
+            iv=iv,
+            salt=salt,
             folder_id=folder_id,
         )
         db.session.add(new_password)
@@ -322,3 +333,47 @@ def list_folders():
 def demo():
     current_year = datetime.now().year
     return render_template("demo.html", current_year=current_year)
+
+
+@main.route("/api/save_password", methods=["POST"])
+@login_required
+def save_encrypted_password():
+    data = request.get_json()
+    ciphertext = data.get("ciphertext")
+    iv = data.get("iv")
+    salt = data.get("salt")
+    website = data.get("website")
+    username = data.get("username")
+
+    if not all([ciphertext, iv, salt, website, username]):
+        return jsonify({"error": "Missing data"}), 400
+
+    encrypted_password = Password(
+        user_id=current_user.id,
+        website=website,
+        username=username,
+        password=",".join(map(str, ciphertext)),
+        iv=",".join(map(str, iv)),
+        salt=",".join(map(str, salt)),
+    )
+    db.session.add(encrypted_password)
+    db.session.commit()
+
+    return jsonify({"status": "success"}), 201
+
+
+@main.route("/api/get_password/<int:password_id>", methods=["GET"])
+@login_required
+def get_encrypted_password(password_id):
+    password_entry = Password.query.get_or_404(password_id)
+    if password_entry.user_id != current_user.id:
+        abort(403)
+
+    data = {
+        "ciphertext": password_entry.password.split(","),
+        "iv": password_entry.iv.split(","),
+        "salt": password_entry.salt.split(","),
+        "website": password_entry.website,
+        "username": password_entry.username,
+    }
+    return jsonify(data)
