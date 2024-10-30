@@ -170,3 +170,11 @@ def send_email_verification_link(to_email, verification_link):
         mail.send(msg)
     except Exception as e:
         logging.warning(f"Error sending email verification link: {e}")
+
+
+def generate_iv():
+    return os.urandom(12).hex()  # Generates a 12-byte iv in hex
+
+
+def generate_salt():
+    return os.urandom(16).hex()  # Generates a 16-byte salt in hex
