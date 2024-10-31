@@ -50,9 +50,10 @@ async function decryptMasterPassword(encryptedData) {
 // Function to get the encryption password, prompting the user if necessary
 async function getEncryptionPassword() {
     let encryptedData = sessionStorage.getItem("encryptedMasterPassword");
+    let password;
     if (!encryptedData) {
         // Prompt the user to enter their encryption password
-        const password = await promptEncryptionPassword();
+        password = await promptEncryptionPassword();
         if (password) {
             // Encrypt and store the password in sessionStorage
             const encrypted = await encryptMasterPassword(password);
@@ -63,26 +64,34 @@ async function getEncryptionPassword() {
             return null;
         }
     } else {
-        // Decrypt the password from sessionStorage
-        encryptedData = JSON.parse(encryptedData);
-        const decryptedPassword = await decryptMasterPassword(encryptedData);
+        while (true) {
+            // Decrypt the password from sessionStorage
+            encryptedData = JSON.parse(encryptedData);
+            const decryptedPassword = await decryptMasterPassword(encryptedData);
 
-        if (decryptedPassword !== null) {
-            return decryptedPassword;
-        } else {
-            // Decryption failed, clear encryptedMasterPassword and re-prompt
-            sessionStorage.removeItem("encryptedMasterPassword");
-            // Display error message inline
-            document.getElementById("error-message").textContent =
-                "Incorrect master password. Please try again.";
-            document.getElementById("error-message").style.display = "block";
-            return null;
+            if (decryptedPassword !== null) {
+                return decryptedPassword;
+            } else {
+                // Decryption failed, clear encryptedMasterPassword and re-prompt
+                sessionStorage.removeItem("encryptedMasterPassword");
+                password = await promptEncryptionPassword(true); // Pass true to indicate error
+                if (password) {
+                    // Encrypt and store the password in sessionStorage
+                    const encrypted = await encryptMasterPassword(password);
+                    sessionStorage.setItem("encryptedMasterPassword", JSON.stringify(encrypted));
+                    // Now try to decrypt again
+                    encryptedData = sessionStorage.getItem("encryptedMasterPassword");
+                } else {
+                    // User did not provide the password, handle accordingly
+                    return null;
+                }
+            }
         }
     }
 }
 
 // Function to prompt the user for the encryption password using a modal
-function promptEncryptionPassword() {
+function promptEncryptionPassword(showError = false) {
     return new Promise((resolve) => {
         const modalHtml = `
         <div class="modal fade" id="unlockModal" tabindex="-1" aria-labelledby="unlockModalLabel" aria-hidden="true">
@@ -90,12 +99,11 @@ function promptEncryptionPassword() {
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Unlock Vault</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>Please enter your master password to unlock your vault.</p>
                         <input type="password" id="unlockPasswordInput" class="form-control" placeholder="Master Password">
-                        <div id="error-message" class="text-danger mt-2" style="display: none;">Incorrect master password. Please try again.</div>
+                        <div id="error-message" class="text-danger mt-2" style="display: ${showError ? "block" : "none"};">Incorrect master password. Please try again.</div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="unlockSubmitButton" class="btn btn-primary">Unlock</button>
@@ -155,7 +163,7 @@ async function decryptData(data) {
 
         if (password === null) {
             // User clicked "Cancel" or did not provide a password
-            alert("Access canceled by user.");
+            // You can handle this case as needed, e.g., redirect or show a message
             return null;
         }
 
@@ -168,12 +176,12 @@ async function decryptData(data) {
             } else {
                 // Clear stored password and re-prompt if incorrect
                 sessionStorage.removeItem("encryptionPassword");
-                alert("Incorrect master password. Please try again.");
+                // The loop will continue, and getEncryptionPassword will re-prompt
             }
         } catch (e) {
             console.error("Decryption failed:", e);
             sessionStorage.removeItem("encryptionPassword");
-            alert("Incorrect master password. Please try again.");
+            // The loop will continue, and getEncryptionPassword will re-prompt
         }
     }
 }
