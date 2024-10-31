@@ -19,6 +19,7 @@ body {
     color: var(--text-color);
     margin: 0;
     padding-bottom: 40px;
+    overflow-y: scroll;
 }
 
 /* Typography */
