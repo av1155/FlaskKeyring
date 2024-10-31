@@ -1,18 +1,72 @@
+// Encrypt master password using Web Crypto API
+async function encryptMasterPassword(password) {
+    const encoder = new TextEncoder();
+    const encodedPassword = encoder.encode(password);
+    const key = await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, [
+        "encrypt",
+        "decrypt",
+    ]);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const encryptedPassword = await crypto.subtle.encrypt(
+        { name: "AES-GCM", iv: iv },
+        key,
+        encodedPassword,
+    );
+
+    // Export the key and store it along with the encrypted password and IV
+    const exportedKey = await crypto.subtle.exportKey("raw", key);
+    return {
+        encryptedPassword: Array.from(new Uint8Array(encryptedPassword)),
+        iv: Array.from(iv),
+        key: Array.from(new Uint8Array(exportedKey)),
+    };
+}
+
+// Decrypt master password using Web Crypto API
+async function decryptMasterPassword(encryptedData) {
+    const { encryptedPassword, iv, key } = encryptedData;
+    const importedKey = await crypto.subtle.importKey(
+        "raw",
+        new Uint8Array(key),
+        { name: "AES-GCM", length: 256 },
+        true,
+        ["decrypt"],
+    );
+
+    try {
+        const decrypted = await crypto.subtle.decrypt(
+            { name: "AES-GCM", iv: new Uint8Array(iv) },
+            importedKey,
+            new Uint8Array(encryptedPassword),
+        );
+        const decoder = new TextDecoder();
+        return decoder.decode(decrypted);
+    } catch (e) {
+        console.error("Decryption failed:", e);
+        return null;
+    }
+}
+
 // Function to get the encryption password, prompting the user if necessary
 async function getEncryptionPassword() {
-    let password = sessionStorage.getItem("encryptionPassword");
-    if (!password) {
+    let encryptedData = sessionStorage.getItem("encryptedMasterPassword");
+    if (!encryptedData) {
         // Prompt the user to enter their encryption password
-        password = await promptEncryptionPassword();
+        const password = await promptEncryptionPassword();
         if (password) {
-            // Store the password in sessionStorage
-            sessionStorage.setItem("encryptionPassword", password);
+            // Encrypt and store the password in sessionStorage
+            const encrypted = await encryptMasterPassword(password);
+            sessionStorage.setItem("encryptedMasterPassword", JSON.stringify(encrypted));
+            return password;
         } else {
             // User did not provide the password, handle accordingly
             return null;
         }
+    } else {
+        // Decrypt the password from sessionStorage
+        encryptedData = JSON.parse(encryptedData);
+        return await decryptMasterPassword(encryptedData);
     }
-    return password;
 }
 
 // Function to prompt the user for the encryption password using a modal

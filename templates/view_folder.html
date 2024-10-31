@@ -22,15 +22,19 @@
                         <tr>
                             <td class="align-middle text-center">{{ password.website }}</td>
                             <td class="align-middle text-center">{{ password.username }}</td>
-                            <td>
-                                <a href="{{ url_for('main.view_password', password_id=password.id) }}"
-                                    class="btn btn-primary">View</a>
-                                <a href="{{ url_for('main.edit_password', password_id=password.id) }}"
-                                    class="btn btn-secondary">Edit</a>
-                                <form action="{{ url_for('main.remove_password', password_id=password.id) }}"
-                                    method="POST" style="display: inline-block">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center flex-wrap">
+                                    <!-- View Button -->
+                                    <a href="{{ url_for('main.view_password', password_id=password.id) }}" class="btn btn-primary mx-2 mb-2">View</a>
+
+                                    <!-- Edit Button -->
+                                    <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary mx-2 mb-2">Edit</a>
+
+                                    <!-- Delete Form/Button -->
+                                    <form action="{{ url_for('main.remove_password', password_id=password.id) }}" method="POST" class="mx-2 mb-2">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         {% endfor %}
