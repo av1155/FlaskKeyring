@@ -89,9 +89,6 @@ def register():
             db.session.add(main_folder)
             db.session.commit()
 
-            # Generate and store Fernet key for the new user
-            generate_and_store_fernet_key(new_user.id)
-
             # Generate and send email verification link
             verification_token = generate_email_verification_token(new_user.id)
             verification_link = url_for(

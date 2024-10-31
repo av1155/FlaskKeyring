@@ -67,6 +67,16 @@ h2 {
     overflow: hidden;
 }
 
+/* Fix for floating label within input group */
+.input-group .form-floating .form-control {
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+}
+
+.input-group .form-floating .form-control:focus {
+    z-index: 3;
+}
+
 .container {
     max-width: 850px;
     width: 80%;
