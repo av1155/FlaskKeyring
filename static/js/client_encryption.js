@@ -60,7 +60,9 @@ async function getEncryptionPassword() {
                 sessionStorage.setItem("encryptedMasterPassword", JSON.stringify(encrypted));
                 return password;
             } else {
-                // User canceled or did not enter a password
+                // User closed the modal; set placeholder to indicate authentication is required
+                document.getElementById("unlockPasswordInput").placeholder =
+                    "Authentication Required";
                 return null;
             }
         } else {
@@ -68,10 +70,8 @@ async function getEncryptionPassword() {
             const decryptedPassword = await decryptMasterPassword(encryptedData);
 
             if (decryptedPassword !== null) {
-                // Return decrypted password if successful
                 return decryptedPassword;
             } else {
-                // Clear and re-prompt if the decryption fails
                 sessionStorage.removeItem("encryptedMasterPassword");
                 const retryPassword = await promptEncryptionPassword(true);
                 if (retryPassword) {
@@ -80,6 +80,8 @@ async function getEncryptionPassword() {
                     encryptedData = sessionStorage.getItem("encryptedMasterPassword");
                 } else {
                     // User canceled or did not enter a password after retry
+                    document.getElementById("unlockPasswordInput").placeholder =
+                        "Authentication Required";
                     return null;
                 }
             }
@@ -96,6 +98,7 @@ function promptEncryptionPassword(showError = false) {
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Unlock Vault</h5>
+                        <button type="button" class="btn-close" id="closeModalButton" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>Please enter your master password to unlock your vault.</p>
@@ -109,10 +112,8 @@ function promptEncryptionPassword(showError = false) {
             </div>
         </div>
         `;
-        // Append modal to body
-        document.body.insertAdjacentHTML("beforeend", modalHtml);
 
-        // Initialize and show the modal
+        document.body.insertAdjacentHTML("beforeend", modalHtml);
         const unlockModalElement = document.getElementById("unlockModal");
         const unlockModal = new bootstrap.Modal(unlockModalElement, {
             backdrop: "static",
@@ -120,12 +121,10 @@ function promptEncryptionPassword(showError = false) {
         });
         unlockModal.show();
 
-        // Focus on the password input when modal is shown
         unlockModalElement.addEventListener("shown.bs.modal", () => {
             document.getElementById("unlockPasswordInput").focus();
         });
 
-        // Handle the unlock button click
         document.getElementById("unlockSubmitButton").addEventListener("click", () => {
             const password = document.getElementById("unlockPasswordInput").value;
             if (password) {
@@ -135,7 +134,6 @@ function promptEncryptionPassword(showError = false) {
                     resolve(password);
                 });
             } else {
-                // Show a hint if the input is empty
                 document.getElementById("error-message").textContent =
                     "Please enter your master password.";
                 document.getElementById("error-message").style.display = "block";
@@ -146,6 +144,14 @@ function promptEncryptionPassword(showError = false) {
             if (event.key === "Enter") {
                 document.getElementById("unlockSubmitButton").click();
             }
+        });
+
+        document.getElementById("closeModalButton").addEventListener("click", () => {
+            unlockModal.hide();
+            unlockModalElement.addEventListener("hidden.bs.modal", () => {
+                unlockModalElement.remove();
+                resolve(null); // Resolve null to indicate the modal was closed
+            });
         });
     });
 }

@@ -229,6 +229,26 @@ input[type="range"]::-moz-range-track {
     min-width: 100px;
 }
 
+/* Align dropdowns and prevent shifting */
+.navbar .dropdown-menu {
+    right: 0; /* Aligns the dropdown menu to the right */
+    left: auto;
+}
+
+.navbar .dropdown-toggle {
+    text-align: right; /* Ensures the dropdown arrow is on the right side */
+    padding-right: 10px; /* Adds some spacing for a cleaner look */
+}
+
+/* Adjust spacing between hamburger and dropdowns */
+.navbar-toggler {
+    margin-right: 15px; /* Adds space between hamburger icon and dropdowns */
+}
+
+.navbar .dropdown {
+    margin-left: 15px; /* Adds space between each dropdown */
+}
+
 /* Responsive Design */
 @media (max-width: 767px) {
     .container {
