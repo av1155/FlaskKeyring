@@ -157,6 +157,12 @@ h2 {
     color: var(--secondary-text-color);
 }
 
+.passwordField {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
 /* Password Generator Styles */
 #passwordGenerator {
     padding: 10px;
