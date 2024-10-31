@@ -65,7 +65,15 @@ async function getEncryptionPassword() {
     } else {
         // Decrypt the password from sessionStorage
         encryptedData = JSON.parse(encryptedData);
-        return await decryptMasterPassword(encryptedData);
+        const decryptedPassword = await decryptMasterPassword(encryptedData);
+        if (decryptedPassword !== null) {
+            return decryptedPassword;
+        } else {
+            // Decryption failed, clear encryptedMasterPassword and re-prompt
+            sessionStorage.removeItem("encryptedMasterPassword");
+            alert("Incorrect master password. Please try again.");
+            return await getEncryptionPassword();
+        }
     }
 }
 
