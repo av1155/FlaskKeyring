@@ -1,8 +1,22 @@
+/* Root Variables */
+:root {
+    --primary-font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    --background-color: #e6f0fa;
+    --text-color: #212529;
+    --secondary-text-color: #666;
+    --section-background: #f8f8f8;
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --box-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --border-radius: 10px;
+    --primary-color: #4a90e2;
+    --light-grey: #f2f2f2;
+}
+
 /* Global Styles */
 body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e6f0fa;
-    color: #212529;
+    font-family: var(--primary-font);
+    background-color: var(--background-color);
+    color: var(--text-color);
     margin: 0;
     padding-bottom: 40px;
 }
@@ -31,6 +45,7 @@ h2 {
     margin-bottom: 20px;
 }
 
+/* Button Hover Effect */
 .btn:hover {
     opacity: 0.9;
 }
@@ -43,11 +58,20 @@ h2 {
 
 /* Table Styles */
 .table {
-    color: #212529;
+    color: var(--text-color);
+    table-layout: fixed;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.table td,
+.table th {
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .table-light td {
-    background-color: #f2f2f2;
+    background-color: var(--light-grey);
 }
 
 .table-dark th {
@@ -57,9 +81,7 @@ h2 {
 /* Containers */
 .tbl-container {
     width: fit-content;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 10px auto 0;
 }
 
 .bdr {
@@ -77,132 +99,108 @@ h2 {
     z-index: 3;
 }
 
+/* Main Container */
 .container {
     max-width: 850px;
     width: 80%;
     margin: auto;
     padding: 20px;
-
-    /* Section Styles */
-    .search-password,
-    .password-list,
-    .add-password,
-    .edit-password,
-    .view-password,
-    .folder-management,
-    .create-folder,
-    .folder-list,
-    .update-folder {
-        background-color: #f8f8f8;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-
-    /* Prompt Sections */
-    .login-prompt-section {
-        background-color: #f8f8f8;
-        max-width: 850px;
-        width: 100%;
-        margin: auto;
-        padding: 20px;
-        text-align: center;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 8vh;
-    }
-
-    .forgot-prompt-section {
-        background-color: #f8f8f8;
-        max-width: 850px;
-        width: 100%;
-        margin: auto;
-        padding: 20px;
-        text-align: center;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 27vh;
-    }
-
-    /* Prompt Fonts */
-    .login-p-font-prompt,
-    .login-href-font-prompt {
-        line-height: 0.5;
-        font-size: 12px;
-    }
-
-    .login-p-font-prompt {
-        color: #666;
-    }
-
-    /* Password Generator Styles */
-    #passwordGenerator {
-        padding: 10px;
-        border: 1px solid #ddd;
-        background-color: #e6f0fa;
-        border-radius: 5px;
-        margin-top: 10px;
-    }
-
-    #generatedPassword {
-        background-color: #dcdde1;
-        cursor: pointer;
-        color: #212529;
-        border: 1px solid #c4d3e0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    #generatedPassword:hover {
-        background-color: #caccd1;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Styles for the track */
-    input[type="range"]::-webkit-slider-runnable-track {
-        background: #4a90e2;
-        height: 8px;
-        border-radius: 4px;
-    }
-
-    input[type="range"]::-moz-range-track {
-        background: #4a90e2;
-        height: 8px;
-        border-radius: 4px;
-    }
-
-    /* Styles for the thumb */
-    input[type="range"]::-webkit-slider-thumb {
-        background: #ffffff;
-        border: 2px solid #4a90e2;
-        height: 24px;
-        width: 24px;
-        border-radius: 50%;
-        margin-top: -8px;
-        -webkit-appearance: none;
-    }
-
-    input[type="range"]::-moz-range-thumb {
-        background: #ffffff;
-        border: 2px solid #4a90e2;
-        height: 24px;
-        width: 24px;
-        border-radius: 50%;
-        -moz-appearance: none;
-    }
-
-    /* Styles for the fill */
-    input[type="range"]::-webkit-slider-runnable-track {
-        background: linear-gradient(#4a90e2, #4a90e2) 0 / var(--fill-percentage) 100% no-repeat #ddd;
-    }
-
-    input[type="range"]:focus::-webkit-slider-runnable-track {
-        background-size: var(--fill-percentage) 100%;
-    }
 }
 
+/* Section Styles */
+.search-password,
+.password-list,
+.add-password,
+.edit-password,
+.view-password,
+.folder-management,
+.create-folder,
+.folder-list,
+.update-folder {
+    background-color: var(--section-background);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+}
+
+/* Prompt Sections */
+.login-prompt-section,
+.forgot-prompt-section {
+    background-color: var(--section-background);
+    max-width: 850px;
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+}
+
+.login-prompt-section {
+    margin-top: 8vh;
+}
+
+.forgot-prompt-section {
+    margin-top: 27vh;
+}
+
+/* Prompt Fonts */
+.login-p-font-prompt,
+.login-href-font-prompt {
+    line-height: 0.5;
+    font-size: 12px;
+}
+
+.login-p-font-prompt {
+    color: var(--secondary-text-color);
+}
+
+/* Password Generator Styles */
+#passwordGenerator {
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: var(--background-color);
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#generatedPassword {
+    background-color: #dcdde1;
+    cursor: pointer;
+    color: var(--text-color);
+    border: 1px solid #c4d3e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#generatedPassword:hover {
+    background-color: #caccd1;
+    box-shadow: var(--box-shadow-hover);
+}
+
+/* Range Input Styles */
+input[type="range"]::-webkit-slider-runnable-track,
+input[type="range"]::-moz-range-track {
+    background: var(--primary-color);
+    height: 8px;
+    border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb,
+input[type="range"]::-moz-range-thumb {
+    background: #ffffff;
+    border: 2px solid var(--primary-color);
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin-top: -8px;
+}
+
+/* Other Elements */
 #metaImage {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--box-shadow-hover);
     width: 35vh;
 }
 
@@ -214,10 +212,26 @@ h2 {
     margin-top: 10px;
 }
 
-/* Default styling for video container (for smaller screens) */
+/* Video Container */
 .demo-video iframe {
     border-radius: 15px;
     overflow: hidden;
+}
+
+/* Action Buttons Styling */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-buttons .btn,
+.action-buttons form {
+    margin: 0 5px 5px;
+}
+
+.action-buttons .btn {
+    min-width: 100px;
 }
 
 /* Responsive Design */
@@ -225,27 +239,14 @@ h2 {
     .container {
         width: 95%;
         padding: 10px;
-
-        .login-prompt-section {
-            margin-top: 15vh;
-        }
-
-        .forgot-prompt-section {
-            margin-top: 35vh;
-        }
     }
 
-    .d-flex.justify-content-center.flex-wrap {
-        display: flex;
-        flex-wrap: nowrap;
+    .login-prompt-section {
+        margin-top: 15vh;
     }
 
-    .btn-group.mx-2 {
-        margin-bottom: 0;
-    }
-
-    .btn-group.mt-3 {
-        margin-top: 15px;
+    .forgot-prompt-section {
+        margin-top: 35vh;
     }
 
     .btn-group {
@@ -276,20 +277,31 @@ h2 {
     #metaImage {
         width: 30vh;
     }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .action-buttons .btn,
+    .action-buttons form {
+        margin: 5px 0;
+        width: 100%;
+    }
 }
 
 @media (max-width: 431px) {
     .container {
         width: 95%;
         padding: 10px;
+    }
 
-        .login-prompt-section {
-            margin-top: 15vh;
-        }
+    .login-prompt-section {
+        margin-top: 15vh;
+    }
 
-        .forgot-prompt-section {
-            margin-top: 30vh;
-        }
+    .forgot-prompt-section {
+        margin-top: 30vh;
     }
 
     h1 {
@@ -325,5 +337,16 @@ h2 {
 
     #metaImage {
         width: 21vh;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .action-buttons .btn,
+    .action-buttons form {
+        margin: 5px 0;
+        width: 100%;
     }
 }
