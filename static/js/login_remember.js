@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const inputField = document.getElementById("username_email");
-    const rememberMeCheckbox = document.getElementById("exampleCheck1");
+    const rememberMeCheckbox = document.getElementById("rememberMeCheckbox");
 
     // Set the input field value from localStorage if 'Remember me' was checked previously
     const rememberedUsername = localStorage.getItem("rememberedUsername");

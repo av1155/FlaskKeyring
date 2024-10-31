@@ -86,6 +86,7 @@ function promptEncryptionPassword() {
                         <input type="password" id="unlockPasswordInput" class="form-control" placeholder="Master Password">
                     </div>
                     <div class="modal-footer">
+                        <button type="button" id="unlockCancelButton" class="btn btn-secondary">Cancel</button>
                         <button type="button" id="unlockSubmitButton" class="btn btn-primary">Unlock</button>
                     </div>
                 </div>
@@ -122,6 +123,15 @@ function promptEncryptionPassword() {
             }
         });
 
+        // Handle the cancel button click
+        document.getElementById("unlockCancelButton").addEventListener("click", () => {
+            unlockModal.hide();
+            unlockModalElement.addEventListener("hidden.bs.modal", () => {
+                unlockModalElement.remove();
+                resolve(null); // Resolve with null if the user cancels
+            });
+        });
+
         // Handle the Enter key in the password input
         document.getElementById("unlockPasswordInput").addEventListener("keyup", (event) => {
             if (event.key === "Enter") {
@@ -134,13 +144,17 @@ function promptEncryptionPassword() {
 // Decryption function with retry mechanism
 async function decryptData(data) {
     let decrypted = null;
+    let password = null;
+
     while (true) {
-        const password = await getEncryptionPassword();
-        if (!password) {
-            // User canceled or did not provide a password
-            alert("Master password is required to access your data.");
+        password = await getEncryptionPassword();
+
+        if (password === null) {
+            // User clicked "Cancel" or did not provide a password
+            alert("Access canceled by user.");
             return null;
         }
+
         try {
             decrypted = await attemptDecryption(data, password);
             if (decrypted !== null) {
@@ -148,7 +162,7 @@ async function decryptData(data) {
                 sessionStorage.setItem("encryptionPassword", password);
                 return decrypted;
             } else {
-                // Decryption failed, clear stored password and prompt again
+                // Clear stored password and re-prompt if incorrect
                 sessionStorage.removeItem("encryptionPassword");
                 alert("Incorrect master password. Please try again.");
             }
