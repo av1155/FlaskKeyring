@@ -50,39 +50,36 @@ async function decryptMasterPassword(encryptedData) {
 // Function to get the encryption password, prompting the user if necessary
 async function getEncryptionPassword() {
     let encryptedData = sessionStorage.getItem("encryptedMasterPassword");
-    let password;
-    if (!encryptedData) {
-        // Prompt the user to enter their encryption password
-        password = await promptEncryptionPassword();
-        if (password) {
-            // Encrypt and store the password in sessionStorage
-            const encrypted = await encryptMasterPassword(password);
-            sessionStorage.setItem("encryptedMasterPassword", JSON.stringify(encrypted));
-            return password;
+
+    while (true) {
+        if (!encryptedData) {
+            // Prompt the user to enter their encryption password if not stored
+            let password = await promptEncryptionPassword();
+            if (password) {
+                const encrypted = await encryptMasterPassword(password);
+                sessionStorage.setItem("encryptedMasterPassword", JSON.stringify(encrypted));
+                return password;
+            } else {
+                // User canceled or did not enter a password
+                return null;
+            }
         } else {
-            // User did not provide the password, handle accordingly
-            return null;
-        }
-    } else {
-        while (true) {
-            // Decrypt the password from sessionStorage
             encryptedData = JSON.parse(encryptedData);
             const decryptedPassword = await decryptMasterPassword(encryptedData);
 
             if (decryptedPassword !== null) {
+                // Return decrypted password if successful
                 return decryptedPassword;
             } else {
-                // Decryption failed, clear encryptedMasterPassword and re-prompt
+                // Clear and re-prompt if the decryption fails
                 sessionStorage.removeItem("encryptedMasterPassword");
-                password = await promptEncryptionPassword(true); // Pass true to indicate error
-                if (password) {
-                    // Encrypt and store the password in sessionStorage
-                    const encrypted = await encryptMasterPassword(password);
+                const retryPassword = await promptEncryptionPassword(true);
+                if (retryPassword) {
+                    const encrypted = await encryptMasterPassword(retryPassword);
                     sessionStorage.setItem("encryptedMasterPassword", JSON.stringify(encrypted));
-                    // Now try to decrypt again
                     encryptedData = sessionStorage.getItem("encryptedMasterPassword");
                 } else {
-                    // User did not provide the password, handle accordingly
+                    // User canceled or did not enter a password after retry
                     return null;
                 }
             }
@@ -156,32 +153,31 @@ function promptEncryptionPassword(showError = false) {
 // Decryption function with retry mechanism
 async function decryptData(data) {
     let decrypted = null;
-    let password = null;
 
     while (true) {
-        password = await getEncryptionPassword();
+        // Get the encryption password, which will prompt if not already set
+        let password = await getEncryptionPassword();
 
-        if (password === null) {
-            // User clicked "Cancel" or did not provide a password
-            // You can handle this case as needed, e.g., redirect or show a message
+        if (!password) {
             return null;
         }
 
         try {
+            // Attempt decryption with the entered password
             decrypted = await attemptDecryption(data, password);
             if (decrypted !== null) {
-                // Store the correct password
+                // If successful, store the correct password and return the decrypted data
                 sessionStorage.setItem("encryptionPassword", password);
                 return decrypted;
             } else {
-                // Clear stored password and re-prompt if incorrect
-                sessionStorage.removeItem("encryptionPassword");
+                // Clear stored password and re-prompt if decryption fails
+                sessionStorage.removeItem("encryptedMasterPassword");
                 // The loop will continue, and getEncryptionPassword will re-prompt
             }
         } catch (e) {
             console.error("Decryption failed:", e);
+            // Clear session storage if decryption fails
             sessionStorage.removeItem("encryptionPassword");
-            // The loop will continue, and getEncryptionPassword will re-prompt
         }
     }
 }
