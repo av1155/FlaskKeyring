@@ -41,6 +41,15 @@ def dashboard():
     passwords = Password.query.filter_by(user_id=current_user.id).all()
     folders = Folder.query.filter_by(user_id=current_user.id).all()
 
+    # Attach folder name to each password entry
+    for password in passwords:
+        folder_name = None
+        if password.folder_id:
+            folder = Folder.query.get(password.folder_id)
+            if folder:
+                folder_name = folder.name
+        password.folder_name = folder_name  # Add the folder name attribute
+
     # Ensure a default "Main" folder exists
     main_folder = Folder.query.filter_by(user_id=current_user.id, name="Main").first()
     if not main_folder:

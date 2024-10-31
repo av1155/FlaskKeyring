@@ -26,10 +26,31 @@
                         View Details
                     </button>
                 </div>
-                <div class="collapse mt-2" id="details-{{ password.id }}">
-                    <p><strong>Username:</strong> {{ password.username }}</p>
-                    <p><strong>Password:</strong> <span class="passwordField" data-password-id="{{ password.id }}">Decrypting...</span></p>
-                    <div class="d-flex justify-content-start mt-2">
+
+                <div class="collapse mt-3" id="details-{{ password.id }}">
+                    <div class="mb-2">
+                        <div class="input-group">
+                            <span class="input-group-text fixed-width-label bg-light text-dark">Username</span>
+                            <input type="text" class="form-control" id="username-{{ password.id }}" value="{{ password.username }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="input-group">
+                            <span class="input-group-text fixed-width-label bg-light text-dark">Password</span>
+                            <input type="text" class="form-control passwordField" id="password-{{ password.id }}" data-password-id="{{ password.id }}" value="Decrypting..." readonly>
+                            <button class="btn btn-outline-secondary copy-btn" data-password-id="{{ password.id }}">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="input-group">
+                            <span class="input-group-text fixed-width-label bg-light text-dark">Folder</span>
+                            <input type="text" class="form-control" id="folder-{{ password.id }}" value="{{ password.folder_name }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-start mt-3">
                         <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary me-2">Edit</a>
                         <button class="btn btn-danger delete-btn" data-id="{{ password.id }}">Delete</button>
                     </div>
@@ -37,7 +58,6 @@
             </li>
             {% endfor %}
         </ul>
-
     </section>
 
     <section class="add-password">
@@ -67,7 +87,39 @@
             </div>
 
             <div class="mb-3" id="passwordGenerator" style="display: none;">
-                <!-- Additional fields for password generation -->
+                <div class="mb-3">
+                    <label for="generatedPassword" class="form-label">Generated Password:</label>
+                    <input type="text" id="generatedPassword" readonly class="form-control" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="passwordType" name="passwordType" aria-label="Password Type select">
+                        <option value="random">Random Password</option>
+                        <option value="memorable">Memorable Password</option>
+                        <option value="pin">PIN Code</option>
+                    </select>
+                    <label for="passwordType">Password Type:</label>
+                </div>
+
+                <div class="mb-3">
+                    <label for="passwordLength" class="form-label">Password Length:</label>
+                    <input type="range" id="passwordLength" value="12" min="4" max="40" class="form-range" />
+                    <span id="passwordLengthDisplay" class="text-muted">Length: 12</span>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="includeNumbers" checked>
+                    <label class="form-check-label" for="includeNumbers">Include Numbers</label>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="includeSymbols" checked>
+                    <label class="form-check-label" for="includeSymbols">Include Symbols</label>
+                </div>
+
+                <div class="text-center">
+                    <button id="generatePasswordButton" class="btn btn-primary mb-2">Generate</button>
+                </div>
             </div>
 
             <div class="form-floating mb-3">
@@ -113,6 +165,7 @@
 
 {% endblock %}
 
+
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/generate_password.js') }}"></script>
 <script src="{{ url_for('static', filename='js/toggle_password.js') }}"></script>
@@ -121,27 +174,49 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Handle View Details for password decryption
     const viewButtons = document.querySelectorAll(".view-details-btn");
-    
+
     viewButtons.forEach(button => {
         button.addEventListener("click", async function() {
             const passwordId = button.getAttribute("data-password-id");
             const passwordField = document.querySelector(`.passwordField[data-password-id="${passwordId}"]`);
 
-            if (passwordField.textContent === "Decrypting...") {
+            if (passwordField.value === "Decrypting...") {
                 try {
                     const response = await fetch(`/api/get_password/${passwordId}`);
                     const data = await response.json();
                     const decryptedPassword = await decryptData(data);
 
                     if (decryptedPassword !== null) {
-                        passwordField.textContent = decryptedPassword;
+                        passwordField.value = decryptedPassword;
                     } else {
-                        passwordField.textContent = "Failed to decrypt password.";
+                        passwordField.value = "Failed to decrypt password.";
                     }
                 } catch (error) {
                     console.error("Error fetching or decrypting password:", error);
-                    passwordField.textContent = "Error retrieving password.";
+                    passwordField.value = "Error retrieving password.";
                 }
+            }
+        });
+    });
+
+    // Handle Copy to Clipboard functionality
+    const copyButtons = document.querySelectorAll(".copy-btn");
+
+    copyButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const passwordId = button.getAttribute("data-password-id");
+            const passwordField = document.querySelector(`.passwordField[data-password-id="${passwordId}"]`);
+
+            if (passwordField.value !== "Decrypting..." && passwordField.value !== "Failed to decrypt password.") {
+                navigator.clipboard.writeText(passwordField.value)
+                    .then(() => {
+                        alert("Password copied to clipboard!");
+                    })
+                    .catch(err => {
+                        console.error("Failed to copy password:", err);
+                    });
+            } else {
+                alert("Password not yet decrypted. Click 'View Details' first.");
             }
         });
     });
