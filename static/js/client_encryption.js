@@ -66,13 +66,17 @@ async function getEncryptionPassword() {
         // Decrypt the password from sessionStorage
         encryptedData = JSON.parse(encryptedData);
         const decryptedPassword = await decryptMasterPassword(encryptedData);
+
         if (decryptedPassword !== null) {
             return decryptedPassword;
         } else {
             // Decryption failed, clear encryptedMasterPassword and re-prompt
             sessionStorage.removeItem("encryptedMasterPassword");
-            alert("Incorrect master password. Please try again.");
-            return await getEncryptionPassword();
+            // Display error message inline
+            document.getElementById("error-message").textContent =
+                "Incorrect master password. Please try again.";
+            document.getElementById("error-message").style.display = "block";
+            return null;
         }
     }
 }
@@ -80,7 +84,6 @@ async function getEncryptionPassword() {
 // Function to prompt the user for the encryption password using a modal
 function promptEncryptionPassword() {
     return new Promise((resolve) => {
-        // Create the modal HTML
         const modalHtml = `
         <div class="modal fade" id="unlockModal" tabindex="-1" aria-labelledby="unlockModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -92,9 +95,9 @@ function promptEncryptionPassword() {
                     <div class="modal-body">
                         <p>Please enter your master password to unlock your vault.</p>
                         <input type="password" id="unlockPasswordInput" class="form-control" placeholder="Master Password">
+                        <div id="error-message" class="text-danger mt-2" style="display: none;">Incorrect master password. Please try again.</div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="unlockCancelButton" class="btn btn-secondary">Cancel</button>
                         <button type="button" id="unlockSubmitButton" class="btn btn-primary">Unlock</button>
                     </div>
                 </div>
@@ -127,20 +130,13 @@ function promptEncryptionPassword() {
                     resolve(password);
                 });
             } else {
-                alert("Please enter your master password.");
+                // Show a hint if the input is empty
+                document.getElementById("error-message").textContent =
+                    "Please enter your master password.";
+                document.getElementById("error-message").style.display = "block";
             }
         });
 
-        // Handle the cancel button click
-        document.getElementById("unlockCancelButton").addEventListener("click", () => {
-            unlockModal.hide();
-            unlockModalElement.addEventListener("hidden.bs.modal", () => {
-                unlockModalElement.remove();
-                resolve(null); // Resolve with null if the user cancels
-            });
-        });
-
-        // Handle the Enter key in the password input
         document.getElementById("unlockPasswordInput").addEventListener("keyup", (event) => {
             if (event.key === "Enter") {
                 document.getElementById("unlockSubmitButton").click();
