@@ -5,31 +5,12 @@ import secrets
 import string
 from datetime import datetime, timedelta
 
-from cryptography.fernet import Fernet
 from flask import render_template
 from flask_mail import Message
 
-from application.models.fernet_key import FernetKey
 from application.models.reset_token import ResetToken
 from application.models.user import User
 from application.utils.extensions import db, mail
-
-
-def generate_and_store_fernet_key(user_id):
-    # Generate a new Fernet key
-    fernet_key = Fernet.generate_key().decode()
-
-    # Store the key in the database
-    new_key = FernetKey(user_id=user_id, key=fernet_key)
-    db.session.add(new_key)
-    db.session.commit()
-
-
-def get_user_fernet_key(user_id):
-    key_entry = FernetKey.query.filter_by(user_id=user_id).first()
-    if key_entry:
-        return key_entry.key
-    return None
 
 
 def is_password_complex(password):
@@ -65,7 +46,7 @@ def generate_random_password(
     if avoid_similar:
         characters = "".join(filter(lambda x: x not in similar_chars, characters))
 
-    return "".join(random.choice(characters) for i in range(length))
+    return "".join(random.choice(characters) for _ in range(length))
 
 
 def generate_memorable_password(length=4):
@@ -91,7 +72,7 @@ def generate_memorable_password(length=4):
 
 
 def generate_pin_code(length=4):
-    return "".join(random.choice(string.digits) for i in range(length))
+    return "".join(random.choice(string.digits) for _ in range(length))
 
 
 def send_password_reset_email(to_email, reset_link):

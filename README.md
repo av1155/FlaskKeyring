@@ -49,7 +49,6 @@ FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, showcases an advanc
 -   **Zero-Knowledge Security Model**: Implements client-side encryption, ensuring that even if the database is compromised, no plaintext passwords can be decrypted without the user’s master password.
 -   **Advanced Cryptographic Techniques**: Uses AES-GCM encryption via the Web Cryptography API, deriving encryption keys client-side from a master password that is never sent to the server. This means that password data remains inaccessible without the client-side key derived from the master password.
 -   **Session Management**: Integrates Flask-Login and Flask-Session to manage user sessions securely and guard against unauthorized access.
--   **Fernet Keys**: Each user has a Fernet key stored server-side, utilized for additional non-password encryption needs such as encrypting sensitive data linked to account settings. However, it is not involved in primary password encryption, reinforcing the zero-knowledge security model.
 
 ### Email Capabilities
 
@@ -60,7 +59,7 @@ FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, showcases an advanc
 -   **Languages**: Python, JavaScript, HTML, CSS
 -   **Frameworks**: Flask, Bootstrap
 -   **Database & ORM**: PostgreSQL, SQLAlchemy
--   **Encryption & Security**: AES-GCM, PBKDF2, Web Cryptography API, Fernet Keys, Zero-Knowledge Security Model
+-   **Encryption & Security**: AES-GCM, PBKDF2, Web Cryptography API, Zero-Knowledge Security Model
 -   **Backend Development**: RESTful API design, Flask-Login, Flask-Session, Flask-Mail integration
 -   **Frontend Development**: Responsive design, client-side JavaScript for encryption, dynamic templating with Jinja2
 -   **Full-Stack Expertise**: End-to-end application architecture, secure session management, user authentication
@@ -86,7 +85,7 @@ FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, showcases an advanc
 
 ### Database Structure and Security
 
--   **User Data Integrity**: Contains structured tables including `users`, `passwords`, `reset_tokens`, `folders`, and `fernet_keys` to organize and protect sensitive information.
+-   **User Data Integrity**: Contains structured tables including `users`, `passwords`, `reset_tokens`, and `folders` to organize and protect sensitive information.
 -   **Only Encrypted Data Stored**: Ensures compliance with best practices for zero-knowledge encryption by storing only ciphertext and decryption parameters (`iv` and `salt`).
 
 ### Encryption and Security Details

@@ -46,8 +46,7 @@
 
     <section class="add-password">
         <h2>Add New Account</h2>
-        <form method="POST" action="{{ url_for('main.add_password') }}" class="mb-4">
-
+        <form id="addPasswordForm" class="mb-4">
 
             <div class="form-floating mb-3">
                 <input type="text" class="form-control form-control-dark" id="website" name="website" placeholder="Website URL" required>
@@ -60,15 +59,17 @@
             </div>
 
 
-            <div class="mb-3">
-                <div class="form-floating mb-3 position-relative">
-                    <input type="password" name="password" class="form-control form-control-dark" id="floatingPassword" placeholder="Password" required />
+            <div class="input-group mb-3">
+                <div class="form-floating flex-grow-1">
+                    <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
                     <label for="floatingPassword">Password</label>
-                    <!-- Button for generating password -->
-                    <button id="generatePasswordIcon" type="button" class="btn btn-primary position-absolute top-0 end-0 mt-2 me-2">
-                        <img src="{{ url_for('static', filename='images/key-icon.png') }}" alt="Password Generator" width="24" height="24">
-                    </button>
                 </div>
+                <button id="togglePassword" type="button" class="btn btn-outline-secondary">
+                    <i class="bi bi-eye-slash"></i>
+                </button>
+                <button id="generatePasswordIcon" type="button" class="btn btn-outline-secondary">
+                    <img src="{{ url_for('static', filename='images/key-icon.png') }}" alt="Password Generator" width="20" height="20">
+                </button>
             </div>
 
             <div class="mb-3" id="passwordGenerator" style="display: none;">
@@ -121,11 +122,9 @@
                 <label for="folder_id">Folder</label>
             </div>
 
-
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Add Account</button>
             </div>
-
         </form>
     </section>
 
@@ -149,5 +148,51 @@
 
     <script src="{{ url_for('static', filename='js/generate_password.js') }}"></script>
     <script src="{{ url_for('static', filename='js/toggle_password.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/client_encryption.js') }}"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const addPasswordForm = document.getElementById("addPasswordForm");
+
+        addPasswordForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const website = document.getElementById("website").value;
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("floatingPassword").value;
+            const folder_id = document.getElementById("folder_id").value;
+
+            const encryptedData = await encryptData(password);
+
+            const payload = {
+                website: website,
+                username: username,
+                folder_id: folder_id,
+                ciphertext: encryptedData.ciphertext,
+                iv: encryptedData.iv,
+                salt: encryptedData.salt,
+            };
+
+            fetch("/api/save_password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("Password saved successfully!");
+                    window.location.reload();
+                } else {
+                    alert("Error saving password.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    });
+    </script>
 
 {% endblock %}

@@ -1,0 +1,68 @@
+{% extends "layout.html" %} {% block content %}
+<header>
+    <h1 class="mb-3">Search Results</h1>
+</header>
+
+<main>
+    <div class="container my-4">
+        {% if passwords %}
+        <section class="password-list">
+            <div class="tbl-container bdr">
+                <table class="table table-bordered table-hover rounded">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Website</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Folder</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                        {% for password in passwords %}
+                        <tr data-password-id="{{ password.id }}">
+                            <td class="align-middle text-center">{{ password.website }}</td>
+                            <td class="align-middle text-center">{{ password.username }}</td>
+                            <td class="align-middle text-center">
+                                <span class="passwordField">Decrypting...</span>
+                            </td>
+                            <td class="align-middle text-center">{{ password.folder.name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        {% else %}
+        <p>No passwords found matching your search criteria.</p>
+        {% endif %}
+    </div>
+</main>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/client_encryption.js') }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        const rows = document.querySelectorAll("tr[data-password-id]");
+
+        for (const row of rows) {
+            const passwordId = row.getAttribute("data-password-id");
+            const passwordField = row.querySelector(".passwordField");
+
+            try {
+                const response = await fetch(`/api/get_password/${passwordId}`);
+                const data = await response.json();
+
+                const decryptedPassword = await decryptData(data);
+
+                if (decryptedPassword !== null) {
+                    passwordField.textContent = decryptedPassword;
+                } else {
+                    passwordField.textContent = "Failed to decrypt.";
+                }
+            } catch (error) {
+                console.error("Error fetching or decrypting password:", error);
+                passwordField.textContent = "Error.";
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -97,6 +97,22 @@ login_manager.init_app(app)
 login_manager.login_view = "auth.login"  # type: ignore
 
 
+@app.after_request
+def apply_csp(response):
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://player.vimeo.com; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+        "font-src 'self' https://cdn.jsdelivr.net; "
+        "img-src 'self' data:; "
+        "frame-src https://player.vimeo.com; "
+        "connect-src 'self'; "
+        "object-src 'none'; "
+        "base-uri 'self';"
+    )
+    return response
+
+
 # User loader for Flask-Login
 @login_manager.user_loader
 def load_user(user_id):

@@ -1,12 +1,17 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var passwordInput = document.getElementById("floatingPassword");
-    passwordInput.addEventListener("focus", function() {
-        passwordInput.type = "text";
-        window.setTimeout(function() {
-            passwordInput.selectionStart = passwordInput.selectionEnd = -1;
-        }, 0);
-    });
-    passwordInput.addEventListener("blur", function() {
-        passwordInput.type = "password";
+document.addEventListener("DOMContentLoaded", function () {
+    const passwordInput = document.getElementById("floatingPassword");
+    const togglePasswordButton = document.getElementById("togglePassword");
+    const toggleIcon = togglePasswordButton.querySelector("i");
+
+    togglePasswordButton.addEventListener("click", function () {
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.remove("bi-eye-slash");
+            toggleIcon.classList.add("bi-eye");
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("bi-eye");
+            toggleIcon.classList.add("bi-eye-slash");
+        }
     });
 });

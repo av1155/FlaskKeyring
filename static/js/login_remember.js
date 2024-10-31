@@ -1,24 +1,25 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const inputField = document.getElementById("username_email");
     const rememberMeCheckbox = document.getElementById("exampleCheck1");
 
-    // Check if 'Remember me' is checked and set the input field value
-    if (rememberMeCheckbox.checked) {
-        inputField.value = localStorage.getItem("lastLogin") || "";
+    // Set the input field value from localStorage if 'Remember me' was checked previously
+    const rememberedUsername = localStorage.getItem("rememberedUsername");
+    if (rememberedUsername) {
+        inputField.value = rememberedUsername;
+        rememberMeCheckbox.checked = true;
     }
 
-    rememberMeCheckbox.addEventListener("change", function() {
+    rememberMeCheckbox.addEventListener("change", function () {
         if (this.checked) {
-            localStorage.setItem("lastLogin", inputField.value);
+            localStorage.setItem("rememberedUsername", inputField.value);
         } else {
-            localStorage.removeItem("lastLogin");
-            inputField.value = "";
+            localStorage.removeItem("rememberedUsername");
         }
     });
 
-    inputField.addEventListener("input", function() {
+    inputField.addEventListener("input", function () {
         if (rememberMeCheckbox.checked) {
-            localStorage.setItem("lastLogin", inputField.value);
+            localStorage.setItem("rememberedUsername", inputField.value);
         }
     });
 });
