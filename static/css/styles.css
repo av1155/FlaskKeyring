@@ -179,23 +179,18 @@ h2 {
 }
 
 /* Range Input Styles */
-input[type="range"]::-webkit-slider-runnable-track,
-input[type="range"]::-moz-range-track {
-    background: var(--primary-color);
+
+/* Styles for the slider track */
+input[type="range"]::-webkit-slider-runnable-track {
+    background: #4a90e2; /* Set the blue color for the slider track */
     height: 8px;
     border-radius: 4px;
 }
 
-input[type="range"]::-webkit-slider-thumb,
-input[type="range"]::-moz-range-thumb {
-    background: #ffffff;
-    border: 2px solid var(--primary-color);
-    height: 24px;
-    width: 24px;
-    border-radius: 50%;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    margin-top: -8px;
+input[type="range"]::-moz-range-track {
+    background: #4a90e2; /* Set the blue color for the slider track in Firefox */
+    height: 8px;
+    border-radius: 4px;
 }
 
 /* Other Elements */

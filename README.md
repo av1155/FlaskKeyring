@@ -1,18 +1,21 @@
-# FlaskKeyring: A Pinnacle of Full-Stack Development and Secure Client-Side Encryption
+# FlaskKeyring: A Secure Password Manager with Client-Side Encryption Powered by JavaScript and Python
 
 <!--toc:start-->
 
--   [FlaskKeyring: A Pinnacle of Full-Stack Development and Secure Client-Side Encryption](#flaskkeyring-a-pinnacle-of-full-stack-development-and-secure-client-side-encryption)
+-   [FlaskKeyring: A Secure Password Manager with Client-Side Encryption Powered by JavaScript and Python](#flaskkeyring-a-secure-password-manager-with-client-side-encryption-powered-by-javascript-and-python)
     -   [Introduction](#introduction)
     -   [Core Technologies](#core-technologies)
-        -   [Python and Flask](#python-and-flask)
-        -   [Full-Stack Mastery](#full-stack-mastery)
+        -   [JavaScript and Client-Side Encryption](#javascript-and-client-side-encryption)
+        -   [Python and Flask Backend](#python-and-flask-backend)
+        -   [Full-Stack Development](#full-stack-development)
         -   [Database and ORM](#database-and-orm)
-        -   [Security and Client-Side Encryption](#security-and-client-side-encryption)
+        -   [Security and Encryption](#security-and-encryption)
         -   [Email Capabilities](#email-capabilities)
     -   [Skills Demonstrated](#skills-demonstrated)
     -   [Deployment and Hosting](#deployment-and-hosting)
     -   [Features and Functionality](#features-and-functionality)
+        -   [Client-Side Encryption with JavaScript](#client-side-encryption-with-javascript)
+        -   [Python Backend Integration](#python-backend-integration)
         -   [Zero-Knowledge User Authentication](#zero-knowledge-user-authentication)
         -   [Advanced Password Management](#advanced-password-management)
         -   [Database Structure and Security](#database-structure-and-security)
@@ -25,30 +28,34 @@
 
 ## Introduction
 
-FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, showcases an advanced, full-stack password management solution that adheres to cutting-edge security principles, including client-side encryption. Built using Python and Flask, FlaskKeyring is designed with the user in mind, providing a robust, intuitive, and highly secure platform for managing passwords. The project is deployed on Heroku and can be accessed at [https://flaskkeyring.tech](https://flaskkeyring.tech), demonstrating its scalability and readiness for production.
+FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, is an advanced, full-stack password management solution that adheres to cutting-edge security principles, notably secure client-side encryption implemented with JavaScript. The application combines the power of JavaScript on the frontend and Python with Flask on the backend to provide a robust, intuitive, and highly secure platform for managing passwords. The project is deployed on Heroku and can be accessed at [https://flaskkeyring.tech](https://flaskkeyring.tech), demonstrating its scalability and readiness for production.
 
 ## Core Technologies
 
-### Python and Flask
+### JavaScript and Client-Side Encryption
 
--   **Python**: Powers the backend with robust functionality for data processing, encryption, and complex server-side logic.
--   **Flask**: The chosen framework for its balance between simplicity and flexibility, handling server operations with efficiency and scalability in mind.
+-   **JavaScript**: Utilized on the client side to implement secure encryption and decryption of user passwords using the Web Cryptography API, ensuring that sensitive data is encrypted before being sent to the server.
+-   **Web Cryptography API**: Provides robust cryptographic operations in the browser, allowing for client-side encryption using AES-GCM and key derivation with PBKDF2.
 
-### Full-Stack Mastery
+### Python and Flask Backend
 
--   **Frontend Excellence**: Designed with HTML, CSS, JavaScript, and Bootstrap, FlaskKeyring offers a responsive, clean, and user-centric interface, prioritizing usability and user experience.
--   **Backend Complexity**: The backend efficiently handles secure data processing, user authentication, encryption, and RESTful API endpoints, showcasing proficiency in managing both the functional and security needs of a web application.
+-   **Python**: Powers the backend, handling server-side logic, integration of components, and management of database interactions.
+-   **Flask**: Chosen for its balance between simplicity and flexibility, Flask serves as the web framework for handling server operations efficiently and scaling effectively.
+
+### Full-Stack Development
+
+-   **Frontend Excellence**: Built with HTML, CSS, JavaScript, and Bootstrap, FlaskKeyring offers a responsive, clean, and user-centric interface, prioritizing usability and user experience.
+-   **Backend Integration**: The Python backend integrates various components, handles secure data processing, user authentication, and provides RESTful API endpoints for client-server communication.
 
 ### Database and ORM
 
--   **PostgreSQL & SQLAlchemy**: Provides robust and secure database management, with advanced ORM techniques ensuring data integrity and seamless interactions between the application and database.
+-   **PostgreSQL & SQLAlchemy**: Provides robust and secure database management, with SQLAlchemy's ORM ensuring data integrity and seamless interactions between the application and the database.
 -   **SQLite**: Employed for local testing to streamline feature development and testing workflows.
 
-### Security and Client-Side Encryption
+### Security and Encryption
 
--   **Zero-Knowledge Security Model**: Implements client-side encryption, ensuring that even if the database is compromised, no plaintext passwords can be decrypted without the user’s master password.
--   **Advanced Cryptographic Techniques**: Uses AES-GCM encryption via the Web Cryptography API, deriving encryption keys client-side from a master password that is never sent to the server. This means that password data remains inaccessible without the client-side key derived from the master password.
--   **Session Management**: Integrates Flask-Login and Flask-Session to manage user sessions securely and guard against unauthorized access.
+-   **Zero-Knowledge Security Model**: Implements client-side encryption using JavaScript, ensuring that even if the database is compromised, no plaintext passwords can be decrypted without the user's master password.
+-   **Advanced Cryptographic Techniques**: Utilizes AES-GCM encryption and PBKDF2 key derivation via the Web Cryptography API in JavaScript. The encryption keys are derived client-side from a master password that is never sent to the server, meaning password data remains inaccessible without the client-side key.
 
 ### Email Capabilities
 
@@ -56,15 +63,13 @@ FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, showcases an advanc
 
 ## Skills Demonstrated
 
--   **Languages**: Python, JavaScript, HTML, CSS
--   **Frameworks**: Flask, Bootstrap
--   **Database & ORM**: PostgreSQL, SQLAlchemy
--   **Encryption & Security**: AES-GCM, PBKDF2, Web Cryptography API, Zero-Knowledge Security Model
--   **Backend Development**: RESTful API design, Flask-Login, Flask-Session, Flask-Mail integration
--   **Frontend Development**: Responsive design, client-side JavaScript for encryption, dynamic templating with Jinja2
--   **Full-Stack Expertise**: End-to-end application architecture, secure session management, user authentication
+-   **Languages**: JavaScript, Python, HTML, CSS
+-   **Frontend Development**: Advanced JavaScript for client-side encryption, responsive design, dynamic templating with Jinja2.
+-   **Backend Development**: Python, Flask, RESTful API design, session management with Flask-Login and Flask-Session, email integration with Flask-Mail.
+-   **Encryption & Security**: Implemented client-side encryption using JavaScript and the Web Cryptography API, AES-GCM, PBKDF2, zero-knowledge security model.
+-   **Database & ORM**: PostgreSQL, SQLAlchemy, SQLite3
 -   **Deployment & Hosting**: Heroku, version control with Git
--   **Project Management**: Modular code organization, scalability, maintainability, security-first design principles
+-   **Project Management**: Modular code organization, scalability, maintainability, security-first design principles.
 
 ## Deployment and Hosting
 
@@ -72,10 +77,20 @@ FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, showcases an advanc
 
 ## Features and Functionality
 
+### Client-Side Encryption with JavaScript
+
+-   **Secure Encryption in the Browser**: JavaScript, along with the Web Cryptography API, is used to encrypt passwords on the client side before any data is transmitted to the server.
+-   **Master Password Handling**: The master password is used to derive encryption keys client-side and is never sent to the server, ensuring a zero-knowledge approach.
+
+### Python Backend Integration
+
+-   **Data Handling and API**: The Python backend handles data storage, user authentication, and provides RESTful API endpoints for the client to interact with securely.
+-   **Database Interactions**: Manages all database interactions, ensuring data integrity and security.
+
 ### Zero-Knowledge User Authentication
 
 -   **Complete Authentication System**: Secure registration, login, and password reset functionalities integrated with email verification for account security.
--   **Client-Side Encryption for Passwords**: Passwords are encrypted client-side using AES-GCM before transmission to the server, where only encrypted data is stored. Even database administrators cannot decrypt passwords without the master password.
+-   **Client-Side Encryption for Passwords**: Passwords are encrypted client-side using JavaScript before transmission to the server, where only encrypted data is stored.
 
 ### Advanced Password Management
 
@@ -90,7 +105,7 @@ FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, showcases an advanc
 
 ### Encryption and Security Details
 
--   **Client-Side AES-GCM Encryption**: Using the Web Cryptography API, passwords are encrypted on the client side before reaching the server.
+-   **Client-Side AES-GCM Encryption**: Using JavaScript and the Web Cryptography API, passwords are encrypted on the client side before reaching the server.
 -   **Password Derivation Using PBKDF2**: Derives encryption keys client-side from a master password and a unique salt, reinforcing a zero-knowledge approach where decryption requires the master password, which is never stored or transmitted.
 
 ### Dynamic Templating and Modularity
@@ -100,13 +115,14 @@ FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, showcases an advanc
 
 ## Project Design and Structure
 
+-   **Client-Side Encryption with JavaScript**: Demonstrates expertise in JavaScript by implementing secure client-side encryption, leveraging the Web Cryptography API for cryptographic operations.
+-   **Python Backend for Integration**: The backend, built with Python and Flask, integrates all components, manages user sessions, handles database interactions, and provides secure APIs.
 -   **Modular and Maintainable Code**: Organized with separate modules for models, views, and utilities, enhancing code readability and scalability.
 -   **Security-First Development**: Designed with a strong focus on security, implementing client-side encryption, secure session management, and email verification to protect user data.
--   **Advanced JavaScript and Web Crypto API Use**: Demonstrates expertise in advanced JavaScript, leveraging the Web Cryptography API to implement secure client-side encryption for password management.
 
 ## Conclusion
 
-FlaskKeyring is a comprehensive password management solution that goes beyond typical web applications by prioritizing client-side encryption and zero-knowledge security. Every detail, from frontend aesthetics to backend encryption logic, reflects a sophisticated understanding of full-stack development and cybersecurity principles. FlaskKeyring exemplifies a robust, scalable, and secure solution built for real-world application, underscoring my full-stack development skills and commitment to secure, user-friendly applications.
+FlaskKeyring is a comprehensive password management solution that leverages both JavaScript and Python to provide a secure, user-friendly application with client-side encryption. By implementing encryption directly in the browser using JavaScript, and managing backend processes with Python and Flask, the application ensures that user data remains confidential and secure. Every detail, from frontend encryption logic to backend integration, reflects a sophisticated understanding of full-stack development and cybersecurity principles. FlaskKeyring exemplifies a robust, scalable, and secure solution built for real-world application, underscoring my full-stack development skills and commitment to secure, user-friendly applications.
 
 ## License
 
