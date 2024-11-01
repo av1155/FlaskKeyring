@@ -40,12 +40,15 @@ if os.getenv("FLASK_ENV") == "production":
             # Check that the host is the same to avoid open redirects
             if parsed_url.netloc == request.host:
                 # Replace HTTP with HTTPS to construct the secure URL
-                secure_url = request.url.replace("http://", "https://", 1)
+                secure_url = request.url.replace("http://", "https://", 1).replace('\\', '')
 
-                # Validate the secure URL has a scheme and netloc
+                # Validate the secure URL does not have a netloc or scheme
                 secure_parsed = urlparse(secure_url)
-                if secure_parsed.scheme == "https" and secure_parsed.netloc:
+                if not secure_parsed.netloc and not secure_parsed.scheme:
                     return redirect(secure_url, code=301)
+
+        # Do nothing if already HTTPS or conditions are not met
+        return redirect('/', code=301)
 
         # Do nothing if already HTTPS or conditions are not met
         return None
