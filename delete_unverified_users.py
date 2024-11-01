@@ -1,8 +1,5 @@
 from datetime import datetime, timedelta, timezone
 
-from application.models.folder import Folder
-from application.models.password import Password
-from application.models.reset_token import ResetToken
 from application.models.user import User
 from application.utils.extensions import db
 
@@ -21,13 +18,10 @@ def delete_unverified_users():
 
     print(f"Unverified users found: {len(unverified_users)}")
 
-    # Delete associated data for each unverified user
+    # Delete each unverified user
     for user in unverified_users:
         print(f"Deleting user: {user.email}, ID: {user.id}")
-        Folder.query.filter_by(user_id=user.id).delete()
-        Password.query.filter_by(user_id=user.id).delete()
-        ResetToken.query.filter_by(user_id=user.id).delete()
-        db.session.delete(user)  # Delete the user record
+        db.session.delete(user)  # This will also delete related records due to cascade
 
     # Commit changes to the database
     db.session.commit()

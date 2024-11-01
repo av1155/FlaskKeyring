@@ -1,5 +1,4 @@
 flaskkeyring.db
-clear_database.py
 DATABASE_MIGRATIONS.md
 
 # Ignore virtual environment

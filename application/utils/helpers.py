@@ -3,7 +3,7 @@ import os
 import random
 import secrets
 import string
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from flask import render_template
 from flask_mail import Message
@@ -96,7 +96,7 @@ def generate_reset_token(user_id):
     token = secrets.token_hex(32)  # Generate a 64-character (32-byte) hex token
 
     # Calculate the token expiration time (e.g., 1 hour from now)
-    expiration_time = datetime.utcnow() + timedelta(hours=1)
+    expiration_time = datetime.now(timezone.utc) + timedelta(hours=1)
 
     # Create a new ResetToken instance and store it in the database
     reset_token = ResetToken(user_id=user_id, token=token, expires_at=expiration_time)
@@ -110,9 +110,15 @@ def validate_reset_token(token):
     # Find the ResetToken record in the database
     reset_token = ResetToken.query.filter_by(token=token).first()
 
-    if reset_token and reset_token.expires_at > datetime.utcnow():
-        # Token is valid and not expired
-        return User.query.get(reset_token.user_id)
+    if reset_token:
+        # Ensure expires_at is timezone-aware (set to UTC if naive)
+        expires_at = reset_token.expires_at
+        if expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
+
+        if expires_at > datetime.now(timezone.utc):
+            # Token is valid and not expired
+            return User.query.get(reset_token.user_id)
 
     return None
 
@@ -122,7 +128,7 @@ def generate_email_verification_token(user_id):
     token = secrets.token_hex(16)  # Generate a 32-character (16-byte) hex token
 
     # Calculate the token expiration time (e.g., 24 hours from now)
-    expiration_time = datetime.utcnow() + timedelta(hours=24)
+    expiration_time = datetime.now(timezone.utc) + timedelta(hours=24)
 
     # Retrieve the user and check if it exists
     user = User.query.get(user_id)

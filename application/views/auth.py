@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timezone
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
@@ -113,24 +114,26 @@ def register():
 
 @auth.route("/verify_email/<token>")
 def verify_email(token):
-    # Find the user with the given token and check if the token is not expired
     user = User.query.filter_by(email_verification_token=token).first()
 
-    if user and user.email_verification_expires_at > datetime.utcnow():
-        # Token is valid and not expired
-        user.email_verified = True
-        user.email_verification_token = None
-        user.email_verification_expires_at = None
-        db.session.commit()
+    if user:
+        # Make email_verification_expires_at timezone-aware if it's naive
+        expires_at = user.email_verification_expires_at
+        if expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
 
-        # Render the email verified confirmation page instead of flashing a message
-        return render_template("email_verified.html")
-    else:
-        flash(
-            "Invalid or expired token. Please request a new verification email.",
-            "error",
-        )
-        return redirect(url_for("main.index"))
+        if expires_at > datetime.now(timezone.utc):
+            # Token is valid and not expired
+            user.email_verified = True
+            user.email_verification_token = None
+            user.email_verification_expires_at = None
+            db.session.commit()
+
+            # Render the email verified confirmation page instead of flashing a message
+            return render_template("email_verified.html")
+
+    flash("Invalid or expired token. Please request a new verification email.", "error")
+    return redirect(url_for("main.index"))
 
 
 @auth.route("/login", methods=["GET", "POST"])
