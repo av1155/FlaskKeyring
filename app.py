@@ -33,38 +33,10 @@ if os.getenv("FLASK_ENV") == "production":
 
     @app.before_request
     def before_request():
+        # Redirect all non-HTTPS requests to HTTPS
         if request.url.startswith("http://"):
-            parsed_url = urlparse(request.url)
-            secure_url = "https://" + parsed_url.netloc + parsed_url.path
-            valid_domains = ["www.flaskkeyring.tech", "flaskkeyring.tech"]
-            valid_paths = [
-                "/register",
-                "/verify_email/",
-                "/login",
-                "/change_password",
-                "/logout",
-                "/forgot-password",
-                "/reset-password/",
-                "/",
-                "/dashboard",
-                "/view_password/",
-                "/search_password",
-                "/edit_password/",
-                "/remove_password/",
-                "/add_password",
-                "/generate_password",
-                "/create_folder",
-                "/update_folder/",
-                "/delete_folder/",
-                "/folder/",
-                "/list_folders",
-            ]
-            if parsed_url.netloc in valid_domains and any(
-                parsed_url.path.startswith(valid_path) for valid_path in valid_paths
-            ):
-                return redirect(secure_url, code=301)
-            else:
-                return "Invalid redirection attempt.", 400
+            secure_url = request.url.replace("http://", "https://", 1)
+            return redirect(secure_url, code=301)
 
 
 # Configure app and extensions
