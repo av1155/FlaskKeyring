@@ -311,13 +311,15 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Handle delete confirmation
+    // Handle delete confirmation with passwordId validation
     const deleteButtons = document.querySelectorAll(".delete-btn");
     const confirmDeleteForm = document.getElementById("confirmDeleteForm");
 
     deleteButtons.forEach(button => {
         button.addEventListener("click", function() {
             const passwordId = button.getAttribute("data-id");
+
+            // Validate passwordId to ensure it is alphanumeric
             if (/^[a-zA-Z0-9]+$/.test(passwordId)) {
                 confirmDeleteForm.action = `/remove_password/${passwordId}`;
             } else {
