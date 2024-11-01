@@ -35,8 +35,12 @@ if os.getenv("FLASK_ENV") == "production":
     def before_request():
         # Redirect all non-HTTPS requests to HTTPS
         if request.url.startswith("http://"):
-            secure_url = request.url.replace("http://", "https://", 1)
-            return redirect(secure_url, code=301)
+            parsed_url = urlparse(request.url.replace('\\', ''))
+            if not parsed_url.netloc and not parsed_url.scheme:
+                secure_url = request.url.replace("http://", "https://", 1)
+                return redirect(secure_url, code=301)
+            else:
+                return redirect('/', code=301)
 
 
 # Configure app and extensions
