@@ -33,18 +33,21 @@ if os.getenv("FLASK_ENV") == "production":
 
     @app.before_request
     def before_request():
-        # Redirect all non-HTTPS requests to HTTPS
+        # Check if the request is not HTTPS
         if request.url.startswith("http://"):
-            parsed_url = urlparse(request.url.replace("\\", ""))
-            # Allow redirection only if the request host matches the current server's host
+            parsed_url = urlparse(request.url)
+
+            # Check that the host is the same to avoid open redirects
             if parsed_url.netloc == request.host:
-                secure_url = request.url.replace("http://", "https://", 1).replace(
-                    "\\", "/"
-                )
-                if not urlparse(secure_url).netloc and not urlparse(secure_url).scheme:
+                # Replace HTTP with HTTPS to construct the secure URL
+                secure_url = request.url.replace("http://", "https://", 1)
+
+                # Validate the secure URL has a scheme and netloc
+                secure_parsed = urlparse(secure_url)
+                if secure_parsed.scheme == "https" and secure_parsed.netloc:
                     return redirect(secure_url, code=301)
 
-        # No action if already HTTPS or conditions are not met
+        # Do nothing if already HTTPS or conditions are not met
         return None
 
 
