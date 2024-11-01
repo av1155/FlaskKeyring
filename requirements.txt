@@ -8,6 +8,6 @@ SQLAlchemy==2.0.24
 cryptography==41.0.7
 python-dotenv==1.0.0
 psycopg2-binary==2.9.9
-gunicorn==21.2.0
+gunicorn==22.0.0
 pytz==2023.3.post1
 validate-email==1.3
