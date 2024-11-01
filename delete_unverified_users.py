@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta, timezone
 
-from application.models.fernet_key import FernetKey
 from application.models.folder import Folder
 from application.models.password import Password
 from application.models.reset_token import ResetToken
@@ -28,7 +27,6 @@ def delete_unverified_users():
         Folder.query.filter_by(user_id=user.id).delete()
         Password.query.filter_by(user_id=user.id).delete()
         ResetToken.query.filter_by(user_id=user.id).delete()
-        FernetKey.query.filter_by(user_id=user.id).delete()
         db.session.delete(user)  # Delete the user record
 
     # Commit changes to the database

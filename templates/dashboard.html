@@ -1,4 +1,5 @@
-{% extends "layout.html" %} {% block content %}
+{% extends "layout.html" %} 
+{% block content %}
 <header>
     <h1>FlaskKeyring Dashboard</h1>
 </header>
@@ -8,7 +9,7 @@
         <h2>Search Account</h2>
         <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-2">
             <div class="input-group">
-                <input type="text" id="search_website" name="search_website" class="form-control form-control-dark" placeholder="Search by website" required />
+                <input type="text" id="search_name" name="search_name" class="form-control form-control-dark" placeholder="Search by account name" required />
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
@@ -21,13 +22,33 @@
             {% for password in passwords %}
             <li class="list-group-item">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>{{ password.website }}</div>
+                    <div>{{ password.name }}</div>
                     <button class="btn btn-primary view-details-btn" data-bs-toggle="collapse" data-bs-target="#details-{{ password.id }}" data-password-id="{{ password.id }}">
                         View Details
                     </button>
                 </div>
 
                 <div class="collapse mt-3" id="details-{{ password.id }}">
+                    <div class="mb-2">
+                        <div class="input-group">
+                            <span class="input-group-text fixed-width-label bg-light text-dark">Account</span>
+                            <input type="text" class="form-control" id="name-{{ password.id }}" value="{{ password.name }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="input-group">
+                            <span class="input-group-text fixed-width-label bg-light text-dark">Website</span>
+                            {% if password.website %}
+                                <a href="{{ password.website }}" target="_blank" class="form-control link-style">
+                                    {{ password.website | replace("https://", "") | replace("http://", "") }}
+                                </a>
+                            {% else %}
+                                <span class="form-control text-muted">No URL provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
                     <div class="mb-2">
                         <div class="input-group">
                             <span class="input-group-text fixed-width-label bg-light text-dark">Username</span>
@@ -38,7 +59,10 @@
                     <div class="mb-2">
                         <div class="input-group">
                             <span class="input-group-text fixed-width-label bg-light text-dark">Password</span>
-                            <input type="text" class="form-control passwordField" id="password-{{ password.id }}" data-password-id="{{ password.id }}" value="Decrypting..." readonly>
+                            <input type="password" class="form-control passwordField" id="password-{{ password.id }}" data-password-id="{{ password.id }}" value="Decrypting..." readonly>
+                            <button class="btn btn-outline-secondary toggle-visibility-btn" data-password-id="{{ password.id }}">
+                                <i class="bi bi-eye-slash"></i>
+                            </button>
                             <button class="btn btn-outline-secondary copy-btn" data-password-id="{{ password.id }}">Copy</button>
                         </div>
                     </div>
@@ -64,8 +88,13 @@
         <h2>Add New Account</h2>
         <form id="addPasswordForm" class="mb-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control form-control-dark" id="website" name="website" placeholder="Website URL" required>
-                <label for="website">Website</label>
+                <input type="text" class="form-control form-control-dark" id="name" name="name" placeholder="Account Name" required>
+                <label for="name">Account Name</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control form-control-dark" id="website" name="website" placeholder="Website URL">
+                <label for="website">Website URL</label>
             </div>
 
             <div class="form-floating mb-3">
@@ -221,10 +250,31 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // Handle Toggle Visibility functionality
+    const toggleButtons = document.querySelectorAll(".toggle-visibility-btn");
+    toggleButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const passwordId = button.getAttribute("data-password-id");
+            const passwordField = document.querySelector(`.passwordField[data-password-id="${passwordId}"]`);
+            const icon = button.querySelector("i");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            }
+        });
+    });
+
     // Handle Add Account form submission
     document.getElementById("addPasswordForm").addEventListener("submit", async function(event) {
         event.preventDefault();
 
+        const name = document.getElementById("name").value;
         const website = document.getElementById("website").value;
         const username = document.getElementById("username").value;
         const password = document.getElementById("floatingPassword").value;
@@ -233,6 +283,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const encryptedData = await encryptData(password);
 
         const payload = {
+            name: name,
             website: website,
             username: username,
             folder_id: folderId,
