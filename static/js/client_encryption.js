@@ -162,7 +162,8 @@ async function decryptData(data) {
 
     while (true) {
         // Get the encryption password, which will prompt if not already set
-        let password = await getEncryptionPassword();
+        let encryptedPassword = sessionStorage.getItem("encryptionPassword");
+        let password = encryptedPassword ? await decryptMasterPassword(JSON.parse(encryptedPassword)) : await getEncryptionPassword();
 
         if (!password) {
             return null;
@@ -173,7 +174,8 @@ async function decryptData(data) {
             decrypted = await attemptDecryption(data, password);
             if (decrypted !== null) {
                 // If successful, store the correct password and return the decrypted data
-                sessionStorage.setItem("encryptionPassword", password);
+                const encryptedPassword = await encryptMasterPassword(password);
+                sessionStorage.setItem("encryptionPassword", JSON.stringify(encryptedPassword));
                 return decrypted;
             } else {
                 // Clear stored password and re-prompt if decryption fails
