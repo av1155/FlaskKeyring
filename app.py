@@ -37,23 +37,22 @@ if os.getenv("FLASK_ENV") == "production":
         if request.url.startswith("http://"):
             parsed_url = urlparse(request.url)
 
-            # Check that the host is the same to avoid open redirects
+            # Ensure the request host matches the server's host to avoid open redirects
             if parsed_url.netloc == request.host:
-                # Replace HTTP with HTTPS to construct the secure URL
+                # Construct the HTTPS URL
                 secure_url = request.url.replace("http://", "https://", 1)
-
-                # Parse the secure URL for validation
                 secure_parsed = urlparse(secure_url)
 
-                # Final validation: ensure the URL has both "https" as the scheme and a valid netloc
+                # Validate that the secure URL has both "https" as the scheme and a matching host
                 if (
                     secure_parsed.scheme == "https"
                     and secure_parsed.netloc == request.host
                 ):
+                    # Redirect to the secure URL
                     return redirect(urlunparse(secure_parsed), code=301)
 
-        # Fallback: Redirect to the homepage if any condition fails
-        return redirect("/", code=301)
+        # Allow the request to proceed without redirection if it’s already HTTPS or doesn't meet criteria
+        return None
 
 
 # Configure app and extensions
