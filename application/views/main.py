@@ -91,13 +91,22 @@ def view_password(password_id):
 @main.route("/search_password", methods=["POST"])
 @login_required
 def search_password():
-    search_website_raw = request.form.get("search_website")
-    if search_website_raw:
-        search_website = f"%{search_website_raw.lower()}%"
+    search_name_raw = request.form.get("search_name")
+    if search_name_raw:
+        search_name = f"%{search_name_raw.lower()}%"
         password_entries = Password.query.filter(
             Password.user_id == current_user.id,
-            func.lower(Password.website).ilike(search_website),
+            func.lower(Password.name).ilike(search_name),
         ).all()
+
+        # Attach folder name to each password entry
+        for password in password_entries:
+            folder_name = None
+            if password.folder_id:
+                folder = Folder.query.get(password.folder_id)
+                if folder:
+                    folder_name = folder.name
+            password.folder_name = folder_name  # Add the folder name attribute
 
         return render_template("search_results.html", passwords=password_entries)
     else:
@@ -233,11 +242,18 @@ def save_encrypted_password():
     ciphertext = data.get("ciphertext")
     iv = data.get("iv")
     salt = data.get("salt")
-    website = data.get("website")
+    name = data.get("name")
     username = data.get("username")
     folder_id = data.get("folder_id")
+    website = data.get("website")
 
-    if not all([ciphertext, iv, salt, website, username]):
+    # Ensure website starts with 'https://' if it exists and is non-empty
+    if website and not (
+        website.startswith("http://") or website.startswith("https://")
+    ):
+        website = "https://" + website
+
+    if not all([ciphertext, iv, salt, name, website, username]):
         return jsonify({"error": "Missing data"}), 400
 
     if folder_id:
@@ -247,6 +263,7 @@ def save_encrypted_password():
 
     encrypted_password = Password(
         user_id=current_user.id,
+        name=name,
         website=website,
         username=username,
         password=",".join(map(str, ciphertext)),
@@ -268,6 +285,7 @@ def get_encrypted_password(password_id):
         abort(403)
 
     data = {
+        "name": password_entry.name,
         "ciphertext": password_entry.password.split(","),
         "iv": password_entry.iv.split(","),
         "salt": password_entry.salt.split(","),
@@ -288,11 +306,18 @@ def update_encrypted_password(password_id):
     ciphertext = data.get("ciphertext")
     iv = data.get("iv")
     salt = data.get("salt")
-    website = data.get("website")
+    name = data.get("name")
     username = data.get("username")
     folder_id = data.get("folder_id")
+    website = data.get("website")
 
-    if not all([ciphertext, iv, salt, website, username]):
+    # Ensure website starts with 'https://' if it exists and is non-empty
+    if website and not (
+        website.startswith("http://") or website.startswith("https://")
+    ):
+        website = "https://" + website
+
+    if not all([ciphertext, iv, salt, name, website, username]):
         return jsonify({"error": "Missing data"}), 400
 
     if folder_id:
@@ -301,6 +326,7 @@ def update_encrypted_password(password_id):
         folder_id = None
 
     # Update the password entry
+    password_entry.name = name
     password_entry.website = website
     password_entry.username = username
     password_entry.password = ",".join(map(str, ciphertext))

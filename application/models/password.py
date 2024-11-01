@@ -5,15 +5,19 @@ class Password(db.Model):
     __tablename__ = "passwords"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
     website = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.Text, nullable=False)
-    iv = db.Column(db.String(255), nullable=False)  # New IV field
-    salt = db.Column(db.String(255), nullable=False)  # New salt field
+    iv = db.Column(db.String(255), nullable=False)  # IV field
+    salt = db.Column(db.String(255), nullable=False)  # Salt field
     folder_id = db.Column(db.Integer, db.ForeignKey("folders.id"), nullable=True)
 
-    def __init__(self, user_id, website, username, password, iv, salt, folder_id=None):
+    def __init__(
+        self, user_id, name, website, username, password, iv, salt, folder_id=None
+    ):
         self.user_id = user_id
+        self.name = name
         self.website = website
         self.username = username
         self.password = password
