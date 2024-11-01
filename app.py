@@ -1,5 +1,5 @@
 import os
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 
 from dotenv import load_dotenv
 
@@ -42,13 +42,18 @@ if os.getenv("FLASK_ENV") == "production":
                 # Replace HTTP with HTTPS to construct the secure URL
                 secure_url = request.url.replace("http://", "https://", 1)
 
-                # Validate the secure URL has a scheme and netloc
+                # Parse the secure URL for validation
                 secure_parsed = urlparse(secure_url)
-                if secure_parsed.scheme == "https" and secure_parsed.netloc:
-                    return redirect(secure_url, code=301)
 
-        # Do nothing if already HTTPS or conditions are not met
-        return None
+                # Final validation: ensure the URL has both "https" as the scheme and a valid netloc
+                if (
+                    secure_parsed.scheme == "https"
+                    and secure_parsed.netloc == request.host
+                ):
+                    return redirect(urlunparse(secure_parsed), code=301)
+
+        # Fallback: Redirect to the homepage if any condition fails
+        return redirect("/", code=301)
 
 
 # Configure app and extensions
