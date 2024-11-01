@@ -28,7 +28,7 @@
 
 ## Introduction
 
-FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, is an advanced, full-stack password management solution that adheres to cutting-edge security principles, notably secure client-side encryption implemented with JavaScript. The application combines the power of JavaScript on the frontend and Python with Flask on the backend to provide a robust, intuitive, and highly secure platform for managing passwords. The project is deployed on Heroku and can be accessed at [https://flaskkeyring.tech](https://flaskkeyring.tech), demonstrating its scalability and readiness for production.
+FlaskKeyring, crafted solely by Andrea Arturo Venti Fuentes, is an advanced, full-stack password management solution that adheres to cutting-edge security principles, notably secure client-side encryption implemented with JavaScript. The application combines the power of JavaScript on the frontend and Python with Flask on the backend to provide a robust, intuitive, and highly secure platform for managing passwords. The project is deployed on Heroku and can be accessed at [flaskkeyring.com](https://www.flaskkeyring.com), demonstrating its scalability and readiness for production.
 
 ## Core Technologies
 
