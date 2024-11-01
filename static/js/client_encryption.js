@@ -281,9 +281,11 @@ function setupInactivityTimeout() {
     }
 
     function logout() {
-        // Clear the encryption password
+        // Clear stored session data for encryption and logout
         sessionStorage.removeItem("encryptionPassword");
+        sessionStorage.removeItem("encryptedMasterPassword");
         alert("Session expired due to inactivity.");
+        window.location.href = "/logout"; // Redirect to logout route
     }
 
     // Add event listeners for user activity

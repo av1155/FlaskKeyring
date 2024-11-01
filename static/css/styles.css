@@ -180,6 +180,17 @@ a.link-style:hover {
     white-space: normal;
 }
 
+/* Button Group Styles */
+.button-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.button-group .btn {
+    min-width: 150px;
+}
+
 /* Password Generator Styles */
 #passwordGenerator {
     padding: 10px;
@@ -326,6 +337,14 @@ input[type="range"]::-moz-range-track {
     .action-buttons form {
         margin: 5px 0;
         width: 100%;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button-group .btn {
+        width: 100%;
+        margin-bottom: 10px;
     }
 }
 

@@ -243,9 +243,9 @@ def save_encrypted_password():
     iv = data.get("iv")
     salt = data.get("salt")
     name = data.get("name")
-    username = data.get("username")
+    username = data.get("username", "")
     folder_id = data.get("folder_id")
-    website = data.get("website")
+    website = data.get("website", "")
 
     # Ensure website starts with 'https://' if it exists and is non-empty
     if website and not (
@@ -253,7 +253,8 @@ def save_encrypted_password():
     ):
         website = "https://" + website
 
-    if not all([ciphertext, iv, salt, name, website, username]):
+    # Ensure essential fields are provided
+    if not all([ciphertext, iv, salt, name]):
         return jsonify({"error": "Missing data"}), 400
 
     if folder_id:
@@ -307,9 +308,9 @@ def update_encrypted_password(password_id):
     iv = data.get("iv")
     salt = data.get("salt")
     name = data.get("name")
-    username = data.get("username")
+    username = data.get("username", "")
     folder_id = data.get("folder_id")
-    website = data.get("website")
+    website = data.get("website", "")
 
     # Ensure website starts with 'https://' if it exists and is non-empty
     if website and not (
@@ -317,7 +318,8 @@ def update_encrypted_password(password_id):
     ):
         website = "https://" + website
 
-    if not all([ciphertext, iv, salt, name, website, username]):
+    # Ensure essential fields are provided
+    if not all([ciphertext, iv, salt, name]):
         return jsonify({"error": "Missing data"}), 400
 
     if folder_id:

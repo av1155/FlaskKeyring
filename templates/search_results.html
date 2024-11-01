@@ -9,43 +9,79 @@
     <div class="container my-4">
         {% if passwords %}
         <section class="password-list">
-            <div class="tbl-container bdr">
-                <table class="table table-bordered table-hover rounded">
-                    <thead class="table-dark text-center">
-                        <tr>
-                            <th>Account Name</th>
-                            <th>Website</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Folder</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-light">
-                        {% for password in passwords %}
-                        <tr data-password-id="{{ password.id }}">
-                            <td class="align-middle text-center">{{ password.name }}</td>
-                            <td class="align-middle text-center">
+            <ul class="list-group">
+                {% for password in passwords %}
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>{{ password.name }}</div>
+                        <button class="btn btn-primary view-details-btn" data-bs-toggle="collapse" data-bs-target="#details-{{ password.id }}" data-password-id="{{ password.id }}">
+                            View Details
+                        </button>
+                    </div>
+
+                    <div class="collapse mt-3" id="details-{{ password.id }}">
+                        <!-- Account Name -->
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Account</span>
+                                <input type="text" class="form-control" id="name-{{ password.id }}" value="{{ password.name }}" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Website -->
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Website</span>
                                 {% if password.website %}
-                                    <a href="{{ password.website }}" target="_blank" class="link-style">
+                                    <a href="{{ password.website }}" target="_blank" class="form-control link-style">
                                         {{ password.website | replace("https://", "") | replace("http://", "") }}
                                     </a>
                                 {% else %}
-                                    <span class="text-muted">No URL provided</span>
+                                    <span class="form-control text-muted">No URL provided</span>
                                 {% endif %}
-                            </td>
-                            <td class="align-middle text-center">{{ password.username }}</td>
-                            <td class="align-middle text-center">
-                                <span class="passwordField">Decrypting...</span>
-                            </td>
-                            <td class="align-middle text-center">{{ password.folder_name }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                            </div>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Username</span>
+                                <input type="text" class="form-control" id="username-{{ password.id }}" value="{{ password.username }}" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Password</span>
+                                <input type="password" class="form-control passwordField" id="password-{{ password.id }}" data-password-id="{{ password.id }}" value="Decrypting..." readonly>
+                                <button class="btn btn-outline-secondary toggle-visibility-btn" data-password-id="{{ password.id }}">
+                                    <i class="bi bi-eye-slash"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary copy-btn" data-password-id="{{ password.id }}">Copy</button>
+                            </div>
+                        </div>
+
+                        <!-- Folder -->
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Folder</span>
+                                <input type="text" class="form-control" id="folder-{{ password.id }}" value="{{ password.folder_name }}" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Edit and Delete Buttons -->
+                        <div class="d-flex justify-content-start mt-3">
+                            <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary me-2">Edit</a>
+                            <button class="btn btn-danger delete-btn" data-id="{{ password.id }}">Delete</button>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
         </section>
         {% else %}
-        <p>No accounts found matching your search criteria.</p>
+        <p class="text-center mt-5 fs-4">No accounts found matching your search criteria.</p>
         {% endif %}
     </div>
 </main>
@@ -53,30 +89,56 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/client_encryption.js') }}"></script>
+<script src="{{ url_for('static', filename='js/toggle_password.js') }}"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", async function () {
-        const rows = document.querySelectorAll("tr[data-password-id]");
+document.addEventListener("DOMContentLoaded", async function () {
+    const passwordFields = document.querySelectorAll(".passwordField");
 
-        for (const row of rows) {
-            const passwordId = row.getAttribute("data-password-id");
-            const passwordField = row.querySelector(".passwordField");
+    if (!sessionStorage.getItem("encryptedMasterPassword")) {
+        await getEncryptionPassword();
+    }
 
+    passwordFields.forEach(async (field) => {
+        const passwordId = field.getAttribute("data-password-id");
+
+        if (sessionStorage.getItem("encryptedMasterPassword")) {
             try {
                 const response = await fetch(`/api/get_password/${passwordId}`);
                 const data = await response.json();
-
                 const decryptedPassword = await decryptData(data);
 
-                if (decryptedPassword !== null) {
-                    passwordField.textContent = decryptedPassword;
+                if (decryptedPassword) {
+                    field.value = decryptedPassword;
                 } else {
-                    passwordField.textContent = "Failed to decrypt.";
+                    field.value = "Failed to decrypt.";
                 }
             } catch (error) {
-                console.error("Error fetching or decrypting password:", error);
-                passwordField.textContent = "Error.";
+                console.error("Error decrypting password:", error);
+                field.value = "Error.";
             }
+        } else {
+            field.value = "Unlock required";
         }
     });
+
+    // Handle Toggle Visibility functionality
+    document.querySelectorAll(".toggle-visibility-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const passwordId = button.getAttribute("data-password-id");
+            const passwordField = document.querySelector(`.passwordField[data-password-id="${passwordId}"]`);
+            const icon = button.querySelector("i");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            }
+        });
+    });
+});
 </script>
 {% endblock %}

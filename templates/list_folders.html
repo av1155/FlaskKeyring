@@ -29,8 +29,9 @@
             </ul>
         </section>
 
-        <div class="text-center">
-            <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary mb-3">Back to Dashboard</a>
+        <div class="text-center d-flex justify-content-center flex-wrap mb-4 button-group">
+            <a href="{{ url_for('main.create_folder') }}" class="btn btn-success me-2 mb-2">Create New Folder</a>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary mb-2">Back to Dashboard</a>
         </div>
 
     </div>
