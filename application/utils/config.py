@@ -11,3 +11,5 @@ MAIL_USE_SSL = False  # Set to True only if using port 465 for SSL
 MAIL_USERNAME = os.getenv("MAIL_USERNAME")
 MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
 MAIL_DEFAULT_SENDER = os.getenv("VERIFIED_SENDER_EMAIL")
+
+RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")

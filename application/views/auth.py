@@ -1,6 +1,8 @@
 import logging
+import os
 from datetime import datetime, timezone
 
+import requests
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import func
@@ -12,6 +14,10 @@ from application.models.folder import Folder
 from application.models.user import User
 from application.utils.extensions import db
 from application.utils.helpers import *
+from application.utils.helpers import (
+    generate_email_verification_token,
+    send_email_verification_link,
+)
 
 auth = Blueprint("auth", __name__)
 
@@ -19,6 +25,27 @@ auth = Blueprint("auth", __name__)
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+        # Retrieve the reCAPTCHA response from the form
+        recaptcha_response = request.form.get("g-recaptcha-response")
+
+        # Verify the reCAPTCHA response with Google's API
+        secret_key = os.getenv("RECAPTCHA_SECRET_KEY")
+        recaptcha_verify_url = "https://www.google.com/recaptcha/api/siteverify"
+
+        # Make a POST request to Google's API with the response and secret key
+        response = requests.post(
+            recaptcha_verify_url,
+            data={"secret": secret_key, "response": recaptcha_response},
+        )
+        result = response.json()
+
+        # Check if the reCAPTCHA verification was successful
+        if not result.get("success"):
+            logging.error(f"reCAPTCHA verification failed: {result}")
+            flash("reCAPTCHA verification failed. Please try again.", "error")
+            return redirect(url_for("auth.register"))
+
+        # Continue with the registration process
         email = request.form.get("email", "").lower().strip()
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()

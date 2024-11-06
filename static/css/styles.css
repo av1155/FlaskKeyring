@@ -408,3 +408,7 @@ input[type="range"]::-moz-range-track {
         width: 100%;
     }
 }
+
+.g-recaptcha {
+    display: inline-block;
+}

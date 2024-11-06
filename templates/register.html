@@ -21,11 +21,26 @@
                 <label for="password">Password</label>
             </div>
 
+            <!-- reCAPTCHA v2 checkbox widget with callback to enable the button -->
+            <div class="d-flex justify-content-center my-3">
+                <div class="g-recaptcha" data-sitekey="6Ld7YHcqAAAAAFm5ju-obUp6OWX5IbE3MmU4mdC9" data-callback="enableRegisterButton"></div>
+            </div>
+
             <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary mb-4">Register</button>
+                <button type="submit" class="btn btn-primary mb-4" id="register-btn" disabled>Register</button>
             </div>
         </section>
     </div>
 </form>
 
+{% endblock %}
+
+{% block scripts %}
+<!-- Google reCAPTCHA v2 -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+    function enableRegisterButton() {
+        document.getElementById('register-btn').disabled = false;
+    }
+</script>
 {% endblock %}

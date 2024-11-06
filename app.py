@@ -89,12 +89,20 @@ login_manager.login_view = "auth.login"  # type: ignore
 def apply_csp(response):
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
-        "script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://player.vimeo.com; "
+        "script-src 'self' 'unsafe-inline' "
+        "https://code.jquery.com "
+        "https://cdn.jsdelivr.net "
+        "https://www.google.com "
+        "https://www.gstatic.com "
+        "https://www.recaptcha.net; "
         "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
         "font-src 'self' https://cdn.jsdelivr.net; "
         "img-src 'self' data:; "
-        "frame-src https://player.vimeo.com; "
-        "connect-src 'self'; "
+        "frame-src https://player.vimeo.com "
+        "https://www.google.com "
+        "https://www.gstatic.com; "
+        "connect-src 'self' https://www.google.com https://www.gstatic.com "
+        "https://www.recaptcha.net; "
         "object-src 'none'; "
         "base-uri 'self';"
     )
