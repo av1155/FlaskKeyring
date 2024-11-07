@@ -4,7 +4,7 @@
 <h2>Register</h2>
 
 <form method="post" id="registerForm">
-    <div class="container my-4 form-container">
+    <div class="container my-4 auth-form-container">
         <section>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required/>
@@ -46,6 +46,18 @@
                 <button type="submit" class="btn btn-primary mb-4" id="register-btn" disabled>Register</button>
             </div>
         </section>
+
+        <div class="login-prompt-section mt-4 mb-4">
+            <div class="mb-3">
+                <p class="mb-0 login-p-font-prompt">Have an account?</p>
+                <a href="/login" class="p-0 btn btn-link login-href-font-prompt">Login</a>
+            </div>
+
+            <div class="mb-0">
+                <p class="mb-0 login-p-font-prompt">Forgot your password?</p>
+                <a href="/forgot-password" class="p-0 btn btn-link login-href-font-prompt">Reset password</a>
+            </div>
+        </div>
     </div>
 </form>
 

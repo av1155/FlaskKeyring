@@ -4,168 +4,170 @@
     <h1>FlaskKeyring Dashboard</h1>
 </header>
 
-<main>
-    <section class="search-password">
-        <h2>Search Account</h2>
-        <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-2">
-            <div class="input-group">
-                <input type="text" id="search_name" name="search_name" class="form-control form-control-dark" placeholder="Search by account name" required />
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
-    </section>
-
-    <section class="password-list">
-        <h2>Your Accounts</h2>
-
-        <ul class="list-group">
-            {% for password in passwords %}
-            <li class="list-group-item">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>{{ password.name }}</div>
-                    <button class="btn btn-primary view-details-btn" data-bs-toggle="collapse" data-bs-target="#details-{{ password.id }}" data-password-id="{{ password.id }}">
-                        View Details
-                    </button>
+<div class="">
+    <main class="main-form-container">
+        <section class="search-password">
+            <h2>Search Account</h2>
+            <form method="POST" action="{{ url_for('main.search_password') }}" class="mb-2">
+                <div class="input-group">
+                    <input type="text" id="search_name" name="search_name" class="form-control form-control-dark" placeholder="Search by account name" required />
+                    <button type="submit" class="btn btn-primary">Search</button>
                 </div>
+            </form>
+        </section>
 
-                <div class="collapse mt-3" id="details-{{ password.id }}">
-                    <div class="mb-2">
-                        <div class="input-group">
-                            <span class="input-group-text fixed-width-label bg-light text-dark">Account</span>
-                            <input type="text" class="form-control" id="name-{{ password.id }}" value="{{ password.name }}" readonly>
+        <section class="password-list">
+            <h2>Your Accounts</h2>
+
+            <ul class="list-group">
+                {% for password in passwords %}
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>{{ password.name }}</div>
+                        <button class="btn btn-primary view-details-btn" data-bs-toggle="collapse" data-bs-target="#details-{{ password.id }}" data-password-id="{{ password.id }}">
+                            View Details
+                        </button>
+                    </div>
+
+                    <div class="collapse mt-3" id="details-{{ password.id }}">
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Account</span>
+                                <input type="text" class="form-control" id="name-{{ password.id }}" value="{{ password.name }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Website</span>
+                                {% if password.website %}
+                                    <a href="{{ password.website }}" target="_blank" class="form-control link-style">
+                                        {{ password.website | replace("https://", "") | replace("http://", "") }}
+                                    </a>
+                                {% else %}
+                                    <span class="form-control text-muted">No URL provided</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Username</span>
+                                <input type="text" class="form-control" id="username-{{ password.id }}" value="{{ password.username }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Password</span>
+                                <input type="password" class="form-control passwordField" id="password-{{ password.id }}" data-password-id="{{ password.id }}" value="Decrypting..." readonly>
+                                <button class="btn btn-outline-secondary toggle-visibility-btn" data-password-id="{{ password.id }}">
+                                    <i class="bi bi-eye-slash"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary copy-btn" data-password-id="{{ password.id }}">Copy</button>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text fixed-width-label bg-light text-dark">Folder</span>
+                                <input type="text" class="form-control" id="folder-{{ password.id }}" value="{{ password.folder_name }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-start mt-3">
+                            <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary me-2">Edit</a>
+                            <button class="btn btn-danger delete-btn" data-id="{{ password.id }}">Delete</button>
                         </div>
                     </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
 
-                    <div class="mb-2">
-                        <div class="input-group">
-                            <span class="input-group-text fixed-width-label bg-light text-dark">Website</span>
-                            {% if password.website %}
-                                <a href="{{ password.website }}" target="_blank" class="form-control link-style">
-                                    {{ password.website | replace("https://", "") | replace("http://", "") }}
-                                </a>
-                            {% else %}
-                                <span class="form-control text-muted">No URL provided</span>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="mb-2">
-                        <div class="input-group">
-                            <span class="input-group-text fixed-width-label bg-light text-dark">Username</span>
-                            <input type="text" class="form-control" id="username-{{ password.id }}" value="{{ password.username }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="mb-2">
-                        <div class="input-group">
-                            <span class="input-group-text fixed-width-label bg-light text-dark">Password</span>
-                            <input type="password" class="form-control passwordField" id="password-{{ password.id }}" data-password-id="{{ password.id }}" value="Decrypting..." readonly>
-                            <button class="btn btn-outline-secondary toggle-visibility-btn" data-password-id="{{ password.id }}">
-                                <i class="bi bi-eye-slash"></i>
-                            </button>
-                            <button class="btn btn-outline-secondary copy-btn" data-password-id="{{ password.id }}">Copy</button>
-                        </div>
-                    </div>
-
-                    <div class="mb-2">
-                        <div class="input-group">
-                            <span class="input-group-text fixed-width-label bg-light text-dark">Folder</span>
-                            <input type="text" class="form-control" id="folder-{{ password.id }}" value="{{ password.folder_name }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-start mt-3">
-                        <a href="{{ url_for('main.edit_password', password_id=password.id) }}" class="btn btn-secondary me-2">Edit</a>
-                        <button class="btn btn-danger delete-btn" data-id="{{ password.id }}">Delete</button>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-    </section>
-
-    <section class="add-password">
-        <h2>Add New Account</h2>
-        <form id="addPasswordForm" class="mb-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control form-control-dark" id="name" name="name" placeholder="Account Name" required>
-                <label for="name">Account Name</label>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control form-control-dark" id="website" name="website" placeholder="Website URL">
-                <label for="website">Website URL</label>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control form-control-dark" id="username" name="username" placeholder="Username">
-                <label for="username">Username</label>
-            </div>
-
-            <div class="input-group mb-3">
-                <div class="form-floating flex-grow-1">
-                    <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
-                    <label for="floatingPassword">Password</label>
-                </div>
-                <button id="togglePassword" type="button" class="btn btn-outline-secondary toggle-password" data-target="#floatingPassword">
-                    <i class="bi bi-eye-slash"></i>
-                </button>
-                <button id="generatePasswordIcon" type="button" class="btn btn-outline-secondary">
-                    <img src="{{ url_for('static', filename='images/key-icon.png') }}" alt="Password Generator" width="20" height="20">
-                </button>
-            </div>
-
-            <div class="mb-3" id="passwordGenerator" style="display: none;">
-                <div class="mb-3">
-                    <label for="generatedPassword" class="form-label">Generated Password:</label>
-                    <input type="text" id="generatedPassword" readonly class="form-control" />
+        <section class="add-password">
+            <h2>Add New Account</h2>
+            <form id="addPasswordForm" class="mb-4">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-dark" id="name" name="name" placeholder="Account Name" required>
+                    <label for="name">Account Name</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <select class="form-select" id="passwordType" name="passwordType" aria-label="Password Type select">
-                        <option value="random">Random Password</option>
-                        <option value="memorable">Memorable Password</option>
-                        <option value="pin">PIN Code</option>
+                    <input type="text" class="form-control form-control-dark" id="website" name="website" placeholder="Website URL">
+                    <label for="website">Website URL</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-dark" id="username" name="username" placeholder="Username">
+                    <label for="username">Username</label>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="form-floating flex-grow-1">
+                        <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
+                        <label for="floatingPassword">Password</label>
+                    </div>
+                    <button id="togglePassword" type="button" class="btn btn-outline-secondary toggle-password" data-target="#floatingPassword">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+                    <button id="generatePasswordIcon" type="button" class="btn btn-outline-secondary">
+                        <img src="{{ url_for('static', filename='images/key-icon.png') }}" alt="Password Generator" width="20" height="20">
+                    </button>
+                </div>
+
+                <div class="mb-3" id="passwordGenerator" style="display: none;">
+                    <div class="mb-3">
+                        <label for="generatedPassword" class="form-label">Generated Password:</label>
+                        <input type="text" id="generatedPassword" readonly class="form-control" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="passwordType" name="passwordType" aria-label="Password Type select">
+                            <option value="random">Random Password</option>
+                            <option value="memorable">Memorable Password</option>
+                            <option value="pin">PIN Code</option>
+                        </select>
+                        <label for="passwordType">Password Type:</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="passwordLength" class="form-label">Password Length:</label>
+                        <input type="range" id="passwordLength" value="12" min="4" max="40" class="form-range" />
+                        <span id="passwordLengthDisplay" class="text-muted">Length: 12</span>
+                    </div>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" role="switch" id="includeNumbers" checked>
+                        <label class="form-check-label" for="includeNumbers">Include Numbers</label>
+                    </div>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" role="switch" id="includeSymbols" checked>
+                        <label class="form-check-label" for="includeSymbols">Include Symbols</label>
+                    </div>
+
+                    <div class="text-center">
+                        <button id="generatePasswordButton" class="btn btn-primary mb-2">Generate</button>
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="folder_id" name="folder_id" aria-label="Folder select">
+                        {% for folder in folders %}
+                            <option value="{{ folder.id }}" {% if folder.name == 'Main' %}selected{% endif %}>{{ folder.name }}</option>
+                        {% endfor %}
                     </select>
-                    <label for="passwordType">Password Type:</label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="passwordLength" class="form-label">Password Length:</label>
-                    <input type="range" id="passwordLength" value="12" min="4" max="40" class="form-range" />
-                    <span id="passwordLengthDisplay" class="text-muted">Length: 12</span>
-                </div>
-
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="includeNumbers" checked>
-                    <label class="form-check-label" for="includeNumbers">Include Numbers</label>
-                </div>
-
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="includeSymbols" checked>
-                    <label class="form-check-label" for="includeSymbols">Include Symbols</label>
+                    <label for="folder_id">Folder</label>
                 </div>
 
                 <div class="text-center">
-                    <button id="generatePasswordButton" class="btn btn-primary mb-2">Generate</button>
+                    <button type="submit" class="btn btn-primary">Add Account</button>
                 </div>
-            </div>
-
-            <div class="form-floating mb-3">
-                <select class="form-select" id="folder_id" name="folder_id" aria-label="Folder select">
-                    {% for folder in folders %}
-                        <option value="{{ folder.id }}" {% if folder.name == 'Main' %}selected{% endif %}>{{ folder.name }}</option>
-                    {% endfor %}
-                </select>
-                <label for="folder_id">Folder</label>
-            </div>
-
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Add Account</button>
-            </div>
-        </form>
-    </section>
-</main>
+            </form>
+        </section>
+    </main>
+</div>
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
