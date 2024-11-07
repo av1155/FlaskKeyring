@@ -3,8 +3,8 @@
 {% block content %}
 <h2>Register</h2>
 
-<form method="post">
-    <div class="container my-4">
+<form method="post" id="registerForm">
+    <div class="container my-4 form-container">
         <section>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required/>
@@ -16,14 +16,30 @@
                 <label for="username">Username</label>
             </div>
 
-            <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required />
-                <label for="password">Password</label>
+            <div class="input-group mb-3">
+                <div class="form-floating flex-grow-1">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required />
+                    <label for="password">Password</label>
+                </div>
+                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#password">
+                    <i class="bi bi-eye-slash"></i>
+                </button>
             </div>
+
+            <div class="input-group mb-3">
+                <div class="form-floating flex-grow-1">
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required />
+                    <label for="confirm_password">Confirm Password</label>
+                </div>
+                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#confirm_password">
+                    <i class="bi bi-eye-slash"></i>
+                </button>
+            </div>
+            <div id="password-match-message" class="text-danger" style="display: none;">Passwords do not match</div>
 
             <!-- reCAPTCHA v2 checkbox widget with callback to enable the button -->
             <div class="d-flex justify-content-center my-3">
-                <div class="g-recaptcha" data-sitekey="6Ld7YHcqAAAAAFm5ju-obUp6OWX5IbE3MmU4mdC9" data-callback="enableRegisterButton"></div>
+                <div class="g-recaptcha" data-sitekey="6Ld7YHcqAAAAAFm5ju-obUp6OWX5IbE3MmU4mdC9" data-callback="verifyCaptcha"></div>
             </div>
 
             <div class="text-center mt-4">
@@ -38,9 +54,38 @@
 {% block scripts %}
 <!-- Google reCAPTCHA v2 -->
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="{{ url_for('static', filename='js/toggle_password.js') }}"></script>
 <script>
-    function enableRegisterButton() {
-        document.getElementById('register-btn').disabled = false;
+    let captchaVerified = false;
+
+    function verifyCaptcha() {
+        captchaVerified = true;
+        checkFormValidity(); // Re-check form only after CAPTCHA verification
     }
+
+    function checkFormValidity() {
+        const passwordField = document.getElementById("password");
+        const confirmPasswordField = document.getElementById("confirm_password");
+        const registerButton = document.getElementById("register-btn"); // Correctly referencing the ID
+        const passwordMatchMessage = document.getElementById("password-match-message");
+
+        // Check if passwords match
+        const passwordsMatch = passwordField.value === confirmPasswordField.value;
+        if (confirmPasswordField.value) { // Show message only when user starts typing in confirm password
+            passwordMatchMessage.style.display = passwordsMatch ? "none" : "block";
+        }
+
+        // Enable the register button only if passwords match and CAPTCHA is verified
+        registerButton.disabled = !(passwordsMatch && captchaVerified);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const passwordField = document.getElementById("password");
+        const confirmPasswordField = document.getElementById("confirm_password");
+
+        // Only check password match warning when user types in confirm password
+        passwordField.addEventListener("input", checkFormValidity);
+        confirmPasswordField.addEventListener("input", checkFormValidity);
+    });
 </script>
 {% endblock %}

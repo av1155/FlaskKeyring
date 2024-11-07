@@ -1,54 +1,49 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="d-flex flex-column vh-100 justify-content-between">
-    <header class="text-center mt-4">
-        <h1 class="display-4" id="welcomePageHeader">Welcome to FlaskKeyring</h1>
-        <p class="lead">Your secure and reliable password management solution.</p>
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Secure Passwords" class="img-fluid rounded mt-2" id="metaImage">
-        <hr class="my-4">
-        <p>Store and manage your passwords securely and conveniently with FlaskKeyring.</p>
-    </header>
-
-
-    <main class="mb-auto text-center">
+<!-- Hero Section -->
+<section class="hero-section text-center text-white py-2">
+    <div class="container">
+        <h1 class="display-3 mb-4">Welcome to FlaskKeyring</h1>
+        <p class="lead mb-5">Securely manage your passwords with ease and confidence.</p>
         {% if not current_user.is_authenticated %}
-        <p class="lead">
-            <div class="d-flex justify-content-center flex-wrap">
-                <div class="btn-group mx-2">
-                    <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Register Now</a>
-                </div>
-                <div class="btn-group mx-2">
-                    <a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
-                </div>
-            </div>
-            <div class="btn-group mt-3">
-                <a class="btn btn-info btn-lg" href="{{ url_for('main.demo') }}" role="button">Watch Demo</a>
-            </div>
-        </p>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg me-2">Get Started</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg me-2">Login</a>
+        <a href="{{ url_for('main.demo') }}" class="btn btn-info btn-lg">Watch Demo</a>
         {% else %}
-        <p class="lead">
-            <a class="btn btn-success btn-lg" href="{{ url_for('main.dashboard') }}" role="button">Go to Dashboard</a>
-        </p>
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-success btn-lg">Go to Dashboard</a>
         {% endif %}
-    </main>
+    </div>
+</section>
 
-
-    <footer class="bg-dark rounded text-white py-3">
-        <div class="container">
-            <div class="row justify-content-between align-items-center">
-                <div class="col d-flex justify-content-md-start">
-                    <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="FlaskKeyring Logo" class="me-2" style="height: 24px;">
-                    <p class="mb-0">&copy; {{ current_year }} FlaskKeyring</p>
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <h2 class="mb-5">Why Choose FlaskKeyring?</h2>
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-shield-alt fa-3x text-primary"></i>
                 </div>
-                <div class="col-auto">
-                    <a href="mailto:support@flaskkeyring.com">
-                        <img src="{{ url_for('static', filename='images/email-icon.png') }}" alt="Email" style="height: 24px;" />
-                    </a>
+                <h4>Top-notch Security</h4>
+                <p>Advanced encryption keeps your passwords safe and secure.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-sync-alt fa-3x text-primary"></i>
                 </div>
+                <h4>Easy Access</h4>
+                <p>Access your passwords anytime, anywhere, on any device.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-user-friends fa-3x text-primary"></i>
+                </div>
+                <h4>User-Friendly</h4>
+                <p>An intuitive interface that makes managing passwords a breeze.</p>
             </div>
         </div>
-    </footer>
-</div>
-{% endblock %}
+    </div>
+</section>
 
+{% endblock %}
