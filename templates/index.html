@@ -2,18 +2,34 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section text-center text-white py-2">
-    <div class="container">
-        <h1 class="display-3 mb-4">Welcome to FlaskKeyring</h1>
+<section class="d-flex flex-column justify-content-between">
+    <header class="text-center mt-4">
+        <h1 class="display-4" id="welcomePageHeader">Welcome to FlaskKeyring</h1>
         <p class="lead mb-5">Securely manage your passwords with ease and confidence.</p>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Secure Passwords" class="img-fluid rounded mt-2 mb-4" id="metaImage">
+    </header>
+
+    <main class="mb-auto text-center mt-4">
         {% if not current_user.is_authenticated %}
-        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg me-2">Get Started</a>
-        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg me-2">Login</a>
-        <a href="{{ url_for('main.demo') }}" class="btn btn-info btn-lg">Watch Demo</a>
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-auto mb-2">
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg responsive-btn">Get Started</a>
+            </div>
+            <div class="col-12 col-sm-auto mb-2">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-secondary btn-lg responsive-btn">Login</a>
+            </div>
+            <div class="col-12 col-sm-auto mb-2">
+                <a href="{{ url_for('main.demo') }}" class="btn btn-info btn-lg responsive-btn">Watch Demo</a>
+            </div>
+        </div>
         {% else %}
-        <a href="{{ url_for('main.dashboard') }}" class="btn btn-success btn-lg">Go to Dashboard</a>
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-auto mb-2">
+                <a href="{{ url_for('main.dashboard') }}" class="btn btn-success btn-lg responsive-btn">Go to Dashboard</a>
+            </div>
+        </div>
         {% endif %}
-    </div>
+    </main>
 </section>
 
 <!-- Features Section -->

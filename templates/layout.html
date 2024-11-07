@@ -1,187 +1,290 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>FlaskKeyring</title>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FlaskKeyring</title>
+        <!-- Primary Meta Tags -->
+        <meta name="title" content="FlaskKeyring - Secure Password Management" />
+        <meta
+            name="description"
+            content="FlaskKeyring is a secure and efficient password manager built with Python and Flask."
+        />
 
-    <!-- Primary Meta Tags -->
-    <meta name="title" content="FlaskKeyring - Secure Password Management" />
-    <meta name="description"
-        content="FlaskKeyring is a secure and efficient password manager built with Python and Flask." />
+        <!-- Additional Meta Tags -->
+        <meta name="keywords" content="password manager, Flask, secure, Python" />
+        <meta name="author" content="FlaskKeyring Team" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="robots" content="index, follow" />
+        <meta name="theme-color" content="#212529" />
 
-    <!-- Additional Meta Tags -->
-    <meta name="keywords" content="password manager, Flask, secure, Python" />
-    <meta name="author" content="FlaskKeyring Team" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#212529" />
+        <!-- Open Graph / Facebook Meta Tags -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.flaskkeyring.tech" />
+        <meta property="og:title" content="FlaskKeyring - Secure Password Management" />
+        <meta
+            property="og:description"
+            content="FlaskKeyring is a secure and efficient password manager built with Python and Flask."
+        />
+        <meta property="og:image" content="{{ url_for('static', filename='images/logo.png') }}" />
 
-    <!-- Open Graph / Facebook Meta Tags -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.flaskkeyring.tech" />
-    <meta property="og:title" content="FlaskKeyring - Secure Password Management" />
-    <meta property="og:description"
-        content="FlaskKeyring is a secure and efficient password manager built with Python and Flask." />
-    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png') }}" />
+        <!-- Twitter Meta Tags -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.flaskkeyring.tech" />
+        <meta property="twitter:title" content="FlaskKeyring - Secure Password Management" />
+        <meta
+            property="twitter:description"
+            content="FlaskKeyring is a secure and efficient password manager built with Python and Flask."
+        />
+        <meta
+            property="twitter:image"
+            content="{{ url_for('static', filename='images/logo.png') }}"
+        />
 
-    <!-- Twitter Meta Tags -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://www.flaskkeyring.tech" />
-    <meta property="twitter:title" content="FlaskKeyring - Secure Password Management" />
-    <meta property="twitter:description"
-        content="FlaskKeyring is a secure and efficient password manager built with Python and Flask." />
-    <meta property="twitter:image" content="{{ url_for('static', filename='images/logo.png') }}" />
+        <!-- Favicon -->
+        <link
+            rel="icon"
+            type="image/png"
+            href="{{ url_for('static', filename='images/favicon.png') }}"
+        />
+        <link
+            rel="apple-touch-icon"
+            href="{{ url_for('static', filename='images/favicon.png') }}"
+        />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}" />
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.png') }}" />
+        <!-- Font Awesome for Icons -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
 
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- Bootstrap and CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+        />
+    </head>
 
-    <!-- Bootstrap and CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-</head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <!-- Navbar brand with image -->
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                    <img
+                        src="{{ url_for('static', filename='images/favicon.png') }}"
+                        alt="FlaskKeyring Logo"
+                        width="30"
+                        height="30"
+                        class="d-inline-block align-text-top"
+                    />
+                    FlaskKeyring
+                </a>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <!-- Navbar brand with image -->
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">
-                <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="FlaskKeyring Logo" width="30"
-                    height="30" class="d-inline-block align-text-top" />
-                FlaskKeyring
-            </a>
+                <!-- Toggle button for mobile navigation -->
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <!-- Toggle button for mobile navigation -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Navbar links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-lg-0">
-
-                    {% if not current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
-                    </li>
-                    {% endif %}
-
-                    {% if current_user.is_authenticated %}
-                    <ul class="navbar-nav ms-auto">
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-lg-0">
+                        {% if not current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                        </li>
+                        {% endif %} {% if current_user.is_authenticated %}
                         <!-- Folder Management Dropdown -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="folderDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                id="folderDropdown"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
                                 Folders
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="folderDropdown">
+                            <ul
+                                class="dropdown-menu dropdown-menu-dark"
+                                aria-labelledby="folderDropdown"
+                            >
                                 <li>
-                                    <a class="dropdown-item" href="{{ url_for('main.create_folder') }}">Create
-                                        Folder</a>
+                                    <a
+                                        class="dropdown-item"
+                                        href="{{ url_for('main.create_folder') }}"
+                                        >Create Folder</a
+                                    >
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ url_for('main.list_folders') }}">View Folders</a>
+                                    <a
+                                        class="dropdown-item"
+                                        href="{{ url_for('main.list_folders') }}"
+                                        >View Folders</a
+                                    >
                                 </li>
                             </ul>
                         </li>
 
                         <!-- User Dropdown -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                id="navbarDropdown"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
                                 <i class="bi-person-circle"></i> {{ current_user.username }}
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+                            <ul
+                                class="dropdown-menu dropdown-menu-dark"
+                                aria-labelledby="navbarDropdown"
+                            >
                                 <li>
-                                    <a class="dropdown-item" href="{{ url_for('auth.change_password') }}">Change
-                                        Password</a>
+                                    <a class="dropdown-item" href="{{ url_for('main.dashboard') }}"
+                                        >Dashboard</a
+                                    >
                                 </li>
-                                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                                <li>
+                                    <a
+                                        class="dropdown-item"
+                                        href="{{ url_for('auth.change_password') }}"
+                                        >Change Password</a
+                                    >
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('auth.logout') }}"
+                                        >Log Out</a
+                                    >
+                                </li>
                             </ul>
                         </li>
+                        {% endif %}
                     </ul>
-                    {% endif %}
-
+                </div>
             </div>
+        </nav>
+
+        <div class="container mt-4">
+            <!-- Flash Messages Section -->
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {%
+            for category, message in messages %}
+            <div
+                class="text-center alert alert-{{ 'danger' if category == 'error' else category }}"
+                role="alert"
+            >
+                {{ message }}
+            </div>
+            {% endfor %} {% endif %} {% endwith %}
+            <!-- End Of Flash Messages Section -->
+
+            {% block content %}
+            <!-- Main content of each page will be inserted here -->
+            {% endblock %}
         </div>
-    </nav>
 
-    <div class="container mt-4">
-        <!-- Flash Messages Section -->
-        {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message
-        in messages %}
-        <div class="text-center alert alert-{{ 'danger' if category == 'error' else category }}" role="alert">
-            {{ message }}
-        </div>
-        {% endfor %} {% endif %} {% endwith %}
-        <!-- End Of Flash Messages Section -->
+        <footer class="text-white py-3 mt-5">
+            <div class="container-fluid">
+                <div class="container footer-container">
+                    <div class="row justify-content-between align-items-center">
+                        <!-- Left section with logo and copyright -->
+                        <div
+                            class="col-12 col-md-auto d-flex justify-content-center justify-content-md-start align-items-center mb-3 mb-md-0"
+                        >
+                            <img
+                                src="{{ url_for('static', filename='images/favicon.png') }}"
+                                alt="FlaskKeyring Logo"
+                                class="me-2"
+                                style="height: 24px"
+                            />
+                            <p class="mb-0">&copy; {{ current_year }} FlaskKeyring</p>
+                        </div>
 
-        {% block content %}
-        <!-- Main content of each page will be inserted here -->
-        {% endblock %}
-    </div>
+                        <!-- Center section with links -->
+                        <div class="col-12 col-md-auto d-flex justify-content-center mb-3 mb-md-0">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item">
+                                    <a
+                                        href="{{ url_for('main.terms_of_service') }}"
+                                        class="text-white"
+                                        >Terms of Service</a
+                                    >
+                                </li>
+                                <li class="list-inline-item">
+                                    <a
+                                        href="{{ url_for('main.privacy_policy') }}"
+                                        class="text-white"
+                                        >Privacy Policy</a
+                                    >
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="mailto:support@flaskkeyring.com" class="text-white"
+                                        >Contact Us</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
 
-    <footer class="text-white py-3 mt-5">
-        <div class="container-fluid">
-            <div class="container footer-container">
-                <div class="row justify-content-between align-items-center">
-                    <!-- Left section with logo and copyright -->
-                    <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-start align-items-center mb-3 mb-md-0">
-                        <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="FlaskKeyring Logo" class="me-2" style="height: 24px;">
-                        <p class="mb-0">&copy; {{ current_year }} FlaskKeyring</p>
-                    </div>
-
-                    <!-- Center section with links -->
-                    <div class="col-12 col-md-auto d-flex justify-content-center mb-3 mb-md-0">
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item"><a href="{{ url_for('main.terms_of_service') }}" class="text-white">Terms of Service</a></li>
-                            <li class="list-inline-item"><a href="{{ url_for('main.privacy_policy') }}" class="text-white">Privacy Policy</a></li>
-                            <li class="list-inline-item"><a href="mailto:support@flaskkeyring.com" class="text-white">Contact Us</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Right section with email icon -->
-                    <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end">
-                        <a href="mailto:support@mg.flaskkeyring.tech" class="text-white">
-                            <img src="{{ url_for('static', filename='images/email-icon.png') }}" alt="Email" style="height: 24px;" />
-                        </a>
+                        <!-- Right section with email icon -->
+                        <div
+                            class="col-12 col-md-auto d-flex justify-content-center justify-content-md-end"
+                        >
+                            <a href="mailto:support@mg.flaskkeyring.tech" class="text-white">
+                                <img
+                                    src="{{ url_for('static', filename='images/email-icon.png') }}"
+                                    alt="Email"
+                                    style="height: 24px"
+                                />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
+        </footer>
 
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs"
-        crossorigin="anonymous"></script>
+        <!-- Include jQuery -->
+        <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs"
+            crossorigin="anonymous"
+        ></script>
 
-    <!-- Include Bootstrap JS via CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+        <!-- Include Bootstrap JS via CDN -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"
+        ></script>
 
-    <!-- Flask flash message timeout -->
-    <script src="{{ url_for('static', filename='js/flash_message_timeout.js') }}"></script>
+        <!-- Flask flash message timeout -->
+        <script src="{{ url_for('static', filename='js/flash_message_timeout.js') }}"></script>
 
-    {% block scripts %}
-    <!-- Include scripts block for children templates -->
-    {% endblock %}
-</body>
-
+        {% block scripts %}
+        <!-- Include scripts block for children templates -->
+        {% endblock %}
+    </body>
 </html>

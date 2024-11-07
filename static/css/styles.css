@@ -58,6 +58,17 @@ a.link-style:hover {
     text-decoration: underline;
 }
 
+/* Custom responsive width for buttons */
+.responsive-btn {
+    width: 75%;
+}
+
+@media (min-width: 576px) {
+    .responsive-btn {
+        width: 100%;
+    }
+}
+
 /* Button Hover Effect */
 .btn:hover {
     opacity: 0.9;
