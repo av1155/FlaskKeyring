@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Terms of Service</title>
+        <style>
+            /* Root Variables */
+            :root {
+                --primary-color: #4a90e2;
+                --text-color: #212529;
+                --secondary-text-color: #666;
+                --section-background: #ffffff;
+                --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                --border-radius: 10px;
+            }
+
+            /* Container Styling */
+            .container {
+                max-width: 800px;
+                background-color: var(--section-background);
+                box-shadow: var(--box-shadow);
+                border-radius: var(--border-radius);
+                padding: 40px;
+                margin: 5% auto;
+            }
+
+            /* Header and General Text */
+            h1 {
+                font-size: 2.5em;
+                font-weight: bold;
+                color: var(--text-color);
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            .last-updated {
+                text-align: center;
+                font-size: 0.9em;
+                color: var(--secondary-text-color);
+                margin-bottom: 20px;
+            }
+
+            /* Section Headings */
+            .section-heading {
+                font-size: 1.5em;
+                font-weight: bold;
+                color: var(--primary-color);
+                border-left: 4px solid var(--primary-color);
+                padding-left: 10px;
+                margin-bottom: 15px;
+            }
+
+            /* Paragraph Styling */
+            p {
+                font-size: 1em;
+                color: var(--text-color);
+                line-height: 1.6;
+                text-align: justify;
+                margin-bottom: 15px;
+            }
+
+            /* Footer Styling */
+            footer {
+                text-align: center;
+                margin-top: 40px;
+            }
+
+            footer p {
+                font-size: 0.9em;
+                color: var(--secondary-text-color);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1>Terms of Service</h1>
+                <p class="last-updated">Last Updated: 2024</p>
+            </header>
+
+            <main>
+                <section class="mb-4">
+                    <h2 class="section-heading">Acceptance of Terms</h2>
+                    <p>
+                        By accessing or using FlaskKeyring on Heroku, you agree to comply with these
+                        Terms of Service.
+                    </p>
+                </section>
+
+                <section class="mb-4">
+                    <h2 class="section-heading">License and Use</h2>
+                    <p>
+                        FlaskKeyring is provided solely for personal, non-commercial use on the
+                        Heroku platform.
+                    </p>
+                </section>
+
+                <section class="mb-4">
+                    <h2 class="section-heading">User Obligations</h2>
+                    <p>
+                        Users are responsible for securing their accounts and must use FlaskKeyring
+                        lawfully.
+                    </p>
+                </section>
+
+                <section class="mb-4">
+                    <h2 class="section-heading">Termination of Service</h2>
+                    <p>
+                        These Terms remain effective until terminated. Violations may result in
+                        suspension or termination.
+                    </p>
+                </section>
+
+                <section class="mb-4">
+                    <h2 class="section-heading">Limitation of Liability</h2>
+                    <p>
+                        FlaskKeyring is provided "as is." The creator is not liable for damages from
+                        your use of the Service.
+                    </p>
+                </section>
+
+                <section class="mb-4">
+                    <h2 class="section-heading">Governing Law</h2>
+                    <p>
+                        These Terms are governed by the laws of the State of Florida, United States.
+                    </p>
+                </section>
+            </main>
+
+            <footer>
+                <p>&copy; 2024 FlaskKeyring. All rights reserved.</p>
+            </footer>
+        </div>
+    </body>
+
+    <footer>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary">Home</a>
+    </footer>
+</html>

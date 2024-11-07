@@ -339,3 +339,15 @@ def update_encrypted_password(password_id):
     db.session.commit()
 
     return jsonify({"status": "success"}), 200
+
+
+@main.route("/terms-of-service")
+def terms_of_service():
+    current_year = datetime.now().year
+    return render_template("terms_of_service.html", current_year=current_year)
+
+
+@main.route("/privacy-policy")
+def privacy_policy():
+    current_year = datetime.now().year
+    return render_template("privacy_policy.html", current_year=current_year)

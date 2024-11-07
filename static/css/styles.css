@@ -69,34 +69,6 @@ a.link-style:hover {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Table Styles */
-.table {
-    color: var(--text-color);
-    table-layout: fixed;
-    width: 100%;
-    word-wrap: break-word;
-}
-
-.table td,
-.table th {
-    white-space: normal;
-    overflow-wrap: break-word;
-}
-
-.table-light td {
-    background-color: var(--light-grey);
-}
-
-.table-dark th {
-    background-color: #343a40;
-}
-
-/* Containers */
-.tbl-container {
-    width: fit-content;
-    margin: 10px auto 0;
-}
-
 .bdr {
     border-radius: 6px;
     overflow: hidden;
@@ -119,10 +91,14 @@ a.link-style:hover {
 
 /* Main Container */
 .container {
-    max-width: 850px;
-    width: 80%;
+    max-width: 1100px;
     margin: auto;
     padding: 20px;
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
 }
 
 /* Section Styles */
@@ -140,6 +116,138 @@ a.link-style:hover {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     margin-bottom: 20px;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #e3f2fd;
+}
+
+/* Hero Section */
+.hero-section {
+    color: #ffffff;
+    padding: 100px 0;
+}
+
+.hero-section .container {
+    background-color: var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: 50px 20px;
+    box-shadow: var(--box-shadow);
+}
+
+.hero-section h1 {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.hero-section p.lead {
+    font-size: 24px;
+    margin-bottom: 40px;
+}
+
+.hero-section .btn {
+    margin-bottom: 10px;
+}
+
+/* Features Section */
+.features-section {
+    padding: 60px 0;
+}
+
+.features-section .container {
+    background-color: var(--section-background); /* Set background for container only */
+    border-radius: var(--border-radius);
+    padding: 40px 20px;
+    box-shadow: var(--box-shadow);
+}
+
+.feature-icon i {
+    color: var(--primary-color);
+}
+
+.features-section h4 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.features-section p {
+    color: var(--secondary-text-color);
+}
+
+/* Footer */
+footer {
+    padding: 20px 0;
+}
+
+footer .container {
+    background-color: #343a40; /* Dark background within the container */
+    color: #fff;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+footer a {
+    color: #adb5bd;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+footer .list-inline-item:not(:last-child) {
+    margin-right: 15px;
+}
+
+/* Footer Container Styles */
+.footer-container {
+    max-width: 900px; /* Limit the maximum width of the footer */
+    padding: 10px 0; /* Less padding for a more compact look */
+    border-radius: var(--border-radius);
+    background-color: #343a40;
+    color: #fff;
+    box-shadow: var(--box-shadow);
+}
+
+footer a {
+    color: #adb5bd;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+footer .list-inline-item:not(:last-child) {
+    margin-right: 15px;
+}
+
+/* Responsive Design for Footer */
+@media (max-width: 767px) {
+    .footer-container {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
+}
+
+@media (max-width: 431px) {
+    .footer-container {
+        padding: 8px; /* Further reduce padding on extra small screens */
+    }
+
+    footer p,
+    footer a {
+        font-size: 14px; /* Smaller font for compactness */
+    }
+
+    footer .list-inline-item:not(:last-child) {
+        margin-right: 10px; /* Reduce spacing between links */
+    }
 }
 
 /* Prompt Sections */
@@ -305,23 +413,23 @@ input[type="range"]::-moz-range-track {
     }
 
     h1 {
+        font-size: 32px;
+    }
+
+    .hero-section {
+        padding: 80px 0;
+    }
+
+    .hero-section h1 {
+        font-size: 32px;
+    }
+
+    .hero-section p.lead {
+        font-size: 18px;
+    }
+
+    .features-section h2 {
         font-size: 28px;
-    }
-
-    .tbl-container {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .table .btn,
-    .table form {
-        display: block;
-        width: 100%;
-        margin-bottom: 3px;
-    }
-
-    .table td {
-        padding: 0.5rem;
     }
 
     #metaImage {
@@ -366,23 +474,20 @@ input[type="range"]::-moz-range-track {
         font-size: 28px;
     }
 
-    .tbl-container {
-        width: 100%;
-        margin-top: 10px;
+    .hero-section {
+        padding: 60px 0;
     }
 
-    .table .btn,
-    .table form {
-        display: block;
-        width: 100%;
-        margin-bottom: 3px;
+    .hero-section h1 {
+        font-size: 28px;
     }
 
-    .table td {
-        padding: 0.5rem;
+    .hero-section p.lead {
+        font-size: 16px;
     }
 
     .folder-actions a,
+    .features-section h2,
     .folder-actions form {
         display: block;
         width: 100%;
@@ -409,6 +514,7 @@ input[type="range"]::-moz-range-track {
     }
 }
 
+/* Other Adjustments */
 .g-recaptcha {
     display: inline-block;
 }
