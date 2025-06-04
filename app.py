@@ -1,5 +1,6 @@
 import os
 from urllib.parse import urlparse, urlunparse
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from dotenv import load_dotenv
 
@@ -27,6 +28,7 @@ database_relative_path = "flaskkeyring.db"
 database_path = os.path.join(current_directory, database_relative_path)
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # Check if environment is production and enforce HTTPS
 if os.getenv("FLASK_ENV") == "production":
